@@ -1,0 +1,25 @@
+From 8da80b803df0039c8f1a5ea37c31e58ec469ad8b Mon Sep 17 00:00:00 2001
+From: Silvio Traversaro <silvio@traversaro.it>
+Date: Sat, 13 Mar 2021 16:52:25 +0100
+Subject: [PATCH] Update CMakeLists.txt
+
+---
+ dart/CMakeLists.txt | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/dart/CMakeLists.txt b/dart/CMakeLists.txt
+index 316832079d5..b62302fab59 100644
+--- a/dart/CMakeLists.txt
++++ b/dart/CMakeLists.txt
+@@ -150,6 +150,11 @@ else()
+   target_compile_features(dart PUBLIC cxx_std_14)
+ endif()
+ 
++# Fix for https://github.com/dartsim/dart/issues/1522
++if(MSVC)
++  target_compile_options(dart PUBLIC /vd2)
++endif()
++
+ # Build DART with all available SIMD instructions
+ if(DART_ENABLE_SIMD)
+   if(MSVC)
