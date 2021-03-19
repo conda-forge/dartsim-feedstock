@@ -61,7 +61,7 @@ requirements:
 test:
   commands:
     - test -f $PREFIX/lib/libdart.dylib  # [osx]
-    - $PREFIX $PREFIX/lib/libdart.so  # [linux]
+    - test -f $PREFIX/lib/libdart.so  # [linux]
     - test -f $PREFIX/share/dart/cmake/dart_collision-odeTargets.cmake  # [not win]
     - if not exist %LIBRARY_LIB%\\dart.lib exit 1  # [win]
     - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-odeTargets.cmake exit 1  # [win]
