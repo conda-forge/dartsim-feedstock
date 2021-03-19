@@ -1,0 +1,750 @@
+From eac1d42ae597e5813e6a1565e46552afab16ca79 Mon Sep 17 00:00:00 2001
+From: Silvio Traversaro <silvio@traversaro.it>
+Date: Wed, 17 Mar 2021 18:40:10 +0100
+Subject: [PATCH] Fix Aspect/Composite-relate tests on Windows/MSVC by marking
+ every class with virtual base with appropriate pragmas (#1541)
+
+Co-authored-by: Jeongseok Lee <jslee02@users.noreply.github.com>
+Co-authored-by: erwincoumans <erwin.coumans@gmail.com>
+---
+ dart/common/Aspect.hpp                    |  1 +
+ dart/common/ClassWithVirtualBase.hpp      | 47 +++++++++++++++++++++++
+ dart/common/Composite.hpp                 |  1 +
+ dart/common/EmbeddedAspect.hpp            |  7 ++++
+ dart/common/LocalResource.hpp             |  3 ++
+ dart/common/RequiresAspect.hpp            |  3 ++
+ dart/common/SpecializedForAspect.hpp      |  3 ++
+ dart/dynamics/BodyNode.hpp                |  6 ++-
+ dart/dynamics/DegreeOfFreedom.hpp         |  3 ++
+ dart/dynamics/Entity.hpp                  |  4 ++
+ dart/dynamics/FixedFrame.hpp              |  6 ++-
+ dart/dynamics/Frame.hpp                   |  2 +
+ dart/dynamics/JacobianNode.hpp            |  2 +
+ dart/dynamics/Joint.hpp                   |  2 +
+ dart/dynamics/Node.hpp                    |  7 ++--
+ dart/dynamics/Shape.hpp                   |  8 ++--
+ dart/dynamics/ShapeFrame.hpp              |  9 +++--
+ dart/dynamics/Skeleton.hpp                | 11 +++---
+ dart/dynamics/SpecializedNodeManager.hpp  |  4 ++
+ dart/dynamics/detail/BasicNodeManager.hpp |  3 ++
+ dart/gui/osg/DefaultEventHandler.hpp      |  3 ++
+ dart/gui/osg/MouseEventHandler.hpp        |  3 ++
+ dart/gui/osg/Viewer.hpp                   |  3 ++
+ dart/simulation/World.hpp                 |  2 +
+ dart/utils/CompositeResourceRetriever.hpp |  3 ++
+ dart/utils/PackageResourceRetriever.hpp   |  3 ++
+ 26 files changed, 130 insertions(+), 19 deletions(-)
+ create mode 100644 dart/common/ClassWithVirtualBase.hpp
+
+diff --git a/dart/common/Aspect.hpp b/dart/common/Aspect.hpp
+index 99efa201053..75d93d84c04 100644
+--- a/dart/common/Aspect.hpp
++++ b/dart/common/Aspect.hpp
+@@ -35,6 +35,7 @@
+ 
+ #include <string>
+ 
++#include "dart/common/ClassWithVirtualBase.hpp"
+ #include "dart/common/Cloneable.hpp"
+ #include "dart/common/detail/NoOp.hpp"
+ 
+diff --git a/dart/common/ClassWithVirtualBase.hpp b/dart/common/ClassWithVirtualBase.hpp
+new file mode 100644
+index 00000000000..9739c4f0f9e
+--- /dev/null
++++ b/dart/common/ClassWithVirtualBase.hpp
+@@ -0,0 +1,47 @@
++/*
++ * Copyright (c) 2011-2021, The DART development contributors
++ * All rights reserved.
++ *
++ * The list of contributors can be found at:
++ *   https://github.com/dartsim/dart/blob/master/LICENSE
++ *
++ * This file is provided under the following "BSD-style" License:
++ *   Redistribution and use in source and binary forms, with or
++ *   without modification, are permitted provided that the following
++ *   conditions are met:
++ *   * Redistributions of source code must retain the above copyright
++ *     notice, this list of conditions and the following disclaimer.
++ *   * Redistributions in binary form must reproduce the above
++ *     copyright notice, this list of conditions and the following
++ *     disclaimer in the documentation and/or other materials provided
++ *     with the distribution.
++ *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
++ *   CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
++ *   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++ *   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++ *   DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
++ *   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++ *   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++ *   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
++ *   USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
++ *   AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
++ *   LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
++ *   ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ *   POSSIBILITY OF SUCH DAMAGE.
++ */
++
++#ifndef DART_COMMON_CLASSWITHVIRTUALBASE_HPP_
++#define DART_COMMON_CLASSWITHVIRTUALBASE_HPP_
++
++// This macro is used to mark all the class that inherit
++// virtually from another to avoid problems on MSVC
++// See https://github.com/dartsim/dart/issues/1522
++#if defined(_MSC_VER)
++#  define DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN __pragma(vtordisp(push, 2))
++#  define DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END __pragma(vtordisp(pop))
++#else
++#  define DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
++#  define DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
++#endif
++
++#endif // DART_COMMON_CLASSWITHVIRTUALBASE_HPP_
+diff --git a/dart/common/Composite.hpp b/dart/common/Composite.hpp
+index 790158863c3..c3d9a65a09b 100644
+--- a/dart/common/Composite.hpp
++++ b/dart/common/Composite.hpp
+@@ -33,6 +33,7 @@
+ #ifndef DART_COMMON_COMPOSITE_HPP_
+ #define DART_COMMON_COMPOSITE_HPP_
+ 
++#include "dart/common/ClassWithVirtualBase.hpp"
+ #include "dart/common/detail/CompositeData.hpp"
+ 
+ namespace dart {
+diff --git a/dart/common/EmbeddedAspect.hpp b/dart/common/EmbeddedAspect.hpp
+index 77143c919d7..54f0a226513 100644
+--- a/dart/common/EmbeddedAspect.hpp
++++ b/dart/common/EmbeddedAspect.hpp
+@@ -87,6 +87,8 @@ class EmbeddedStateAspect : public detail::EmbeddedStateAspect<
+ /// It is possible to customize the way an EmbeddedStateAspect interacts with
+ /// your Composite by using the dart::common::detail::EmbeddedStateAspect class
+ /// directly instead of inheriting this class.
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
++
+ template <class DerivedT, typename StateDataT>
+ class EmbedState : public virtual common::RequiresAspect<
+     common::EmbeddedStateAspect<DerivedT, StateDataT> >
+@@ -120,6 +122,7 @@ class EmbedState : public virtual common::RequiresAspect<
+   AspectState mAspectState;
+ 
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ //==============================================================================
+ /// This is an alternative to EmbedState which allows your class to also inherit
+@@ -204,6 +207,7 @@ class EmbeddedPropertiesAspect : public detail::EmbeddedPropertiesAspect<
+ /// with your Composite by using the
+ /// dart::common::detail::EmbeddedPropertiesAspect class directly instead of
+ /// inheriting this class.
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ template <class DerivedT, typename PropertiesDataT>
+ class EmbedProperties : public virtual common::RequiresAspect<
+     common::EmbeddedPropertiesAspect<DerivedT, PropertiesDataT> >
+@@ -237,6 +241,7 @@ class EmbedProperties : public virtual common::RequiresAspect<
+   AspectProperties mAspectProperties;
+ 
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ //==============================================================================
+ /// This is an alternative to EmbedProperties which allows your class to also
+@@ -378,6 +383,7 @@ class EmbeddedStateAndPropertiesAspect :
+ /// void setAspectState(const AspectState& state);
+ /// void setAspectProperties(const AspectProperties& state);
+ /// \endcode
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ template <class DerivedT, typename StateDataT, typename PropertiesDataT>
+ class EmbedStateAndProperties : public virtual common::RequiresAspect<
+     common::EmbeddedStateAndPropertiesAspect<
+@@ -425,6 +431,7 @@ class EmbedStateAndProperties : public virtual common::RequiresAspect<
+   AspectProperties mAspectProperties;
+ 
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ //==============================================================================
+ /// This is an alternative to EmbedStateAndProperties which allows your class to
+diff --git a/dart/common/LocalResource.hpp b/dart/common/LocalResource.hpp
+index bc19597bd2e..099d511385a 100644
+--- a/dart/common/LocalResource.hpp
++++ b/dart/common/LocalResource.hpp
+@@ -33,11 +33,13 @@
+ #ifndef DART_COMMON_LOCALRESOURCE_HPP_
+ #define DART_COMMON_LOCALRESOURCE_HPP_
+ 
++#include "dart/common/ClassWithVirtualBase.hpp"
+ #include "dart/common/Resource.hpp"
+ 
+ namespace dart {
+ namespace common {
+ 
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ class LocalResource : public virtual Resource
+ {
+ public:
+@@ -65,6 +67,7 @@ class LocalResource : public virtual Resource
+ private:
+   std::FILE* mFile;
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ } // namespace common
+ } // namespace dart
+diff --git a/dart/common/RequiresAspect.hpp b/dart/common/RequiresAspect.hpp
+index 492321f5c1a..6ddc9902d45 100644
+--- a/dart/common/RequiresAspect.hpp
++++ b/dart/common/RequiresAspect.hpp
+@@ -33,6 +33,7 @@
+ #ifndef DART_COMMON_REQUIRESASPECT_HPP_
+ #define DART_COMMON_REQUIRESASPECT_HPP_
+ 
++#include "dart/common/ClassWithVirtualBase.hpp"
+ #include "dart/common/SpecializedForAspect.hpp"
+ 
+ namespace dart {
+@@ -48,6 +49,7 @@ template <class... OtherRequiredAspects>
+ class RequiresAspect { };
+ 
+ //==============================================================================
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ template <class ReqAspect>
+ class RequiresAspect<ReqAspect> : public virtual SpecializedForAspect<ReqAspect>
+ {
+@@ -58,6 +60,7 @@ class RequiresAspect<ReqAspect> : public virtual SpecializedForAspect<ReqAspect>
+   RequiresAspect();
+ 
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ //==============================================================================
+ template <class ReqAspect1, class... OtherReqAspects>
+diff --git a/dart/common/SpecializedForAspect.hpp b/dart/common/SpecializedForAspect.hpp
+index 133a08167f2..3b0fefddcbb 100644
+--- a/dart/common/SpecializedForAspect.hpp
++++ b/dart/common/SpecializedForAspect.hpp
+@@ -51,6 +51,8 @@ class SpecializedForAspect
+ //==============================================================================
+ /// SpecializedForAspect allows classes that inherit Composite to have
+ /// constant-time access to a specific type of Aspect
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
++
+ template <class SpecAspect>
+ class SpecializedForAspect<SpecAspect> : public virtual Composite
+ {
+@@ -181,6 +183,7 @@ class SpecializedForAspect<SpecAspect> : public virtual Composite
+   Composite::AspectMap::iterator mSpecAspectIterator;
+ 
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ //==============================================================================
+ /// This is the variadic version of the SpecializedForAspect class which
+diff --git a/dart/dynamics/BodyNode.hpp b/dart/dynamics/BodyNode.hpp
+index f3711d33f7f..23492be3a35 100644
+--- a/dart/dynamics/BodyNode.hpp
++++ b/dart/dynamics/BodyNode.hpp
+@@ -70,8 +70,9 @@ class Marker;
+ ///
+ /// BodyNode inherits Frame, and a parent Frame of a BodyNode is the parent
+ /// BodyNode of the BodyNode.
+-class BodyNode :
+-    public detail::BodyNodeCompositeBase,
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
++class BodyNode
++  : public detail::BodyNodeCompositeBase,
+     public virtual BodyNodeSpecializedFor<ShapeNode, EndEffector, Marker>,
+     public SkeletonRefCountingBase,
+     public TemplatedJacobianNode<BodyNode>
+@@ -1221,6 +1222,7 @@ class BodyNode :
+   std::shared_ptr<NodeDestructor> mSelfDestructor;
+ 
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ }  // namespace dynamics
+ }  // namespace dart
+diff --git a/dart/dynamics/DegreeOfFreedom.hpp b/dart/dynamics/DegreeOfFreedom.hpp
+index 12107973380..d8657c64760 100644
+--- a/dart/dynamics/DegreeOfFreedom.hpp
++++ b/dart/dynamics/DegreeOfFreedom.hpp
+@@ -37,6 +37,7 @@
+ #include <memory>
+ #include <Eigen/Core>
+ 
++#include "dart/common/ClassWithVirtualBase.hpp"
+ #include "dart/common/Subject.hpp"
+ #include "dart/dynamics/SmartPointer.hpp"
+ 
+@@ -49,6 +50,7 @@ class BodyNode;
+ 
+ /// DegreeOfFreedom class is a proxy class for accessing single degrees of
+ /// freedom (aka generalized coordinates) of the Skeleton.
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ class DegreeOfFreedom : public virtual common::Subject
+ {
+ public:
+@@ -403,6 +405,7 @@ class DegreeOfFreedom : public virtual common::Subject
+   // destructed.
+ 
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ } // namespace dynamics
+ } // namespace dart
+diff --git a/dart/dynamics/Entity.hpp b/dart/dynamics/Entity.hpp
+index 2377239de19..f6bfab73dcd 100644
+--- a/dart/dynamics/Entity.hpp
++++ b/dart/dynamics/Entity.hpp
+@@ -56,6 +56,7 @@ class Frame;
+ /// may have different policies about how/if their reference frame or name
+ /// can be changed. Use the Detachable class to create an Entity whose reference
+ /// Frame can be changed arbitrarily.
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ class Entity : public virtual common::Subject
+ {
+ public:
+@@ -228,9 +229,11 @@ class Entity : public virtual common::Subject
+   /// Whether or not this Entity is a Frame
+   bool mAmFrame;
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ /// The Detachable class is a special case of the Entity base class. Detachable
+ /// allows the Entity's reference Frame to be changed arbitrarily by the user.
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ class Detachable : public virtual Entity
+ {
+ public:
+@@ -246,6 +249,7 @@ class Detachable : public virtual Entity
+   Detachable();
+ 
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ } // namespace dynamics
+ } // namespace dart
+diff --git a/dart/dynamics/FixedFrame.hpp b/dart/dynamics/FixedFrame.hpp
+index 01cbfc90949..ecec0a548f1 100644
+--- a/dart/dynamics/FixedFrame.hpp
++++ b/dart/dynamics/FixedFrame.hpp
+@@ -45,8 +45,9 @@ namespace dynamics {
+ /// zero relative acceleration. It does not move within its parent Frame after
+ /// its relative transform is set. However, classes that inherit the FixedFrame
+ /// class may alter its relative transform or change what its parent Frame is.
+-class FixedFrame :
+-    public virtual Frame,
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
++class FixedFrame
++  : public virtual Frame,
+     public virtual common::VersionCounter,
+     public common::EmbedProperties<FixedFrame, detail::FixedFrameProperties>
+ {
+@@ -95,6 +96,7 @@ class FixedFrame :
+   // To get byte-aligned Eigen vectors
+   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ } // namespace dynamics
+ } // namespace dart
+diff --git a/dart/dynamics/Frame.hpp b/dart/dynamics/Frame.hpp
+index 938db4b049e..4d0d08f2888 100644
+--- a/dart/dynamics/Frame.hpp
++++ b/dart/dynamics/Frame.hpp
+@@ -53,6 +53,7 @@ namespace dynamics {
+ /// Entity class is inherited by using virtual inheritence to solve the
+ /// so-called "diamond problem". Because of that, the Entity's constructor will
+ /// be called directly by the most derived class's constructor.
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ class Frame : public virtual Entity
+ {
+ public:
+@@ -371,6 +372,7 @@ class WorldFrame : public Frame
+   // To get byte-aligned Eigen vectors
+   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ } // namespace dynamics
+ } // namespace dart
+diff --git a/dart/dynamics/JacobianNode.hpp b/dart/dynamics/JacobianNode.hpp
+index 9523b6a0331..a22f1752a17 100644
+--- a/dart/dynamics/JacobianNode.hpp
++++ b/dart/dynamics/JacobianNode.hpp
+@@ -50,6 +50,7 @@ class InverseKinematics;
+ /// The JacobianNode class serves as a common interface for BodyNodes and
+ /// EndEffectors to both be used as references for IK modules. This is a pure
+ /// abstract class.
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ class JacobianNode : public virtual Frame, public Node
+ {
+ public:
+@@ -304,6 +305,7 @@ class JacobianNode : public virtual Frame, public Node
+   std::unordered_set<JacobianNode*> mChildJacobianNodes;
+ 
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ } // namespace dart
+ } // namespace dynamics
+diff --git a/dart/dynamics/Joint.hpp b/dart/dynamics/Joint.hpp
+index c416dd66264..d937511a743 100644
+--- a/dart/dynamics/Joint.hpp
++++ b/dart/dynamics/Joint.hpp
+@@ -53,6 +53,7 @@ class Skeleton;
+ class DegreeOfFreedom;
+ 
+ /// class Joint
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ class Joint : public virtual common::Subject,
+               public virtual common::VersionCounter,
+               public common::EmbedProperties<Joint, detail::JointProperties>
+@@ -1023,6 +1024,7 @@ class Joint : public virtual common::Subject,
+   // To get byte-aligned Eigen vectors
+   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ }  // namespace dynamics
+ }  // namespace dart
+diff --git a/dart/dynamics/Node.hpp b/dart/dynamics/Node.hpp
+index fb0899878f5..8b21af5912c 100644
+--- a/dart/dynamics/Node.hpp
++++ b/dart/dynamics/Node.hpp
+@@ -78,9 +78,9 @@ class NodeDestructor final
+ ///
+ /// In most cases, when creating your own custom Node class, you will also want
+ /// to inherit from AccessoryNode using CRTP.
+-class Node :
+-    public virtual common::Subject,
+-    public virtual common::VersionCounter
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
++class Node : public virtual common::Subject,
++             public virtual common::VersionCounter
+ {
+ public:
+ 
+@@ -226,6 +226,7 @@ class Node :
+   /// Index of this Node within its tree
+   std::size_t mIndexInTree;
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ //==============================================================================
+ /// AccessoryNode provides an interface for Nodes to get their index within the
+diff --git a/dart/dynamics/Shape.hpp b/dart/dynamics/Shape.hpp
+index 5a1f3f93880..51c1d848adb 100644
+--- a/dart/dynamics/Shape.hpp
++++ b/dart/dynamics/Shape.hpp
+@@ -37,6 +37,7 @@
+ 
+ #include <Eigen/Dense>
+ 
++#include "dart/common/ClassWithVirtualBase.hpp"
+ #include "dart/common/Deprecated.hpp"
+ #include "dart/common/Signal.hpp"
+ #include "dart/common/Subject.hpp"
+@@ -47,9 +48,9 @@
+ namespace dart {
+ namespace dynamics {
+ 
+-class Shape
+-    : public virtual common::Subject,
+-      public virtual common::VersionCounter
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
++class Shape : public virtual common::Subject,
++              public virtual common::VersionCounter
+ {
+ public:
+ 
+@@ -219,6 +220,7 @@ class Shape
+   common::SlotRegister<VersionChangedSignal> onVersionChanged;
+ 
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ }  // namespace dynamics
+ }  // namespace dart
+diff --git a/dart/dynamics/ShapeFrame.hpp b/dart/dynamics/ShapeFrame.hpp
+index f94bdbdbd78..9c459425dd6 100644
+--- a/dart/dynamics/ShapeFrame.hpp
++++ b/dart/dynamics/ShapeFrame.hpp
+@@ -157,10 +157,10 @@ class DynamicsAspect final :
+ };
+ 
+ //==============================================================================
+-class ShapeFrame :
+-    public virtual common::VersionCounter,
+-    public detail::ShapeFrameCompositeBase,
+-    public virtual Frame
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
++class ShapeFrame : public virtual common::VersionCounter,
++                   public detail::ShapeFrameCompositeBase,
++                   public virtual Frame
+ {
+ public:
+ 
+@@ -258,6 +258,7 @@ class ShapeFrame :
+       onRelativeTransformUpdated;
+ 
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ } // namespace dynamics
+ } // namespace dart
+diff --git a/dart/dynamics/Skeleton.hpp b/dart/dynamics/Skeleton.hpp
+index 33b822b0b08..25c0e88c83b 100644
+--- a/dart/dynamics/Skeleton.hpp
++++ b/dart/dynamics/Skeleton.hpp
+@@ -51,11 +51,11 @@ namespace dart {
+ namespace dynamics {
+ 
+ /// class Skeleton
+-class Skeleton :
+-    public virtual common::VersionCounter,
+-    public MetaSkeleton,
+-    public SkeletonSpecializedFor<ShapeNode, EndEffector, Marker>,
+-    public detail::SkeletonAspectBase
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
++class Skeleton : public virtual common::VersionCounter,
++                 public MetaSkeleton,
++                 public SkeletonSpecializedFor<ShapeNode, EndEffector, Marker>,
++                 public detail::SkeletonAspectBase
+ {
+ public:
+   // Some of non-virtual functions of MetaSkeleton are hidden because of the
+@@ -1351,6 +1351,7 @@ class Skeleton :
+   ///
+   std::size_t mUnionIndex;
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ }  // namespace dynamics
+ }  // namespace dart
+diff --git a/dart/dynamics/SpecializedNodeManager.hpp b/dart/dynamics/SpecializedNodeManager.hpp
+index 9c5fabfe172..6a5518a123b 100644
+--- a/dart/dynamics/SpecializedNodeManager.hpp
++++ b/dart/dynamics/SpecializedNodeManager.hpp
+@@ -51,6 +51,7 @@ class BodyNodeSpecializedFor { };
+ //==============================================================================
+ /// BodyNodeSpecializedFor allows classes that inherit BodyNode to
+ /// have constant-time access to a specific type of Node
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ template <class SpecNode>
+ class BodyNodeSpecializedFor<SpecNode> :
+     public virtual detail::BasicNodeManagerForBodyNode
+@@ -103,6 +104,7 @@ class BodyNodeSpecializedFor<SpecNode> :
+   BasicNodeManagerForBodyNode::NodeMap::iterator mSpecNodeIterator;
+ 
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ //==============================================================================
+ /// This is the variadic version of the BodyNodeSpecializedFor class
+@@ -122,6 +124,7 @@ class SkeletonSpecializedFor { };
+ //==============================================================================
+ /// SkeletonSpecializedForNode allows classes that inherit Skeleton to
+ /// have constant-time access to a specific type of Node
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ template <class SpecNode>
+ class SkeletonSpecializedFor<SpecNode> :
+     public virtual detail::BasicNodeManagerForSkeleton,
+@@ -201,6 +204,7 @@ class SkeletonSpecializedFor<SpecNode> :
+   NodeNameMgrMap::iterator mSpecNodeNameMgrIterator;
+ 
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ //==============================================================================
+ /// This is the variadic version of the SkeletonSpecializedForNode class
+diff --git a/dart/dynamics/detail/BasicNodeManager.hpp b/dart/dynamics/detail/BasicNodeManager.hpp
+index 31a995efe35..c92c24f2bb6 100644
+--- a/dart/dynamics/detail/BasicNodeManager.hpp
++++ b/dart/dynamics/detail/BasicNodeManager.hpp
+@@ -37,6 +37,7 @@
+ #include <typeindex>
+ #include <unordered_set>
+ 
++#include "dart/common/ClassWithVirtualBase.hpp"
+ #include "dart/common/NameManager.hpp"
+ #include "dart/common/Empty.hpp"
+ #include "dart/dynamics/Node.hpp"
+@@ -89,6 +90,7 @@ class BasicNodeManagerForBodyNode
+ 
+ };
+ 
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ class BasicNodeManagerForSkeleton : public virtual BasicNodeManagerForBodyNode
+ {
+ public:
+@@ -136,6 +138,7 @@ class BasicNodeManagerForSkeleton : public virtual BasicNodeManagerForBodyNode
+   SpecializedTreeNodes mSpecializedTreeNodes;
+ 
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ //==============================================================================
+ template <class NodeType>
+diff --git a/dart/gui/osg/DefaultEventHandler.hpp b/dart/gui/osg/DefaultEventHandler.hpp
+index a277429d99b..5e71b97209b 100644
+--- a/dart/gui/osg/DefaultEventHandler.hpp
++++ b/dart/gui/osg/DefaultEventHandler.hpp
+@@ -41,6 +41,7 @@
+ 
+ #include <osgGA/GUIEventHandler>
+ 
++#include "dart/common/ClassWithVirtualBase.hpp"
+ #include "dart/common/Subject.hpp"
+ #include "dart/common/Observer.hpp"
+ 
+@@ -95,6 +96,7 @@ enum ConstraintType {
+ 
+ class MouseEventHandler;
+ 
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ class DefaultEventHandler : public ::osgGA::GUIEventHandler,
+                             public virtual dart::common::Subject,
+                             public virtual dart::common::Observer
+@@ -227,6 +229,7 @@ class DefaultEventHandler : public ::osgGA::GUIEventHandler,
+   int mLastModKeyMask;
+ 
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ } // namespace osg
+ } // namespace gui
+diff --git a/dart/gui/osg/MouseEventHandler.hpp b/dart/gui/osg/MouseEventHandler.hpp
+index 3895a2776f0..dc4358b786c 100644
+--- a/dart/gui/osg/MouseEventHandler.hpp
++++ b/dart/gui/osg/MouseEventHandler.hpp
+@@ -33,6 +33,7 @@
+ #ifndef DART_GUI_OSG_MOUSEEVENTHANDLER_HPP_
+ #define DART_GUI_OSG_MOUSEEVENTHANDLER_HPP_
+ 
++#include "dart/common/ClassWithVirtualBase.hpp"
+ #include "dart/common/Subject.hpp"
+ #include "dart/common/Observer.hpp"
+ 
+@@ -44,6 +45,7 @@ namespace osg {
+ 
+ class DefaultEventHandler;
+ 
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ class MouseEventHandler : public virtual dart::common::Subject,
+                           public virtual dart::common::Observer
+ {
+@@ -68,6 +70,7 @@ class MouseEventHandler : public virtual dart::common::Subject,
+   DefaultEventHandler* mEventHandler;
+ 
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ } // namespace osg
+ } // namespace gui
+diff --git a/dart/gui/osg/Viewer.hpp b/dart/gui/osg/Viewer.hpp
+index e683489f045..29900dbda5a 100644
+--- a/dart/gui/osg/Viewer.hpp
++++ b/dart/gui/osg/Viewer.hpp
+@@ -42,6 +42,7 @@
+ 
+ #include <Eigen/Core>
+ 
++#include "dart/common/ClassWithVirtualBase.hpp"
+ #include "dart/common/Subject.hpp"
+ 
+ namespace dart {
+@@ -71,6 +72,7 @@ class BodyNodeDnD;
+ class Viewer;
+ class SaveScreen;
+ 
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ class ViewerAttachment : public virtual ::osg::Group
+ {
+ public:
+@@ -389,6 +391,7 @@ class Viewer : public osgViewer::Viewer, public dart::common::Subject
+   /// Map from BodyNode ptrs to BodyNodeDnD ptrs
+   std::map<dart::dynamics::BodyNode*,BodyNodeDnD*> mBodyNodeDnDMap;
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ } // namespace osg
+ } // namespace gui
+diff --git a/dart/simulation/World.hpp b/dart/simulation/World.hpp
+index ce588b24e37..b8e67a32509 100644
+--- a/dart/simulation/World.hpp
++++ b/dart/simulation/World.hpp
+@@ -79,6 +79,7 @@ namespace simulation {
+ DART_COMMON_DECLARE_SHARED_WEAK(World)
+ 
+ /// class World
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ class World : public virtual common::Subject
+ {
+ public:
+@@ -324,6 +325,7 @@ class World : public virtual common::Subject
+   common::SlotRegister<NameChangedSignal> onNameChanged;
+ 
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ }  // namespace simulation
+ }  // namespace dart
+diff --git a/dart/utils/CompositeResourceRetriever.hpp b/dart/utils/CompositeResourceRetriever.hpp
+index 1ebd71f9965..4ad92dfcbd2 100644
+--- a/dart/utils/CompositeResourceRetriever.hpp
++++ b/dart/utils/CompositeResourceRetriever.hpp
+@@ -35,6 +35,7 @@
+ 
+ #include <unordered_map>
+ #include <vector>
++#include "dart/common/ClassWithVirtualBase.hpp"
+ #include "dart/common/ResourceRetriever.hpp"
+ 
+ namespace dart {
+@@ -44,6 +45,7 @@ namespace utils {
+ /// used interchangably by: (1) associating each \ref ResourceRetriever with a
+ /// particular URI schema and/or (2) providing a precedence order for trying
+ /// multiple retrievers.
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ class CompositeResourceRetriever : public virtual common::ResourceRetriever
+ {
+ public:
+@@ -83,6 +85,7 @@ class CompositeResourceRetriever : public virtual common::ResourceRetriever
+     std::vector<common::ResourceRetrieverPtr> > mResourceRetrievers;
+   std::vector<common::ResourceRetrieverPtr> mDefaultResourceRetrievers;
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ using CompositeResourceRetrieverPtr
+   = std::shared_ptr<CompositeResourceRetriever>;
+diff --git a/dart/utils/PackageResourceRetriever.hpp b/dart/utils/PackageResourceRetriever.hpp
+index 293503655e6..e26704062c9 100644
+--- a/dart/utils/PackageResourceRetriever.hpp
++++ b/dart/utils/PackageResourceRetriever.hpp
+@@ -35,6 +35,7 @@
+ 
+ #include <unordered_map>
+ #include <vector>
++#include "dart/common/ClassWithVirtualBase.hpp"
+ #include "dart/common/ResourceRetriever.hpp"
+ 
+ namespace dart {
+@@ -45,6 +46,7 @@ namespace utils {
+ /// \ref ResourceRetriever. This class uses requires you to manually provide the
+ /// base URI of every package that you wish to resolve using the
+ /// \ref addPackageDirectory method.
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_BEGIN
+ class PackageResourceRetriever : public virtual common::ResourceRetriever
+ {
+ public:
+@@ -103,6 +105,7 @@ class PackageResourceRetriever : public virtual common::ResourceRetriever
+   bool resolvePackageUri(const common::Uri& _uri,
+     std::string& _packageName, std::string& _relativePath) const;
+ };
++DART_DECLARE_CLASS_WITH_VIRTUAL_BASE_END
+ 
+ using PackageResourceRetrieverPtr = std::shared_ptr<PackageResourceRetriever>;
+ 
+
