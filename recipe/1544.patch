@@ -18,7 +18,7 @@ index a447eee175a..d499937cdd9 100644
 +include(FindPackageHandleStandardArgs)
 +
 +# First try to find ODE via the official cmake config
-+find_package(ODE QUIET NO_MODULE)
++find_package(ODE REQUIRED NO_MODULE)
 +mark_as_advanced(ODE_DIR)
 +
 +if(ODE_FOUND)
