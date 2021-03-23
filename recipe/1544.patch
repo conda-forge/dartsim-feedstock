@@ -1,40 +1,27 @@
-From 969b9bd7ba709f1f997a786b26d8bddb7376e824 Mon Sep 17 00:00:00 2001
+From 48731e9e020e7c9d80fa55564240b43d2832a26e Mon Sep 17 00:00:00 2001
 From: Silvio Traversaro <silvio@traversaro.it>
-Date: Tue, 23 Mar 2021 11:39:53 +0100
-Subject: [PATCH] FindODE: try to check first for ODE cmake config
+Date: Tue, 23 Mar 2021 12:10:09 +0100
+Subject: [PATCH] Make ode required
 
 ---
- cmake/FindODE.cmake | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ cmake/DARTFindODE.cmake | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/cmake/FindODE.cmake b/cmake/FindODE.cmake
-index a447eee175a..d499937cdd9 100644
---- a/cmake/FindODE.cmake
-+++ b/cmake/FindODE.cmake
-@@ -17,6 +17,18 @@
- # and the following targets:
- #   ODE::ODE
+diff --git a/cmake/DARTFindODE.cmake b/cmake/DARTFindODE.cmake
+index 9833f5acce8..0c8bf720d4c 100644
+--- a/cmake/DARTFindODE.cmake
++++ b/cmake/DARTFindODE.cmake
+@@ -6,12 +6,4 @@
+ #
+ # This file is provided under the "BSD-style" License
  
-+include(FindPackageHandleStandardArgs)
-+
-+# First try to find ODE via the official cmake config
-+find_package(ODE REQUIRED NO_MODULE)
-+mark_as_advanced(ODE_DIR)
-+
-+if(ODE_FOUND)
-+  find_package_handle_standard_args(ODE CONFIG_MODE)
-+  return()
-+endif()
-+
-+# Fallback to use pkg-config
- find_package(PkgConfig QUIET)
- 
- # Check to see if pkgconfig is installed.
-@@ -41,7 +53,6 @@ endif()
- set(ODE_VERSION ${PC_ODE_VERSION})
- 
- # Set (NAME)_FOUND if all the variables and the version are satisfied.
--include(FindPackageHandleStandardArgs)
- find_package_handle_standard_args(ODE
-     FAIL_MESSAGE  DEFAULT_MSG
-     REQUIRED_VARS ODE_INCLUDE_DIRS ODE_LIBRARIES
+-find_package(ODE 0.13 QUIET MODULE)
+-
+-if(ODE_FOUND AND NOT TARGET ODE::ODE)
+-  add_library(ODE::ODE INTERFACE IMPORTED)
+-  set_target_properties(ODE::ODE PROPERTIES
+-    INTERFACE_INCLUDE_DIRECTORIES "${ODE_INCLUDE_DIRS}"
+-    INTERFACE_LINK_LIBRARIES "${ODE_LIBRARIES}"
+-  )
+-endif()
++find_package(ODE REQUIRED CONFIG)
