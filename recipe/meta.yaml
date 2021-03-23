@@ -11,7 +11,7 @@ source:
     patches:
       - 1478.patch  # [win]
       - 1541.patch  # [win]
-      - 1544.patch
+      - ode-required.patch
 
 build:
   number: 3
