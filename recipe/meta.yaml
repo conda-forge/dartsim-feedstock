@@ -11,9 +11,10 @@ source:
     patches:
       - 1478.patch  # [win]
       - 1541.patch  # [win]
+      - ode-required.patch
 
 build:
-  number: 2
+  number: 3
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
@@ -62,7 +63,9 @@ test:
   commands:
     - test -f $PREFIX/lib/libdart.dylib  # [osx]
     - test -f $PREFIX/lib/libdart.so  # [linux]
+    - test -f $PREFIX/share/dart/cmake/dart_collision-odeTargets.cmake  # [not win]
     - if not exist %LIBRARY_LIB%\\dart.lib exit 1  # [win]
+    - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-odeTargets.cmake exit 1  # [win]
 
 about:
   home: http://dartsim.github.io/
