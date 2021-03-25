@@ -14,7 +14,7 @@ source:
       - ode-required.patch
 
 build:
-  number: 3
+  number: 4
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
@@ -46,7 +46,7 @@ requirements:
   run:
     - assimp
     - boost-cpp
-    - bullet
+    - bullet-cpp
     - console_bridge
     - eigen
     - fcl
@@ -64,8 +64,10 @@ test:
     - test -f $PREFIX/lib/libdart.dylib  # [osx]
     - test -f $PREFIX/lib/libdart.so  # [linux]
     - test -f $PREFIX/share/dart/cmake/dart_collision-odeTargets.cmake  # [not win]
+    - test -f $PREFIX/share/dart/cmake/dart_collision-bulletTargets.cmake  # [not win]
     - if not exist %LIBRARY_LIB%\\dart.lib exit 1  # [win]
     - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-odeTargets.cmake exit 1  # [win]
+    - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-bulletTargets.cmake exit 1  # [win]
 
 about:
   home: http://dartsim.github.io/
