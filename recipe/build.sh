@@ -24,5 +24,6 @@ make ${NUM_PARALLEL}
 make ${NUM_PARALLEL} install
 
 if [ ${target_platform} != "linux-ppc64le" ]; then
+  make ${NUM_PARALLEL} tests
   ctest --output-on-failure 
 fi
