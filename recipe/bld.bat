@@ -6,6 +6,7 @@ cmake -G "Ninja" ^
     -DCMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
     -DDART_MSVC_DEFAULT_OPTIONS=ON ^
     -DDART_VERBOSE=ON ^
+    -DBUILD_TESTING:BOOL=ON ^
     %SRC_DIR%
 
 echo "Print CMakeOutput:"
@@ -18,4 +19,7 @@ ninja
 if errorlevel 1 exit 1
 
 ninja install
+if errorlevel 1 exit 1
+
+ctest --output-on-failure
 if errorlevel 1 exit 1
