@@ -23,4 +23,6 @@ cmake $SRC_DIR \
 make ${NUM_PARALLEL}
 make ${NUM_PARALLEL} install
 
-ctest --output-on-failure 
+if [ ${target_platform} != "linux-ppc64le" ]; then
+  ctest --output-on-failure 
+fi
