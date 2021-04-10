@@ -1,5 +1,5 @@
 {% set name = "dartsim" %}
-{% set version = "6.9.5" %}
+{% set version = "6.10.0" %}
 
 package:
   name: {{ name }}
@@ -7,7 +7,7 @@ package:
 
 source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
-    sha256: 624c00b65e3a753cba50de038620860c86e2ac47b1793ae51f9427a4bcb14c32
+    sha256: 23334b2199a3f3308327d6095252647afe34f7c7222e6708ee635b69fb4832f7
     patches:
       - 1478.patch  # [win]
       - 1541.patch  # [win]
@@ -15,7 +15,7 @@ source:
       - ode-required.patch
 
 build:
-  number: 5
+  number: 0
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
