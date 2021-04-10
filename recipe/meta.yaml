@@ -8,8 +8,6 @@ package:
 source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
     sha256: 410ab1dc74fa41985beba1fb15239f71dc7ca02f385f00b8495d173c92b098de
-    patches:
-      - ode-required.patch
 
 build:
   number: 0
