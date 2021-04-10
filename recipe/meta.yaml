@@ -9,9 +9,6 @@ source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
     sha256: 23334b2199a3f3308327d6095252647afe34f7c7222e6708ee635b69fb4832f7
     patches:
-      - 1478.patch  # [win]
-      - 1541.patch  # [win]
-      - 1510.patch
       - ode-required.patch
 
 build:
