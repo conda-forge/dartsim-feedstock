@@ -18,7 +18,6 @@ cmake $SRC_DIR \
       -DCMAKE_PREFIX_PATH=$PREFIX \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_LIBDIR=lib \
-      # To ensure that OpenGL is not accidentally found on macOS
       -DDART_SKIP_OpenGL:BOOL=ON \
       ${CMAKE_TEST_CMD}
 
