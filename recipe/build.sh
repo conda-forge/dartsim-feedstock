@@ -19,6 +19,7 @@ cmake $SRC_DIR \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_LIBDIR=lib \
       -DDART_SKIP_OpenGL:BOOL=ON \
+      -DDART_VERBOSE:BOOL=ON \
       ${CMAKE_TEST_CMD}
 
 make ${NUM_PARALLEL}
