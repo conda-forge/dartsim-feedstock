@@ -1,0 +1,20 @@
+From 124fdefbbc97ac9bdff9ff888522a8a0c69c7e51 Mon Sep 17 00:00:00 2001
+From: Silvio Traversaro <silvio@traversaro.it>
+Date: Sat, 10 Apr 2021 15:05:22 +0200
+Subject: [PATCH] Update CMakeLists.txt
+
+---
+ dart/external/CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dart/external/CMakeLists.txt b/dart/external/CMakeLists.txt
+index 08377bd4a98e..a9e019da3501 100644
+--- a/dart/external/CMakeLists.txt
++++ b/dart/external/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-add_subdirectory(imgui)
++# add_subdirectory(imgui)
+ add_subdirectory(ikfast)
+ add_subdirectory(lodepng)
+ add_subdirectory(odelcpsolver)
+ 

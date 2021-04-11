@@ -18,6 +18,7 @@ cmake $SRC_DIR \
       -DCMAKE_PREFIX_PATH=$PREFIX \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_LIBDIR=lib \
+      -DDART_VERBOSE:BOOL=ON \
       ${CMAKE_TEST_CMD}
 
 make ${NUM_PARALLEL}
