@@ -13,7 +13,7 @@ source:
       - disable_gui.patch
 
 build:
-  number: 0
+  number: 1
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
@@ -40,7 +40,7 @@ requirements:
     - lz4-c
     - octomap
     - tinyxml2
-    - urdfdom
+    - urdfdom {{ urdfdom }}
     - freeglut  # [win]
 
   run:
