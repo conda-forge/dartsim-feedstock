@@ -7,13 +7,13 @@ package:
 
 source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
-    sha256: bd65b600e0983a5bdc0788d90dff0ba8fba8494d3f4af590ba1e81f44323eb4e
+    sha256: bf19cdef8e28dbc4059dcbb11997576d6e1d825791bd756e8272d2ddc5b147ce
     patches:
       - disable_imgui.patch
       - disable_gui.patch
 
 build:
-  number: 0
+  number: 1
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
