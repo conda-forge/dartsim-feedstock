@@ -11,6 +11,7 @@ source:
     patches:
       - disable_imgui.patch
       - disable_gui.patch
+      - 1613.patch
 
 build:
   number: 0
