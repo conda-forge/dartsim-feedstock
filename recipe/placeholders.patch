@@ -1,0 +1,23 @@
+From e7a7575b32ceb7fb9b283f15033349bd7a344c8d Mon Sep 17 00:00:00 2001
+From: Silvio Traversaro <silvio@traversaro.it>
+Date: Sun, 10 Oct 2021 19:43:21 +0200
+Subject: [PATCH] Update test_Signal.cpp
+
+---
+ unittests/unit/test_Signal.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/unittests/unit/test_Signal.cpp b/unittests/unit/test_Signal.cpp
+index c2d6d1d426e..6070f39704c 100644
+--- a/unittests/unit/test_Signal.cpp
++++ b/unittests/unit/test_Signal.cpp
+@@ -140,8 +140,8 @@ TEST(Signal, NonStaticMemberFunction)
+   signal2.connect(&Viewer::onSignal2Static);
+ 
+   // Connect non-static member function
+-  using placeholders::_1;
+-  using placeholders::_2;
++  using std::placeholders::_1;
++  using std::placeholders::_2;
+   signal1.connect(bind(&Viewer::onSignal1, &viewer, _1));
+   signal2.connect(bind(&Viewer::onSignal2, &viewer, _1, _2));
