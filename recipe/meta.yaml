@@ -12,6 +12,7 @@ source:
       - disable_imgui.patch
       - disable_gui.patch
       - 1613.patch
+      - placeholders.patch
 
 build:
   number: 0
