@@ -1,6 +1,6 @@
-From 124fdefbbc97ac9bdff9ff888522a8a0c69c7e51 Mon Sep 17 00:00:00 2001
+From 4d9052429b3133f08d6ebee6d8af5932bc670a24 Mon Sep 17 00:00:00 2001
 From: Silvio Traversaro <silvio@traversaro.it>
-Date: Sat, 10 Apr 2021 15:05:22 +0200
+Date: Sun, 10 Oct 2021 11:57:32 +0200
 Subject: [PATCH] Update CMakeLists.txt
 
 ---
@@ -8,12 +8,13 @@ Subject: [PATCH] Update CMakeLists.txt
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/dart/external/CMakeLists.txt b/dart/external/CMakeLists.txt
-index 08377bd4a98e..a9e019da3501 100644
+index aa2fa0a2121a..0d04e5b43df2 100644
 --- a/dart/external/CMakeLists.txt
 +++ b/dart/external/CMakeLists.txt
-@@ -1,4 +1,4 @@
+@@ -1,5 +1,5 @@
+ add_subdirectory(convhull_3d)
 -add_subdirectory(imgui)
-+# add_subdirectory(imgui)
++#add_subdirectory(imgui)
  add_subdirectory(ikfast)
  add_subdirectory(lodepng)
  add_subdirectory(odelcpsolver)
