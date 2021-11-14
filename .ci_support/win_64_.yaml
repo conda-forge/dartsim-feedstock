@@ -3,7 +3,7 @@ boost_cpp:
 c_compiler:
 - vs2017
 channel_sources:
-- conda-forge,defaults
+- conda-forge
 channel_targets:
 - conda-forge main
 cxx_compiler:
@@ -13,15 +13,13 @@ flann:
 lz4_c:
 - 1.9.3
 perl:
-- 5.26.2
+- 5.32.1
 pin_run_as_build:
   boost-cpp:
     max_pin: x.x.x
   flann:
     max_pin: x.x.x
   lz4-c:
-    max_pin: x.x.x
-  perl:
     max_pin: x.x.x
 target_platform:
 - win-64
