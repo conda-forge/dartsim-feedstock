@@ -1,0 +1,25 @@
+From 2748745b77df297d05aad941ae9c09f4a726143f Mon Sep 17 00:00:00 2001
+From: Silvio Traversaro <silvio@traversaro.it>
+Date: Sun, 14 Nov 2021 17:22:57 +0100
+Subject: [PATCH] Disable test_Issue1596
+
+---
+ unittests/regression/CMakeLists.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/unittests/regression/CMakeLists.txt b/unittests/regression/CMakeLists.txt
+index ace85bafc91..6a976f6849c 100644
+--- a/unittests/regression/CMakeLists.txt
++++ b/unittests/regression/CMakeLists.txt
+@@ -6,8 +6,8 @@ if(TARGET dart-utils)
+   dart_add_test("regression" test_Issue1583)
+   target_link_libraries(test_Issue1583 dart-utils)
+ 
+-  dart_add_test("regression" test_Issue1596)
+-  target_link_libraries(test_Issue1596 dart-utils)
++  #dart_add_test("regression" test_Issue1596)
++  #target_link_libraries(test_Issue1596 dart-utils)
+ endif()
+ 
+ if(TARGET dart-utils-urdf)
+ 
