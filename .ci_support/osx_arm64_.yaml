@@ -1,25 +1,25 @@
+MACOSX_DEPLOYMENT_TARGET:
+- '11.0'
 boost_cpp:
 - 1.74.0
 c_compiler:
-- gcc
+- clang
 c_compiler_version:
-- '9'
-cdt_name:
-- cos6
+- '11'
 channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
 cxx_compiler:
-- gxx
+- clangxx
 cxx_compiler_version:
-- '9'
-docker_image:
-- quay.io/condaforge/linux-anvil-cos7-x86_64
+- '11'
 flann:
 - 1.9.1
 lz4_c:
 - 1.9.3
+macos_machine:
+- arm64-apple-darwin20.0.0
 pin_run_as_build:
   boost-cpp:
     max_pin: x.x.x
@@ -28,7 +28,7 @@ pin_run_as_build:
   lz4-c:
     max_pin: x.x.x
 target_platform:
-- linux-64
+- osx-arm64
 tinyxml2:
 - '9'
 zip_keys:
