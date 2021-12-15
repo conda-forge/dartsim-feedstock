@@ -13,7 +13,7 @@ fi
 
 
 
-cmake $SRC_DIR \
+cmake ${CMAKE_ARGS} $SRC_DIR \
       -DCMAKE_INSTALL_PREFIX=$PREFIX \
       -DCMAKE_PREFIX_PATH=$PREFIX \
       -DCMAKE_BUILD_TYPE=Release \
@@ -26,5 +26,7 @@ make ${NUM_PARALLEL} install
 
 if [ ${target_platform} != "linux-ppc64le" ]; then
   make ${NUM_PARALLEL} tests
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
   ctest --output-on-failure -E "test_Collision"
+fi
 fi
