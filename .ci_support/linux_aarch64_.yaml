@@ -1,5 +1,7 @@
 BUILD:
 - aarch64-conda_cos7-linux-gnu
+assimp:
+- '5.2'
 boost_cpp:
 - 1.74.0
 c_compiler:
