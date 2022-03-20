@@ -1,5 +1,5 @@
 assimp:
-- '5.2'
+- 5.2.3
 boost_cpp:
 - 1.74.0
 c_compiler:
