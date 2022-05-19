@@ -27,8 +27,6 @@ pin_run_as_build:
     max_pin: x.x.x
   flann:
     max_pin: x.x.x
-  lz4-c:
-    max_pin: x.x.x
 target_platform:
 - linux-64
 tinyxml2:
