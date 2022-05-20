@@ -12,6 +12,7 @@ source:
       - disable_imgui.patch
       - disable_gui.patch
       - disable_test_Issue1596.patch
+      - 1663.patch
 
 build:
   number: 4
