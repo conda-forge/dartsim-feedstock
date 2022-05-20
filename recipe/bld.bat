@@ -1,5 +1,8 @@
 mkdir build && cd build
 
+:: Check the number of cores use by ninja by default
+ninja -h
+
 cmake -G "Ninja" ^
     -DCMAKE_BUILD_TYPE=Release ^
     -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
