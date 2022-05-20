@@ -1,5 +1,8 @@
 mkdir build && cd build
 
+:: Check the number of cores use by ninja by default
+ninja -h
+
 cmake -G "Ninja" ^
     -DCMAKE_BUILD_TYPE=Release ^
     -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
@@ -17,7 +20,9 @@ echo "Print CMakeOutput:"
 type CMakeFiles\CMakeError.log
 if errorlevel 1 exit 1
 
-ninja
+:: Use 4 core to try to avoid out of memory errors
+:: See https://github.com/conda-forge/dartsim-feedstock/pull/27#issuecomment-1132570816
+ninja -j 4
 if errorlevel 1 exit 1
 
 ninja install
