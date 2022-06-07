@@ -36,7 +36,7 @@ requirements:
     - eigen
     - fcl
     - flann
-    - libccd
+    - libccd-double
     - libode
     - lz4-c
     - octomap
