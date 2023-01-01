@@ -43,6 +43,7 @@ requirements:
     - tinyxml2
     - urdfdom
     - freeglut  # [win]
+    - fmt
 
   run:
     - boost-cpp
