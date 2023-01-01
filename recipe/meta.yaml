@@ -28,9 +28,9 @@ requirements:
     - ninja                  # [win]
     - perl                   # [win]
 
+
   host:
     - assimp
-    - boost-cpp
     - bullet-cpp
     - console_bridge
     - eigen
@@ -44,9 +44,10 @@ requirements:
     - urdfdom
     - freeglut  # [win]
     - fmt
+    - spdlog
+
 
   run:
-    - boost-cpp
     - eigen
     - flann
     - lz4-c
