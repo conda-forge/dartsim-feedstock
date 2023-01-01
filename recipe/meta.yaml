@@ -1,5 +1,5 @@
 {% set name = "dartsim" %}
-{% set version = "6.12.2" %}
+{% set version = "6.13.0" %}
 
 package:
   name: {{ name }}
@@ -7,14 +7,14 @@ package:
 
 source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
-    sha256: db1b3ef888d37f0dbc567bc291ab2cdb5699172523a58dd5a5fe513ee38f83b0
+    sha256: 4da3ff8cee056252a558b05625a5ff29b21e71f2995e6d7f789abbf6261895f7
     patches:
       - disable_imgui.patch
       - disable_gui.patch
       - disable_test_Issue1596.patch
 
 build:
-  number: 3
+  number: 0
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
@@ -28,9 +28,9 @@ requirements:
     - ninja                  # [win]
     - perl                   # [win]
 
+
   host:
     - assimp
-    - boost-cpp
     - bullet-cpp
     - console_bridge
     - eigen
@@ -43,9 +43,11 @@ requirements:
     - tinyxml2
     - urdfdom
     - freeglut  # [win]
+    - fmt
+    - spdlog
+
 
   run:
-    - boost-cpp
     - eigen
     - flann
     - lz4-c
