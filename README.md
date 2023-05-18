@@ -1,11 +1,11 @@
-About dartsim
-=============
+About dartsim-feedstock
+=======================
+
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/dartsim-feedstock/blob/main/LICENSE.txt)
 
 Home: http://dartsim.github.io/
 
 Package license: BSD-2-Clause
-
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/dartsim-feedstock/blob/main/LICENSE.txt)
 
 Summary: The DART (Dynamic Animation and Robotics Toolkit) library provides data structures and algorithms for kinematic and dynamic applications in robotics and computer animation.
 
@@ -203,7 +203,4 @@ Feedstock Maintainers
 
 * [@traversaro](https://github.com/traversaro/)
 * [@wolfv](https://github.com/wolfv/)
-
-
-<!-- dummy commit to enable rerendering -->
 
