@@ -14,11 +14,6 @@ cmake -G "Ninja" ^
     -DASSIMP_AIMATERIAL_CTOR_DTOR_DEFINED:BOOL=ON ^
     -DDART_TREAT_WARNINGS_AS_ERRORS:BOOL=OFF ^
     %SRC_DIR%
-
-echo "Print CMakeOutput:"
-type CMakeFiles\CMakeOutput.log
-echo "Print CMakeOutput:"
-type CMakeFiles\CMakeError.log
 if errorlevel 1 exit 1
 
 :: Use 3 core to try to avoid out of memory errors
