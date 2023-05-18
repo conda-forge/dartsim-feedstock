@@ -16,10 +16,11 @@ cmake -G "Ninja" ^
     %SRC_DIR%
 if errorlevel 1 exit 1
 
-:: Use 3 core to try to avoid out of memory errors
+:: Use 2 core to try to avoid out of memory errors
 :: See https://github.com/conda-forge/dartsim-feedstock/pull/27#issuecomment-1132570816 (where it was reduced to 4)
 :: and https://github.com/conda-forge/dartsim-feedstock/pull/30#issuecomment-1149743621 (where it was reduced to 3)
-ninja -j 3
+:: and https://github.com/conda-forge/dartsim-feedstock/pull/38#issuecomment-1553091093 (where it was reduced to 2)
+ninja -j 2
 if errorlevel 1 exit 1
 
 ninja install
