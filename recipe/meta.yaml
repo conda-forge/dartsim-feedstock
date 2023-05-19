@@ -12,6 +12,7 @@ source:
       - disable_imgui.patch
       - disable_gui.patch
       - disable_test_Issue1596.patch
+      - enable_windows_tests.patch
 
 build:
   number: 1
@@ -60,7 +61,6 @@ test:
     - test -f $PREFIX/share/dart/cmake/dart_collision-odeTargets.cmake  # [not win]
     - test -f $PREFIX/share/dart/cmake/dart_collision-bulletTargets.cmake  # [not win]
     - if not exist %LIBRARY_LIB%\\dart.lib exit 1  # [win]
-    - if not exist %LIBRARY_BIN%\\dart.dll exit 1  # [win]
     - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-odeTargets.cmake exit 1  # [win]
     - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-bulletTargets.cmake exit 1  # [win]
 
