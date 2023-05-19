@@ -12,9 +12,10 @@ source:
       - disable_imgui.patch
       - disable_gui.patch
       - disable_test_Issue1596.patch
+      - enable_windows_tests.patch
 
 build:
-  number: 0
+  number: 1
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
