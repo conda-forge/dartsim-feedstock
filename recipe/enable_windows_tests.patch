@@ -1,0 +1,13 @@
+diff --git a/unittests/CMakeLists.txt b/unittests/CMakeLists.txt
+index a495f25550e8b..81dc08f396063 100644
+--- a/unittests/CMakeLists.txt
++++ b/unittests/CMakeLists.txt
+@@ -93,7 +93,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+ #   fixed even after further changes are made
+ # - "unit": low level tests for one or few classes and functions to verify that
+ #   they performs correctly as expected
+-if(NOT MSVC)
++if(TRUE)
+   # Disabled due to limitied disk space in CI image
+   add_subdirectory(integration)
+   add_subdirectory(regression)
