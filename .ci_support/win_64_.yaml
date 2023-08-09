@@ -13,7 +13,7 @@ cxx_compiler:
 flann:
 - 1.9.1
 fmt:
-- '9'
+- '10'
 lz4_c:
 - 1.9.3
 perl:
