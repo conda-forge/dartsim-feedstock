@@ -28,7 +28,7 @@ pin_run_as_build:
   flann:
     max_pin: x.x.x
 spdlog:
-- '1.11'
+- '1.12'
 target_platform:
 - osx-64
 tinyxml2:
