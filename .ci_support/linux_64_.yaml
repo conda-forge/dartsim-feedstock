@@ -21,14 +21,14 @@ docker_image:
 flann:
 - 1.9.1
 fmt:
-- '9'
+- '10'
 lz4_c:
 - 1.9.3
 pin_run_as_build:
   flann:
     max_pin: x.x.x
 spdlog:
-- '1.11'
+- '1.12'
 target_platform:
 - linux-64
 tinyxml2:
