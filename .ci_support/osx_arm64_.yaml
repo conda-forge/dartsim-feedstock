@@ -1,13 +1,13 @@
 MACOSX_DEPLOYMENT_TARGET:
 - '11.0'
 assimp:
-- 5.2.4
+- 5.2.5
 boost_cpp:
 - 1.78.0
 c_compiler:
 - clang
 c_compiler_version:
-- '14'
+- '15'
 channel_sources:
 - conda-forge
 channel_targets:
@@ -17,7 +17,7 @@ console_bridge:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '14'
+- '15'
 flann:
 - 1.9.1
 lz4_c:
