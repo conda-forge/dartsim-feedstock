@@ -15,7 +15,7 @@ source:
       - enable_windows_tests.patch
 
 build:
-  number: 4
+  number: 5
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
