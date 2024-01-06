@@ -2,8 +2,6 @@ BUILD:
 - aarch64-conda_cos7-linux-gnu
 assimp:
 - 5.3.1
-boost_cpp:
-- 1.78.0
 bullet_cpp:
 - '3.25'
 c_compiler:
@@ -31,8 +29,6 @@ flann:
 lz4_c:
 - 1.9.3
 pin_run_as_build:
-  boost-cpp:
-    max_pin: x.x.x
   flann:
     max_pin: x.x.x
 target_platform:
@@ -40,7 +36,7 @@ target_platform:
 tinyxml2:
 - '9'
 urdfdom:
-- '3.1'
+- '4.0'
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
