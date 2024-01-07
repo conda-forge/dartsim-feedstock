@@ -2,8 +2,6 @@ MACOSX_DEPLOYMENT_TARGET:
 - '11.0'
 assimp:
 - 5.3.1
-boost_cpp:
-- 1.78.0
 bullet_cpp:
 - '3.25'
 c_compiler:
@@ -27,14 +25,12 @@ lz4_c:
 macos_machine:
 - arm64-apple-darwin20.0.0
 pin_run_as_build:
-  boost-cpp:
-    max_pin: x.x.x
   flann:
     max_pin: x.x.x
 target_platform:
 - osx-arm64
 tinyxml2:
-- '9'
+- '10'
 urdfdom:
 - '3.1'
 zip_keys:
