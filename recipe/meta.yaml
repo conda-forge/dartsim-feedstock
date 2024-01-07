@@ -15,7 +15,7 @@ source:
 
 build:
   skip: true  # [win]
-  number: 7
+  number: 8
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
@@ -31,7 +31,7 @@ requirements:
 
   host:
     - assimp
-    - boost-cpp
+    - libboost-devel
     - bullet-cpp
     - console_bridge
     - eigen
@@ -46,7 +46,6 @@ requirements:
     - freeglut  # [win]
 
   run:
-    - boost-cpp
     - eigen
     - flann
     - lz4-c
