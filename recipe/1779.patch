@@ -1,0 +1,29 @@
+From f1e523e125a9bdce1a3679307693513ba19a3fc3 Mon Sep 17 00:00:00 2001
+From: Steve Peters <scpeters@openrobotics.org>
+Date: Thu, 4 Jan 2024 12:10:18 -0800
+Subject: [PATCH] urdf_world_parser: fix ambiguous call to parsePose
+
+There is a parsePose method in urdfdom 4.0.0 with
+the same signature as the function defined locally
+in urdf_world_parser, which causes build errors
+due to an ambiguous call. This adds urdf_parsing::
+to eliminate the ambiguity.
+
+Signed-off-by: Steve Peters <scpeters@openrobotics.org>
+---
+ dart/utils/urdf/urdf_world_parser.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dart/utils/urdf/urdf_world_parser.cpp b/dart/utils/urdf/urdf_world_parser.cpp
+index 6f88280fd2a5b..0bc0aa350855a 100644
+--- a/dart/utils/urdf/urdf_world_parser.cpp
++++ b/dart/utils/urdf/urdf_world_parser.cpp
+@@ -216,7 +216,7 @@ std::shared_ptr<World> parseWorldURDF(
+           auto* origin = entity_xml->FirstChildElement("origin");
+           if (origin)
+           {
+-            if (!parsePose(entity.origin, origin))
++            if (!urdf_parsing::parsePose(entity.origin, origin))
+             {
+               dtwarn << "[ERROR] Missing origin tag for '"
+                      << entity.model->getName() << "'\n";

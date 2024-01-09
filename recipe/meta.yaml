@@ -12,10 +12,11 @@ source:
       - disable_imgui.patch
       - disable_gui.patch
       - disable_test_Issue1596.patch
+      - 1779.patch
 
 build:
   skip: true  # [win]
-  number: 8
+  number: 9
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
