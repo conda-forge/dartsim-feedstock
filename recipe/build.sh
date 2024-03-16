@@ -33,6 +33,6 @@ make ${NUM_PARALLEL} install
 if [ ${target_platform} != "linux-ppc64le" ]; then
   make ${NUM_PARALLEL} tests
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
-  ctest --output-on-failure -E "test_Collision"
+  ctest --output-on-failure
 fi
 fi
