@@ -27,5 +27,6 @@ if errorlevel 1 exit 1
 ninja install
 if errorlevel 1 exit 1
 
-ctest --output-on-failure
+:: See https://github.com/conda-forge/dartsim-feedstock/issues/63
+ctest -E "test_Collision"  --output-on-failure
 if errorlevel 1 exit 1
