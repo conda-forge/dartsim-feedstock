@@ -16,7 +16,7 @@ source:
 
 build:
   skip: true  # [win]
-  number: 10
+  number: 11
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
@@ -24,6 +24,7 @@ requirements:
   build:
     - {{ compiler('cxx') }}
     - {{ compiler('c') }}
+    - {{ stdlib("c") }}
     - cmake
     - pkg-config
     - make                   # [not win]
