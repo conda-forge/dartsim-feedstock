@@ -15,7 +15,7 @@ source:
       - enable_windows_tests.patch
 
 build:
-  number: 1
+  number: 2
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
@@ -23,6 +23,7 @@ requirements:
   build:
     - {{ compiler('cxx') }}
     - {{ compiler('c') }}
+    - {{ stdlib("c") }}
     - cmake
     - pkg-config
     - make                   # [not win]
