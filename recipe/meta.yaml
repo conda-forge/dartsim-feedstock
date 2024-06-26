@@ -9,7 +9,6 @@ source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
     sha256: f3fdccb2781d6a606c031f11d6b1fdf5278708c6787e3ab9a67385d9a19a60ea
     patches:
-      - disable_imgui.patch
       - disable_gui.patch
       - disable_test_Issue1596.patch
       - enable_windows_tests.patch
