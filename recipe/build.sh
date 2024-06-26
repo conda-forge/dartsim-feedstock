@@ -2,7 +2,7 @@
 
 mkdir build && cd build
 
-if [ ${target_platform} == "linux-ppc64le" ]; then
+if [[ ${target_platform} == "linux-ppc64le" ]]; then
   # Disable tests
   CMAKE_TEST_CMD=-DBUILD_TESTING:BOOL=OFF
   NUM_PARALLEL=-j1
@@ -12,8 +12,8 @@ else
 fi
 
 # Disable SIMD for linux-ppc64le, linux_aarch64, and any OSX platform; enable for other platforms
-if [ "${target_platform}" == "linux-ppc64le" ] ||
-  [ "${target_platform}" == "linux_aarch64" ] ||
+if [[ "${target_platform}" == "linux-ppc64le" ]] ||
+  [[ "${target_platform}" == "linux-aarch64" ]] ||
   [[ "${target_platform}" == osx-* ]]; then
   DART_ENABLE_SIMD=OFF
 else
