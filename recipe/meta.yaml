@@ -1,5 +1,5 @@
 {% set name = "dartsim" %}
-{% set version = "6.13.2" %}
+{% set version = "6.14.0" %}
 
 package:
   name: {{ name }}
@@ -7,15 +7,13 @@ package:
 
 source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
-    sha256: 02699a8f807276231c80ffc5dbc3f66dc1c3612364340c91bcad63a837c01576
+    sha256: f3fdccb2781d6a606c031f11d6b1fdf5278708c6787e3ab9a67385d9a19a60ea
     patches:
-      - disable_imgui.patch
       - disable_gui.patch
       - disable_test_Issue1596.patch
-      - enable_windows_tests.patch
 
 build:
-  number: 3
+  number: 0
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
