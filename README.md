@@ -85,6 +85,7 @@ Current release info
 
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-dartpy-green.svg)](https://anaconda.org/conda-forge/dartpy) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/dartpy.svg)](https://anaconda.org/conda-forge/dartpy) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/dartpy.svg)](https://anaconda.org/conda-forge/dartpy) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/dartpy.svg)](https://anaconda.org/conda-forge/dartpy) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-dartsim-green.svg)](https://anaconda.org/conda-forge/dartsim) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/dartsim.svg)](https://anaconda.org/conda-forge/dartsim) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/dartsim.svg)](https://anaconda.org/conda-forge/dartsim) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/dartsim.svg)](https://anaconda.org/conda-forge/dartsim) |
 
 Installing dartsim
@@ -97,41 +98,41 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `dartsim` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `dartpy, dartsim` can be installed with `conda`:
 
 ```
-conda install dartsim
-```
-
-or with `mamba`:
-
-```
-mamba install dartsim
-```
-
-It is possible to list all of the versions of `dartsim` available on your platform with `conda`:
-
-```
-conda search dartsim --channel conda-forge
+conda install dartpy dartsim
 ```
 
 or with `mamba`:
 
 ```
-mamba search dartsim --channel conda-forge
+mamba install dartpy dartsim
+```
+
+It is possible to list all of the versions of `dartpy` available on your platform with `conda`:
+
+```
+conda search dartpy --channel conda-forge
+```
+
+or with `mamba`:
+
+```
+mamba search dartpy --channel conda-forge
 ```
 
 Alternatively, `mamba repoquery` may provide more information:
 
 ```
 # Search all versions available on your platform:
-mamba repoquery search dartsim --channel conda-forge
+mamba repoquery search dartpy --channel conda-forge
 
-# List packages depending on `dartsim`:
-mamba repoquery whoneeds dartsim --channel conda-forge
+# List packages depending on `dartpy`:
+mamba repoquery whoneeds dartpy --channel conda-forge
 
-# List dependencies of `dartsim`:
-mamba repoquery depends dartsim --channel conda-forge
+# List dependencies of `dartpy`:
+mamba repoquery depends dartpy --channel conda-forge
 ```
 
 
