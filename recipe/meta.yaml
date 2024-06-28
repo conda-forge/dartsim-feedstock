@@ -10,7 +10,6 @@ source:
     sha256: 07bc1442a80abc03b2c1984bdb9b5843446047ac6a37c18b834533c871631fde
     patches:
       - disable_gui.patch
-      - disable_test_Issue1596.patch
 
 build:
   number: 1
