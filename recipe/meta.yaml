@@ -10,58 +10,81 @@ source:
     sha256: f5fc7f5cb1269cc127a1ff69be26247b9f3617ce04ff1c80c0f3f6abc7d9ab70
 
 build:
-  number: 0
-  run_exports:
-    - {{ pin_subpackage(name, max_pin='x.x') }}
+  number: 1
 
-requirements:
-  build:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - {{ cdt('mesa-libgl-devel') }}  # [linux64]
-    - {{ cdt('mesa-libglu-devel') }}  # [linux64]
-    - {{ stdlib("c") }}
-    - cmake
-    - doxygen
-    - make                   # [not win]
-    - ninja                  # [win]
-    - perl                   # [win]
-    - pkg-config
+outputs:
+  - name: dartsim
+    script: build.sh  # [unix]
+    script: bld.bat   # [win]
+    build:
+      run_exports:
+        - {{ pin_subpackage('dartsim', max_pin='x.x') }}
+    requirements:
+      build:
+        - {{ compiler('cxx') }}
+        - {{ compiler('c') }}
+        - {{ stdlib("c") }}
+        - cmake
+        - pkg-config
+        - make                   # [not win]
+        - ninja                  # [win]
+        - perl                   # [win]
+      host:
+        - assimp
+        - bullet-cpp
+        - console_bridge
+        - eigen
+        - fcl
+        - flann
+        - libccd-double
+        - libode
+        - lz4-c
+        - octomap
+        - tinyxml2
+        - urdfdom
+        - freeglut  # [win]
+        - fmt
+        - spdlog
+      run:
+        - eigen
+        - flann
+        - lz4-c
+        - octomap
+    test:
+      commands:
+        - test -f $PREFIX/lib/libdart.dylib  # [osx]
+        - test -f $PREFIX/lib/libdart.so  # [linux]
+        - test -f $PREFIX/share/dart/cmake/dart_collision-odeTargets.cmake  # [not win]
+        - test -f $PREFIX/share/dart/cmake/dart_collision-bulletTargets.cmake  # [not win]
+        - if not exist %LIBRARY_LIB%\\dart.lib exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-odeTargets.cmake exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-bulletTargets.cmake exit 1  # [win]
 
-  host:
-    - assimp
-    - bullet-cpp
-    - console_bridge
-    - eigen
-    - fcl
-    - fmt
-    - freeglut  # [not osx]
-    - imgui  # [not ppc64le]
-    - ipopt
-    - libboost-devel  # [not ppc64le]
-    - libode
-    - nlopt
-    - octomap
-    - openscenegraph  # [linux64 or osx or win]
-    - pagmo  # [not ppc64le]
-    - pagmo-devel  # [not ppc64le]
-    - tinyxml2
-    - urdfdom
-    - spdlog
-
-  run:
-    - eigen
-    - octomap
-
-test:
-  commands:
-    - test -f $PREFIX/lib/libdart.dylib  # [osx]
-    - test -f $PREFIX/lib/libdart.so  # [linux]
-    - test -f $PREFIX/share/dart/cmake/dart_collision-odeTargets.cmake  # [not win]
-    - test -f $PREFIX/share/dart/cmake/dart_collision-bulletTargets.cmake  # [not win]
-    - if not exist %LIBRARY_LIB%\\dart.lib exit 1  # [win]
-    - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-odeTargets.cmake exit 1  # [win]
-    - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-bulletTargets.cmake exit 1  # [win]
+  - name: dartpy
+    script: build_dartpy.sh  # [unix]
+    script: bld_dartpy.bat   # [win]
+    requirements:
+      build:
+        - {{ compiler('cxx') }}
+        - {{ compiler('c') }}
+        - {{ stdlib("c") }}
+        - cmake
+        - pkg-config
+        - make                   # [not win]
+        - ninja                  # [win]
+        - perl                   # [win]
+      host:
+        - {{ pin_subpackage("dartsim", exact=True) }}
+        - python
+        - pip
+        - numpy
+      run:
+        - {{ pin_subpackage("dartsim", exact=True) }}
+        - python
+        - numpy
+    test:
+      imports:
+        - dartpy
 
 about:
   home: http://dartsim.github.io/
