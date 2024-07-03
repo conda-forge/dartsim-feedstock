@@ -32,7 +32,6 @@ requirements:
 
   host:
     - assimp
-    - boost  # needed by pagmo
     - bullet-cpp
     - console_bridge
     - eigen
@@ -41,6 +40,7 @@ requirements:
     - freeglut  # [not osx]
     - imgui  # [not ppc64le]
     - ipopt
+    - libboost-devel  # needed by pagmo
     - libode
     - nlopt
     - octomap
