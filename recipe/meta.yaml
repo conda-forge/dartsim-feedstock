@@ -34,7 +34,6 @@ requirements:
     - eigen
     - fcl
     - libode
-    - lz4-c
     - octomap
     - openscenegraph
     - tinyxml2
@@ -45,8 +44,6 @@ requirements:
 
   run:
     - eigen
-    - flann
-    - lz4-c
     - octomap
     - openscenegraph
 
