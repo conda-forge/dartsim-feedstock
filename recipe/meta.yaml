@@ -16,16 +16,16 @@ build:
 
 requirements:
   build:
-    - {{ compiler('cxx') }}
     - {{ compiler('c') }}
-    - {{ stdlib("c") }}
+    - {{ compiler('cxx') }}
     - {{ cdt('mesa-libgl-devel') }}  # [linux]
+    - {{ stdlib("c") }}
     - cmake
     - doxygen
-    - pkg-config
     - make                   # [not win]
     - ninja                  # [win]
     - perl                   # [win]
+    - pkg-config
 
   host:
     - assimp
@@ -33,19 +33,15 @@ requirements:
     - console_bridge
     - eigen
     - fcl
+    - fmt
+    - freeglut  # [not osx]
+    - imgui
     - libode
     - octomap
-    - openscenegraph  # [linux or osx or win]
+    - openscenegraph  # [not linux_aarch64 and not linux_ppc64le]
     - tinyxml2
     - urdfdom
-    - freeglut  # [not osx]
-    - fmt
     - spdlog
-
-  run:
-    - eigen
-    - octomap
-    - openscenegraph  # [linux or osx or win]
 
 test:
   commands:
