@@ -9,24 +9,26 @@ source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
     sha256: 6bbaf452f8182b97bf22adeab6cc7f3dc1cd2733358543131fa130e07c0860fc
     patches:
-      - disable_gui.patch
+      - disable_gui.patch  # [aarch64 or ppc64le]
 
 build:
-  number: 0
+  number: 1
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
 requirements:
   build:
-    - {{ compiler('cxx') }}
     - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ cdt('mesa-libgl-devel') }}  # [linux]
+    - {{ cdt('mesa-libglu-devel') }}  # [linux64]
     - {{ stdlib("c") }}
     - cmake
-    - pkg-config
+    - doxygen
     - make                   # [not win]
     - ninja                  # [win]
     - perl                   # [win]
-
+    - pkg-config
 
   host:
     - assimp
@@ -34,22 +36,18 @@ requirements:
     - console_bridge
     - eigen
     - fcl
-    - flann
-    - libccd-double
+    - fmt
+    - freeglut  # [not osx]
+    - imgui  # [not ppc64le]
     - libode
-    - lz4-c
     - octomap
+    - openscenegraph  # [linux64 or osx or win]
     - tinyxml2
     - urdfdom
-    - freeglut  # [win]
-    - fmt
     - spdlog
-
 
   run:
     - eigen
-    - flann
-    - lz4-c
     - octomap
 
 test:
