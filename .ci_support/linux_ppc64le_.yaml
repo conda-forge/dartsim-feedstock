@@ -28,8 +28,6 @@ fmt:
 - '10'
 libode:
 - 0.16.2
-lz4_c:
-- 1.9.3
 spdlog:
 - '1.13'
 target_platform:

@@ -28,8 +28,6 @@ fmt:
 - '10'
 libode:
 - 0.16.2
-lz4_c:
-- 1.9.3
 macos_machine:
 - x86_64-apple-darwin13.4.0
 spdlog:
