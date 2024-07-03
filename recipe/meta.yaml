@@ -27,30 +27,28 @@ requirements:
     - ninja                  # [win]
     - perl                   # [win]
 
-
   host:
     - assimp
     - bullet-cpp
     - console_bridge
     - eigen
     - fcl
-    - flann
-    - libccd-double
     - libode
     - lz4-c
     - octomap
+    - openscenegraph
     - tinyxml2
     - urdfdom
     - freeglut  # [win]
     - fmt
     - spdlog
 
-
   run:
     - eigen
     - flann
     - lz4-c
     - octomap
+    - openscenegraph
 
 test:
   commands:
