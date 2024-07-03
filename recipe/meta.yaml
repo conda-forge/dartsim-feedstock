@@ -32,6 +32,7 @@ requirements:
 
   host:
     - assimp
+    - boost  # needed by pagmo
     - bullet-cpp
     - console_bridge
     - eigen
