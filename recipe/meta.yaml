@@ -35,7 +35,7 @@ requirements:
     - fcl
     - libode
     - octomap
-    - openscenegraph
+    - openscenegraph  # [linux or osx or win]
     - tinyxml2
     - urdfdom
     - freeglut  # [not osx]
@@ -45,7 +45,7 @@ requirements:
   run:
     - eigen
     - octomap
-    - openscenegraph
+    - openscenegraph  # [linux or osx or win]
 
 test:
   commands:
