@@ -21,7 +21,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ cdt('mesa-libgl-devel') }}  # [linux]
-    - {{ cdt('mesa-libglu-devel') }}  # [linux]
+    - {{ cdt('mesa-libglu-devel') }}  # [linux64]
     - {{ stdlib("c") }}
     - cmake
     - doxygen
