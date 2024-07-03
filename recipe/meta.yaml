@@ -40,7 +40,7 @@ requirements:
     - imgui
     - libode
     - octomap
-    - openscenegraph  # [not aarch64 and not ppc64le]
+    - openscenegraph  # [linux64 or osx or win]
     - tinyxml2
     - urdfdom
     - spdlog
