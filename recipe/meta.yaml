@@ -37,7 +37,7 @@ requirements:
     - fcl
     - fmt
     - freeglut  # [not osx]
-    - imgui
+    - imgui  # [not ppc64le]
     - libode
     - octomap
     - openscenegraph  # [linux64 or osx or win]
