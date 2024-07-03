@@ -46,6 +46,10 @@ requirements:
     - urdfdom
     - spdlog
 
+  run:
+    - eigen
+    - octomap
+
 test:
   commands:
     - test -f $PREFIX/lib/libdart.dylib  # [osx]
