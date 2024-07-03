@@ -38,7 +38,7 @@ requirements:
     - openscenegraph
     - tinyxml2
     - urdfdom
-    - freeglut  # [win]
+    - freeglut  # [not osx]
     - fmt
     - spdlog
 
