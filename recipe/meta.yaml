@@ -8,8 +8,6 @@ package:
 source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
     sha256: 6bbaf452f8182b97bf22adeab6cc7f3dc1cd2733358543131fa130e07c0860fc
-    patches:
-      - disable_gui.patch  # [aarch64 or ppc64le]
 
 build:
   number: 2

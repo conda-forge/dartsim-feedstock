@@ -13,11 +13,18 @@ if [[ "${target_platform}" == osx-* ]]; then
   CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
 fi
 
+if [[ "${target_platform}" == *aarch64 || "${target_platform}" == *ppc64le ]]; then
+  DART_BUILD_GUI_OSG=OFF
+else
+  DART_BUILD_GUI_OSG=ON
+fi
+
 cmake ${CMAKE_ARGS} $SRC_DIR \
   -DCMAKE_BUILD_TYPE=Release \
   -DDART_VERBOSE:BOOL=ON \
   -DDART_TREAT_WARNINGS_AS_ERRORS:BOOL=OFF \
   -DDART_ENABLE_SIMD:BOOL=OFF \
+  -DDART_BUILD_GUI_OSG:BOOL=${DART_BUILD_GUI_OSG} \
   -DDART_BUILD_DARTPY:BOOL=OFF \
   -DDART_USE_SYSTEM_IMGUI:BOOL=ON
 
