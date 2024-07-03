@@ -16,8 +16,12 @@ cxx_compiler:
 - vs2019
 fmt:
 - '10'
+ipopt:
+- 3.14.16
 libode:
 - 0.16.2
+nlopt:
+- '2.7'
 perl:
 - 5.32.1
 spdlog:
