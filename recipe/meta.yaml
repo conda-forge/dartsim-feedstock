@@ -39,9 +39,13 @@ requirements:
     - fmt
     - freeglut  # [not osx]
     - imgui  # [not ppc64le]
+    - ipopt
     - libode
+    - nlopt
     - octomap
     - openscenegraph  # [linux64 or osx or win]
+    - pagmo
+    - pagmo-devel
     - tinyxml2
     - urdfdom
     - spdlog
