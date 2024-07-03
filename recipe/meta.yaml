@@ -8,6 +8,8 @@ package:
 source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
     sha256: 6bbaf452f8182b97bf22adeab6cc7f3dc1cd2733358543131fa130e07c0860fc
+    patches:
+      - disable_gui.patch  # [not linux-aarch64 and not linux-ppc64le]
 
 build:
   number: 1
@@ -38,7 +40,7 @@ requirements:
     - imgui
     - libode
     - octomap
-    - openscenegraph  # [linux_64 or osx or win]
+    - openscenegraph  # [linux-64 or osx or win]
     - tinyxml2
     - urdfdom
     - spdlog
