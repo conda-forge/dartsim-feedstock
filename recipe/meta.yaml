@@ -40,13 +40,13 @@ requirements:
     - freeglut  # [not osx]
     - imgui  # [not ppc64le]
     - ipopt
-    - libboost-devel  # needed by pagmo
+    - libboost-devel  # [not ppc64le]
     - libode
     - nlopt
     - octomap
     - openscenegraph  # [linux64 or osx or win]
-    - pagmo
-    - pagmo-devel
+    - pagmo  # [not ppc64le]
+    - pagmo-devel  # [not ppc64le]
     - tinyxml2
     - urdfdom
     - spdlog
