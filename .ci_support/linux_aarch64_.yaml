@@ -30,8 +30,14 @@ docker_image:
 - quay.io/condaforge/linux-anvil-cos7-x86_64
 fmt:
 - '10'
+ipopt:
+- 3.14.16
+libboost_devel:
+- '1.84'
 libode:
 - 0.16.2
+nlopt:
+- '2.7'
 spdlog:
 - '1.13'
 target_platform:
