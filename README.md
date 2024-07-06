@@ -205,6 +205,3 @@ Feedstock Maintainers
 * [@traversaro](https://github.com/traversaro/)
 * [@wolfv](https://github.com/wolfv/)
 
-
-<!-- dummy commit to enable rerendering -->
-
