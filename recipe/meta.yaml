@@ -14,14 +14,17 @@ build:
 
 requirements:
   build:
-    - {{ compiler('cxx') }}
     - {{ compiler('c') }}
-    - {{ stdlib("c") }}
+    - {{ compiler('cxx') }}
+    - {{ cdt('mesa-libgl-devel') }}  # [linux64]
+    - {{ cdt('mesa-libglu-devel') }}  # [linux64]
+    - {{ stdlib('c') }}
     - cmake
-    - pkg-config
+    - doxygen
     - make                   # [not win]
     - ninja                  # [win]
     - perl                   # [win]
+    - pkg-config
 
 outputs:
   - name: dartsim
@@ -31,36 +34,28 @@ outputs:
       run_exports:
         - {{ pin_subpackage('dartsim', max_pin='x.x') }}
     requirements:
-      build:
-        - {{ compiler('cxx') }}
-        - {{ compiler('c') }}
-        - {{ stdlib("c") }}
-        - cmake
-        - pkg-config
-        - make                   # [not win]
-        - ninja                  # [win]
-        - perl                   # [win]
       host:
         - assimp
         - bullet-cpp
-        - cmake
         - console_bridge
         - eigen
         - fcl
-        - flann
-        - libccd-double
+        - fmt
+        - freeglut  # [not osx]
+        - imgui  # [not ppc64le]
+        - ipopt
+        - libboost-devel  # [not ppc64le]
         - libode
-        - lz4-c
+        - nlopt
         - octomap
+        - openscenegraph  # [linux64 or osx or win]
+        - pagmo  # [not ppc64le]
+        - pagmo-devel  # [not ppc64le]
         - tinyxml2
         - urdfdom
-        - freeglut  # [win]
-        - fmt
         - spdlog
       run:
         - eigen
-        - flann
-        - lz4-c
         - octomap
     test:
       commands:
@@ -76,15 +71,6 @@ outputs:
     script: build_dartpy.sh  # [unix]
     script: bld_dartpy.bat   # [win]
     requirements:
-      build:
-        - {{ compiler('cxx') }}
-        - {{ compiler('c') }}
-        - {{ stdlib("c") }}
-        - cmake
-        - pkg-config
-        - make                   # [not win]
-        - ninja                  # [win]
-        - perl                   # [win]
       host:
         - {{ pin_subpackage("dartsim", exact=True) }}
         - python
