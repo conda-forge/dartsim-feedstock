@@ -24,16 +24,18 @@ cxx_compiler:
 - clangxx
 cxx_compiler_version:
 - '16'
-flann:
-- 1.9.2
 fmt:
 - '10'
+ipopt:
+- 3.14.16
+libboost_devel:
+- '1.84'
 libode:
 - 0.16.2
-lz4_c:
-- 1.9.3
 macos_machine:
 - arm64-apple-darwin20.0.0
+nlopt:
+- '2.7'
 numpy:
 - '1.22'
 - '1.23'
@@ -41,8 +43,6 @@ numpy:
 - '1.22'
 - '1.22'
 pin_run_as_build:
-  flann:
-    max_pin: x.x.x
   python:
     min_pin: x.x
     max_pin: x.x
