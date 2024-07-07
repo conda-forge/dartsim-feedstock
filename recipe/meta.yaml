@@ -12,6 +12,17 @@ source:
 build:
   number: 1
 
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+    - {{ compiler('c') }}
+    - {{ stdlib("c") }}
+    - cmake
+    - pkg-config
+    - make                   # [not win]
+    - ninja                  # [win]
+    - perl                   # [win]
+
 outputs:
   - name: dartsim
     script: build.sh  # [unix]
@@ -32,6 +43,7 @@ outputs:
       host:
         - assimp
         - bullet-cpp
+        - cmake
         - console_bridge
         - eigen
         - fcl
