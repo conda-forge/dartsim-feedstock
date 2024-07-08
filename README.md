@@ -87,6 +87,7 @@ Current release info
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-dartpy-green.svg)](https://anaconda.org/conda-forge/dartpy) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/dartpy.svg)](https://anaconda.org/conda-forge/dartpy) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/dartpy.svg)](https://anaconda.org/conda-forge/dartpy) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/dartpy.svg)](https://anaconda.org/conda-forge/dartpy) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-dartsim-green.svg)](https://anaconda.org/conda-forge/dartsim) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/dartsim.svg)](https://anaconda.org/conda-forge/dartsim) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/dartsim.svg)](https://anaconda.org/conda-forge/dartsim) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/dartsim.svg)](https://anaconda.org/conda-forge/dartsim) |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-dartsim--cpp-green.svg)](https://anaconda.org/conda-forge/dartsim-cpp) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/dartsim-cpp.svg)](https://anaconda.org/conda-forge/dartsim-cpp) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/dartsim-cpp.svg)](https://anaconda.org/conda-forge/dartsim-cpp) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/dartsim-cpp.svg)](https://anaconda.org/conda-forge/dartsim-cpp) |
 
 Installing dartsim
 ==================
@@ -98,16 +99,16 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `dartpy, dartsim` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `dartpy, dartsim, dartsim-cpp` can be installed with `conda`:
 
 ```
-conda install dartpy dartsim
+conda install dartpy dartsim dartsim-cpp
 ```
 
 or with `mamba`:
 
 ```
-mamba install dartpy dartsim
+mamba install dartpy dartsim dartsim-cpp
 ```
 
 It is possible to list all of the versions of `dartpy` available on your platform with `conda`:
