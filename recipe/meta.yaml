@@ -15,8 +15,11 @@ build:
     - {{ pin_subpackage(name, max_pin='x.x') }}
   ignore_run_exports:
     - console_bridge
-    - fmt       # [osx]
-    - libboost  # [osx]
+    - fmt           # [osx]
+    - freeglut      # [aarch64 or ppc64le]
+    - imgui         # [aarch64]
+    - libboost      # [osx]
+    - libstdcxx-ng  # [aarch64 or ppc64le]
     - spdlog
 
 requirements:
