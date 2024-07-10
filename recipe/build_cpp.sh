@@ -5,7 +5,11 @@ mkdir build && cd build
 if [[ ${target_platform} == "linux-ppc64le" ]]; then
   NUM_PARALLEL=-j1
 else
-  NUM_PARALLEL=-j${CPU_COUNT}
+  if [[ ${CPU_COUNT} -gt 8 ]]; then
+    NUM_PARALLEL=-j8
+  else
+    NUM_PARALLEL=-j${CPU_COUNT}
+  fi
 fi
 
 if [[ "${target_platform}" == osx-* ]]; then
