@@ -13,6 +13,9 @@ build:
   number: 0
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
+  ignore_run_exports:
+    - console_bridge
+    - spdlog
 
 requirements:
   build:
@@ -51,7 +54,11 @@ requirements:
 
   run:
     - eigen
+    - glfw
+    - libccd-double
     - octomap
+    - sdl2
+    - xorg-libxi
 
 test:
   commands:
