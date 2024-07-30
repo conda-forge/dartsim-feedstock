@@ -27,7 +27,7 @@ nlopt:
 perl:
 - 5.32.1
 spdlog:
-- '1.13'
+- '1.14'
 target_platform:
 - win-64
 tinyxml2:

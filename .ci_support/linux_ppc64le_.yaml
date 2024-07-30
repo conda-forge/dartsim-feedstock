@@ -33,7 +33,7 @@ libode:
 nlopt:
 - '2.7'
 spdlog:
-- '1.13'
+- '1.14'
 target_platform:
 - linux-ppc64le
 tinyxml2:
