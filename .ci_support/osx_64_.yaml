@@ -37,7 +37,7 @@ macos_machine:
 nlopt:
 - '2.7'
 spdlog:
-- '1.13'
+- '1.14'
 target_platform:
 - osx-64
 tinyxml2:
