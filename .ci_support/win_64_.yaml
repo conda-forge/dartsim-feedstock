@@ -15,7 +15,7 @@ console_bridge:
 cxx_compiler:
 - vs2019
 fmt:
-- '10'
+- '11'
 ipopt:
 - 3.14.16
 libboost_devel:

@@ -25,7 +25,7 @@ cxx_compiler:
 cxx_compiler_version:
 - '16'
 fmt:
-- '10'
+- '11'
 ipopt:
 - 3.14.16
 libboost_devel:
