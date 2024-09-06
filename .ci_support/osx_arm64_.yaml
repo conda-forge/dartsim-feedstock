@@ -35,7 +35,7 @@ libode:
 macos_machine:
 - arm64-apple-darwin20.0.0
 nlopt:
-- '2.7'
+- '2.8'
 spdlog:
 - '1.14'
 target_platform:
