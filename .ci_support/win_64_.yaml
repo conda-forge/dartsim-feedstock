@@ -23,7 +23,7 @@ libboost_devel:
 libode:
 - 0.16.2
 nlopt:
-- '2.7'
+- '2.8'
 perl:
 - 5.32.1
 spdlog:
