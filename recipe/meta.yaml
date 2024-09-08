@@ -8,60 +8,148 @@ package:
 source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
     sha256: f5fc7f5cb1269cc127a1ff69be26247b9f3617ce04ff1c80c0f3f6abc7d9ab70
+    patches:
+      - remove-opencl.patch
 
 build:
-  number: 4
-  run_exports:
-    - {{ pin_subpackage(name, max_pin='x.x') }}
+  number: 5
 
-requirements:
-  build:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - {{ cdt('mesa-libgl-devel') }}  # [linux64]
-    - {{ cdt('mesa-libglu-devel') }}  # [linux64]
-    - {{ stdlib("c") }}
-    - cmake
-    - doxygen
-    - make                   # [not win]
-    - ninja                  # [win]
-    - perl                   # [win]
-    - pkg-config
+outputs:
+  - name: dartsim-cpp
+    script: build_cpp.sh  # [unix]
+    script: bld_cpp.bat   # [win]
+    build:
+      run_exports:
+        - {{ pin_subpackage('dartsim-cpp', max_pin='x.x') }}
+      ignore_run_exports:
+        - console_bridge
+        - spdlog
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - {{ cdt('mesa-libgl-devel') }}  # [linux64]
+        - {{ cdt('mesa-libglu-devel') }}  # [linux64]
+        - {{ stdlib('c') }}
+        - cmake
+        - doxygen
+        - make                   # [not win]
+        - ninja                  # [win]
+        - perl                   # [win]
+        - pkg-config
+        - python                                 # [build_platform != target_platform and backend == "python3"]
+        - cross-python_{{ target_platform }}     # [build_platform != target_platform and backend == "python3"]
+        - numpy                                  # [build_platform != target_platform and backend == "python3"]
+      host:
+        - assimp
+        - bullet-cpp
+        - console_bridge
+        - eigen
+        - fcl
+        - fmt
+        - freeglut  # [not osx]
+        - imgui  # [not ppc64le]
+        - ipopt
+        - libboost-devel  # [not ppc64le]
+        - libode
+        - nlopt
+        - octomap
+        - openscenegraph  # [linux64 or osx or win]
+        - pagmo  # [not ppc64le]
+        - pagmo-devel  # [not ppc64le]
+        - tinyxml2
+        - urdfdom
+        - spdlog
+      run:
+        - eigen
+        - octomap
+    test:
+      commands:
+        - test -f $PREFIX/lib/libdart.dylib  # [osx]
+        - test -f $PREFIX/lib/libdart.so  # [linux]
+        - test -f $PREFIX/share/dart/cmake/dart_collision-odeTargets.cmake  # [not win]
+        - test -f $PREFIX/share/dart/cmake/dart_collision-bulletTargets.cmake  # [not win]
+        - if not exist %LIBRARY_LIB%\\dart.lib exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-odeTargets.cmake exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-bulletTargets.cmake exit 1  # [win]
 
-  host:
-    - assimp
-    - bullet-cpp
-    - console_bridge
-    - eigen
-    - fcl
-    - fmt
-    - freeglut  # [not osx]
-    - imgui  # [not ppc64le]
-    - ipopt
-    - libboost-devel  # [not ppc64le]
-    - libode
-    - nlopt
-    - octomap
-    - openscenegraph  # [linux64 or osx or win]
-    - pagmo  # [not ppc64le]
-    - pagmo-devel  # [not ppc64le]
-    - tinyxml2
-    - urdfdom
-    - spdlog
+  - name: dartpy
+    script: build_py.sh  # [unix]
+    script: bld_py.bat   # [win]
+    build:
+      skip: true  # [linux and not x86_64]
+      skip: true  # [osx]
+      skip: true  # [win]
+    requirements:
+      build:
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+        - {{ cdt('mesa-dri-drivers') }}  # [linux]
+        - {{ cdt('mesa-libgl-devel') }}  # [linux64]
+        - {{ cdt('mesa-libglu-devel') }}  # [linux64]
+        - {{ cdt('libselinux') }}  # [linux]
+        - {{ cdt('libxdamage') }}  # [linux]
+        - {{ cdt('libxext') }}     # [linux]
+        - {{ cdt('libxxf86vm') }}  # [linux]        
+        - {{ stdlib('c') }}
+        - cmake
+        - doxygen
+        - make                   # [not win]
+        - ninja                  # [win]
+        - perl                   # [win]
+        - pkg-config
+        - python                                 # [build_platform != target_platform and backend == "python3"]
+        - cross-python_{{ target_platform }}     # [build_platform != target_platform and backend == "python3"]
+        - numpy                                  # [build_platform != target_platform and backend == "python3"]
+      host:
+        - {{ pin_subpackage('dartsim-cpp', exact=True) }}
+        - libgl  # [linux]
+        - numpy
+        - pip
+        - python
+        - requests
+        - setuptools
+        - xorg-libxfixes  # [linux]
+      run:
+        - {{ cdt('mesa-libgl-devel') }}   # [linux64]
+        - {{ cdt('mesa-libglu-devel') }}  # [linux64]
+        - {{ cdt('mesa-dri-drivers') }}   # [linux]
+        - {{ pin_subpackage('dartsim-cpp', exact=True) }}
+        - libgl  # [linux]
+        - libglu
+        - numpy
+        - python
+        - openscenegraph
+        - nlopt
+        - bullet-cpp
+        - fcl
+        - assimp
+        - octomap
+        - libode
+        - urdfdom
+        - tinyxml2
+    test:
+      imports:
+        - dartpy
 
-  run:
-    - eigen
-    - octomap
-
-test:
-  commands:
-    - test -f $PREFIX/lib/libdart.dylib  # [osx]
-    - test -f $PREFIX/lib/libdart.so  # [linux]
-    - test -f $PREFIX/share/dart/cmake/dart_collision-odeTargets.cmake  # [not win]
-    - test -f $PREFIX/share/dart/cmake/dart_collision-bulletTargets.cmake  # [not win]
-    - if not exist %LIBRARY_LIB%\\dart.lib exit 1  # [win]
-    - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-odeTargets.cmake exit 1  # [win]
-    - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-bulletTargets.cmake exit 1  # [win]
+  - name: dartsim
+    requirements:
+      run:
+        - {{ pin_subpackage('dartsim-cpp', exact=True) }}
+        - {{ pin_subpackage('dartpy', exact=True) }}
+        - python
+        - numpy
+    test:
+      imports:
+        - dartpy
+      commands:
+        - test -f $PREFIX/lib/libdart.dylib  # [osx]
+        - test -f $PREFIX/lib/libdart.so  # [linux]
+        - test -f $PREFIX/share/dart/cmake/dart_collision-odeTargets.cmake  # [not win]
+        - test -f $PREFIX/share/dart/cmake/dart_collision-bulletTargets.cmake  # [not win]
+        - if not exist %LIBRARY_LIB%\\dart.lib exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-odeTargets.cmake exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-bulletTargets.cmake exit 1  # [win]
 
 about:
   home: http://dartsim.github.io/
