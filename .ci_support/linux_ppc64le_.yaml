@@ -63,3 +63,9 @@ zip_keys:
   - cdt_name
 - - python
   - numpy
+build_platform:
+- linux-64
+CMAKE_CROSSCOMPILING_EMULATOR: 
+- /usr/bin/qemu-ppc64le-static
+CROSSCOMPILING_EMULATOR: 
+- /usr/bin/qemu-ppc64le-static
