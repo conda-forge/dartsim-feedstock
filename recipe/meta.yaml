@@ -12,7 +12,7 @@ source:
       - remove-opencl.patch
 
 build:
-  number: -
+  number: 0
 
 outputs:
   - name: dartsim-cpp
