@@ -24,8 +24,22 @@ libode:
 - 0.16.2
 nlopt:
 - '2.8'
+numpy:
+- '1.22'
+- '1.23'
+- '1.26'
+- '1.22'
 perl:
 - 5.32.1
+pin_run_as_build:
+  python:
+    min_pin: x.x
+    max_pin: x.x
+python:
+- 3.10.* *_cpython
+- 3.11.* *_cpython
+- 3.12.* *_cpython
+- 3.9.* *_cpython
 spdlog:
 - '1.14'
 target_platform:
@@ -34,3 +48,6 @@ tinyxml2:
 - '10'
 urdfdom:
 - '4.0'
+zip_keys:
+- - python
+  - numpy
