@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -euxo pipefail
+
 # Set CMAKE_BUILD_PARALLEL_LEVEL to control the parallel build level
 if [[ ${target_platform} == "linux-ppc64le" ]]; then
   export CMAKE_BUILD_PARALLEL_LEVEL=1
@@ -12,4 +14,4 @@ else
 fi
 
 # Install the Python package
-python -m pip install .
+python -m pip install . -vv
