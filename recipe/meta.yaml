@@ -10,6 +10,7 @@ source:
     sha256: eb89cc01f4f48c399b055d462d8ecd2a3f846f825a35ffc67f259186b362e136
     patches:
       - remove-opencl.patch
+      - osx-default-arch.patch
 
 build:
   number: 3

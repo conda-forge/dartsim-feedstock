@@ -1,0 +1,26 @@
+diff --git a/setup.py b/setup.py
+index 2cd9c5c25759..6a1260ddd4b2 100644
+--- a/setup.py
++++ b/setup.py
+@@ -128,12 +128,15 @@ class CMakeBuild(build_ext):
+                 build_args += ["--config", cfg]
+ 
+         if sys.platform.startswith("darwin"):
+-            # Enable cross-compilation support for macOS and respect ARCHFLAGS if set
+-            archs = re.findall(r"-arch (\S+)", os.environ.get("ARCHFLAGS", ""))
+-            if archs:
+-                cmake_args.append(
+-                    "-DCMAKE_OSX_ARCHITECTURES={}".format(";".join(archs))
+-                )
++            # Check if ARCHFLAGS is set in the environment
++            archflags = os.environ.get("ARCHFLAGS")
++            if archflags:
++                # Extract architectures from ARCHFLAGS and set CMAKE_OSX_ARCHITECTURES
++                archs = re.findall(r"-arch (\S+)", archflags)
++                if archs:
++                    cmake_args.append(
++                        "-DCMAKE_OSX_ARCHITECTURES={}".format(";".join(archs))
++                    )
+ 
+             print(f"[DEBUG] cmake_args: {cmake_args}")
+ 
