@@ -28,6 +28,8 @@ fmt:
 - '11'
 ipopt:
 - 3.14.16
+libboost_devel:
+- '1.86'
 libode:
 - 0.16.2
 nlopt:

@@ -12,7 +12,7 @@ source:
       - remove-opencl.patch
 
 build:
-  number: 2
+  number: 3
 
 outputs:
   - name: dartsim-cpp
@@ -48,15 +48,15 @@ outputs:
         - fcl
         - fmt
         - freeglut  # [not osx]
-        - imgui  # [not ppc64le]
+        - imgui
         - ipopt
-        - libboost-devel  # [not ppc64le]
+        - libboost-devel
         - libode
         - nlopt
         - octomap
-        - openscenegraph  # [linux64 or osx or win]
-        - pagmo  # [not ppc64le]
-        - pagmo-devel  # [not ppc64le]
+        - openscenegraph
+        - pagmo
+        - pagmo-devel
         - tinyxml2
         - urdfdom
         - spdlog
