@@ -73,8 +73,6 @@ outputs:
   - name: dartpy
     script: build_py.sh  # [unix]
     script: bld_py.bat  # [win]
-    build:
-      skip: true  # [win]
     requirements:
       build:
         - {{ compiler('c') }}
@@ -135,12 +133,12 @@ outputs:
     requirements:
       run:
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
-        - {{ pin_subpackage('dartpy', exact=True) }}  # [not win]
+        - {{ pin_subpackage('dartpy', exact=True) }}
         - python
         - numpy
     test:
       imports:
-        - dartpy  # [not win]
+        - dartpy
       commands:
         - test -f $PREFIX/lib/libdart.dylib  # [osx]
         - test -f $PREFIX/lib/libdart.so  # [linux]
