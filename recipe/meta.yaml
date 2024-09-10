@@ -83,13 +83,13 @@ outputs:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - {{ cdt('mesa-dri-drivers') }}  # [linux]
-        - {{ cdt('mesa-libgl-devel') }}  # [linux64]
-        - {{ cdt('mesa-libglu-devel') }}  # [linux64]
+        - {{ cdt('mesa-dri-drivers') }}   # [linux]
+        - {{ cdt('mesa-libgl-devel') }}   # [linux]
+        - {{ cdt('mesa-libglu-devel') }}  # [linux]
         - {{ cdt('libselinux') }}  # [linux]
         - {{ cdt('libxdamage') }}  # [linux]
         - {{ cdt('libxext') }}     # [linux]
-        - {{ cdt('libxxf86vm') }}  # [linux]        
+        - {{ cdt('libxxf86vm') }}  # [linux]
         - {{ stdlib('c') }}
         - cmake
         - doxygen
@@ -110,8 +110,8 @@ outputs:
         - setuptools
         - xorg-libxfixes  # [linux]
       run:
-        - {{ cdt('mesa-libgl-devel') }}   # [linux64]
-        - {{ cdt('mesa-libglu-devel') }}  # [linux64]
+        - {{ cdt('mesa-libgl-devel') }}   # [linux]
+        - {{ cdt('mesa-libglu-devel') }}  # [linux]
         - {{ cdt('mesa-dri-drivers') }}   # [linux]
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
         - libgl  # [linux]
