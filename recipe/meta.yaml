@@ -104,7 +104,8 @@ outputs:
         - numpy                                  # [build_platform != target_platform and backend == "python3"]
       host:
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
-        - libgl  # [linux]
+        - libgl   # [linux]
+        - libglu  # [linux]
         - numpy
         - pip
         - python
