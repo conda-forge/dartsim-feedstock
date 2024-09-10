@@ -106,8 +106,9 @@ outputs:
         - numpy                                  # [build_platform != target_platform and backend == "python3"]
       host:
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
-        - libgl   # [linux]
-        - libglu  # [linux]
+        - libgl    # [linux]
+        - libglu   # [linux]
+        - mesalib  # [unix]
         - numpy
         - pip
         - python
@@ -120,8 +121,8 @@ outputs:
         - {{ cdt('mesa-libglapi') }}      # [aarch64 or ppc64le]
         - {{ cdt('mesa-libglu-devel') }}  # [linux64]
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
-        - libgl  # [linux]
-        - libglu
+        - libgl   # [linux]
+        - libglu  # [linux]
         - numpy
         - python
         - openscenegraph
