@@ -106,34 +106,30 @@ outputs:
         - numpy                                  # [build_platform != target_platform and backend == "python3"]
       host:
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
+        - assimp
+        - bullet-cpp
+        - fcl
         - libgl    # [linux]
         - libglu   # [linux]
+        - libode
         - mesalib  # [unix]
+        - nlopt
         - numpy
+        - octomap
+        - openscenegraph
         - pip
         - python
         - requests
         - setuptools
+        - tinyxml2
+        - urdfdom
         - xorg-libxfixes  # [linux]
       run:
-        - {{ cdt('mesa-dri-drivers') }}   # [linux]
-        - {{ cdt('mesa-libgl-devel') }}   # [linux]
-        - {{ cdt('mesa-libglapi') }}      # [aarch64 or ppc64le]
-        - {{ cdt('mesa-libglu-devel') }}  # [linux64]
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
         - libgl   # [linux]
         - libglu  # [linux]
         - numpy
         - python
-        - openscenegraph
-        - nlopt
-        - bullet-cpp
-        - fcl
-        - assimp
-        - octomap
-        - libode
-        - urdfdom
-        - tinyxml2
     test:
       imports:
         - dartpy
