@@ -6,4 +6,4 @@ IF %CPU_COUNT% GTR 8 (
 )
 
 :: Install the Python package
-python -m pip install .
+python -m pip install . -vv

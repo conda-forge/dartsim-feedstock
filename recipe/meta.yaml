@@ -79,7 +79,6 @@ outputs:
     build:
       skip: true  # [linux and not x86_64]
       skip: true  # [osx]
-      skip: true  # [win]
     requirements:
       build:
         - {{ compiler('c') }}
