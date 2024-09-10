@@ -28,7 +28,8 @@ outputs:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - {{ cdt('mesa-libgl-devel') }}  # [linux64]
+        - {{ cdt('mesa-libgl-devel') }}   # [linux]
+        - {{ cdt('mesa-libglapi') }}      # [aarch64 or ppc64le]
         - {{ cdt('mesa-libglu-devel') }}  # [linux64]
         - {{ stdlib('c') }}
         - cmake
@@ -85,7 +86,8 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ cdt('mesa-dri-drivers') }}   # [linux]
         - {{ cdt('mesa-libgl-devel') }}   # [linux]
-        - {{ cdt('mesa-libglu-devel') }}  # [linux]
+        - {{ cdt('mesa-libglapi') }}      # [aarch64 or ppc64le]
+        - {{ cdt('mesa-libglu-devel') }}  # [linux64]
         - {{ cdt('libselinux') }}  # [linux]
         - {{ cdt('libxdamage') }}  # [linux]
         - {{ cdt('libxext') }}     # [linux]
@@ -110,9 +112,10 @@ outputs:
         - setuptools
         - xorg-libxfixes  # [linux]
       run:
-        - {{ cdt('mesa-libgl-devel') }}   # [linux]
-        - {{ cdt('mesa-libglu-devel') }}  # [linux]
         - {{ cdt('mesa-dri-drivers') }}   # [linux]
+        - {{ cdt('mesa-libgl-devel') }}   # [linux]
+        - {{ cdt('mesa-libglapi') }}      # [aarch64 or ppc64le]
+        - {{ cdt('mesa-libglu-devel') }}  # [linux64]
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
         - libgl  # [linux]
         - libglu
