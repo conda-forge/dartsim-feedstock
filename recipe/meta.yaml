@@ -12,7 +12,7 @@ source:
       - remove-opencl.patch
 
 build:
-  number: 3
+  number: 4
 
 outputs:
   - name: dartsim-cpp
@@ -28,8 +28,9 @@ outputs:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - {{ cdt('mesa-libgl-devel') }}  # [linux64]
-        - {{ cdt('mesa-libglu-devel') }}  # [linux64]
+        - {{ cdt('mesa-libgl-devel') }}   # [linux]
+        - {{ cdt('mesa-libglapi') }}      # [aarch64 or ppc64le]
+        - {{ cdt('mesa-libglu-devel') }}  # [linux]
         - {{ stdlib('c') }}
         - cmake
         - doxygen
@@ -77,20 +78,22 @@ outputs:
     script: build_py.sh  # [unix]
     script: bld_py.bat   # [win]
     build:
-      skip: true  # [linux and not x86_64]
       skip: true  # [osx]
       skip: true  # [win]
     requirements:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
-        - {{ cdt('mesa-dri-drivers') }}  # [linux]
-        - {{ cdt('mesa-libgl-devel') }}  # [linux64]
-        - {{ cdt('mesa-libglu-devel') }}  # [linux64]
-        - {{ cdt('libselinux') }}  # [linux]
-        - {{ cdt('libxdamage') }}  # [linux]
-        - {{ cdt('libxext') }}     # [linux]
-        - {{ cdt('libxxf86vm') }}  # [linux]        
+        - {{ cdt('mesa-dri-drivers') }}   # [linux]
+        - {{ cdt('mesa-libegl-devel') }}  # [linux]
+        - {{ cdt('mesa-libgl-devel') }}   # [linux]
+        - {{ cdt('mesa-libglapi') }}      # [aarch64 or ppc64le]
+        - {{ cdt('mesa-libglu-devel') }}  # [linux]
+        - {{ cdt('libselinux') }}         # [linux]
+        - {{ cdt('libselinux-devel') }}   # [linux]
+        - {{ cdt('libxdamage') }}         # [linux]
+        - {{ cdt('libxext') }}            # [linux]
+        - {{ cdt('libxxf86vm') }}         # [linux]
         - {{ stdlib('c') }}
         - cmake
         - doxygen
@@ -103,31 +106,30 @@ outputs:
         - numpy                                  # [build_platform != target_platform and backend == "python3"]
       host:
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
-        - libgl  # [linux]
+        - assimp
+        - bullet-cpp
+        - fcl
+        - libgl    # [linux]
+        - libglu   # [linux]
+        - libode
+        - mesalib  # [unix]
+        - nlopt
         - numpy
+        - octomap
+        - openscenegraph
         - pip
         - python
         - requests
         - setuptools
+        - tinyxml2
+        - urdfdom
         - xorg-libxfixes  # [linux]
       run:
-        - {{ cdt('mesa-libgl-devel') }}   # [linux64]
-        - {{ cdt('mesa-libglu-devel') }}  # [linux64]
-        - {{ cdt('mesa-dri-drivers') }}   # [linux]
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
-        - libgl  # [linux]
-        - libglu
+        - libgl   # [linux]
+        - libglu  # [linux]
         - numpy
         - python
-        - openscenegraph
-        - nlopt
-        - bullet-cpp
-        - fcl
-        - assimp
-        - octomap
-        - libode
-        - urdfdom
-        - tinyxml2
     test:
       imports:
         - dartpy
