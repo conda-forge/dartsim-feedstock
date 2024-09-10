@@ -54,7 +54,7 @@ outputs:
         - libode
         - nlopt
         - octomap
-        - openscenegraph  # [linux64 or osx or win]
+        - openscenegraph
         - pagmo
         - pagmo-devel
         - tinyxml2
