@@ -30,7 +30,7 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ cdt('mesa-libgl-devel') }}   # [linux]
         - {{ cdt('mesa-libglapi') }}      # [aarch64 or ppc64le]
-        - {{ cdt('mesa-libglu-devel') }}  # [linux64]
+        - {{ cdt('mesa-libglu-devel') }}  # [linux]
         - {{ stdlib('c') }}
         - cmake
         - doxygen
@@ -88,7 +88,7 @@ outputs:
         - {{ cdt('mesa-libegl-devel') }}  # [linux]
         - {{ cdt('mesa-libgl-devel') }}   # [linux]
         - {{ cdt('mesa-libglapi') }}      # [aarch64 or ppc64le]
-        - {{ cdt('mesa-libglu-devel') }}  # [linux64]
+        - {{ cdt('mesa-libglu-devel') }}  # [linux]
         - {{ cdt('libselinux') }}         # [linux]
         - {{ cdt('libselinux-devel') }}   # [linux]
         - {{ cdt('libxdamage') }}         # [linux]
