@@ -115,8 +115,8 @@ outputs:
         - {{ cdt('mesa-libglu-devel') }}  # [linux64]
         - {{ cdt('mesa-dri-drivers') }}   # [linux]
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
-        - libgl  # [linux]
-        - libglu
+        - libgl   # [linux]
+        - libglu  # [linux]
         - numpy
         - python
         - openscenegraph
