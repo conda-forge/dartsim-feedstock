@@ -2,29 +2,15 @@
 
 set -euxo pipefail
 
-# Detect architecture and platform
-ARCH=$(uname -m)
-OS=$(uname)
-
 # Set architecture-specific options for macOS
-if [[ "$OS" == "Darwin" ]]; then
-  case "$ARCH" in
-  arm64)
+if [[ "${target_platform}" == osx-* ]]; then
+  if [[ "${target_platform}" == osx-arm64 ]]; then
     echo "Building for macOS ARM (Apple Silicon)"
     export ARCHFLAGS="-arch arm64"
-    ;;
-  x86_64)
+  else
     echo "Building for macOS Intel (x86_64)"
     export ARCHFLAGS="-arch x86_64"
-    ;;
-  *)
-    echo "Unknown macOS architecture: $ARCH"
-    exit 1
-    ;;
-  esac
-else
-  echo "Building for other OS: $OS $ARCH"
-  export ARCHFLAGS=""
+  fi
 fi
 
 # Set CMAKE_BUILD_PARALLEL_LEVEL to control the parallel build level
