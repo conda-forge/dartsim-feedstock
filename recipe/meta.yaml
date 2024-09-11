@@ -99,12 +99,10 @@ outputs:
         - perl                   # [win]
         - pkg-config
         - cross-python_{{ target_platform }}  # [build_platform != target_platform and backend == "python3"]
-        - cython                              # [build_platform != target_platform and backend == "python3"]
         - numpy                               # [build_platform != target_platform and backend == "python3"]
         - python                              # [build_platform != target_platform and backend == "python3"]
       host:
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
-        - cython
         - libgl  # [linux]
         - numpy
         - pip
