@@ -10,7 +10,7 @@ source:
     sha256: bbf954e283f464f6d0a8a5ab43ce92fd49ced357ccdd986c7cb4c29152df8692
 
 build:
-  number: 1
+  number: 2
 
 outputs:
   - name: dartsim-cpp
@@ -101,7 +101,6 @@ outputs:
         - numpy                               # [build_platform != target_platform]
         - python                              # [build_platform != target_platform]
       host:
-        - {{ pin_subpackage('dartsim-cpp', exact=True) }}
         # C++ deps
         - assimp
         - bullet-cpp
@@ -124,7 +123,6 @@ outputs:
         - {{ cdt('mesa-libgl-devel') }}   # [linux64]
         - {{ cdt('mesa-libglu-devel') }}  # [linux64]
         - {{ cdt('mesa-dri-drivers') }}   # [linux]
-        - {{ pin_subpackage('dartsim-cpp', exact=True) }}
         - libgl   # [linux]
         - libglu  # [linux]
         - numpy
