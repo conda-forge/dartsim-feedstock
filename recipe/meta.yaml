@@ -12,7 +12,7 @@ source:
       - remove-opencl.patch
 
 build:
-  number: 4
+  number: 5
 
 outputs:
   - name: dartsim-cpp
@@ -102,7 +102,6 @@ outputs:
         - numpy                               # [build_platform != target_platform and backend == "python3"]
         - python                              # [build_platform != target_platform and backend == "python3"]
       host:
-        - {{ pin_subpackage('dartsim-cpp', exact=True) }}
         - libgl  # [linux]
         - numpy
         - pip
@@ -114,7 +113,6 @@ outputs:
         - {{ cdt('mesa-libgl-devel') }}   # [linux64]
         - {{ cdt('mesa-libglu-devel') }}  # [linux64]
         - {{ cdt('mesa-dri-drivers') }}   # [linux]
-        - {{ pin_subpackage('dartsim-cpp', exact=True) }}
         - libgl   # [linux]
         - libglu  # [linux]
         - numpy
