@@ -103,14 +103,24 @@ outputs:
         - python                              # [build_platform != target_platform and backend == "python3"]
       host:
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
+        # C++ deps
         - assimp
+        - bullet-cpp
+        - fcl
         - libgl  # [linux]
+        - libode
+        - nlopt
+        - octomap
+        - openscenegraph
+        - tinyxml2
+        - urdfdom
         - numpy
+        - xorg-libxfixes  # [linux]
+        # Python deps
         - pip
         - python
         - requests
         - setuptools
-        - xorg-libxfixes  # [linux]
       run:
         - {{ cdt('mesa-libgl-devel') }}   # [linux64]
         - {{ cdt('mesa-libglu-devel') }}  # [linux64]
@@ -120,14 +130,6 @@ outputs:
         - libglu  # [linux]
         - numpy
         - python
-        - openscenegraph
-        - nlopt
-        - bullet-cpp
-        - fcl
-        - octomap
-        - libode
-        - urdfdom
-        - tinyxml2
     test:
       imports:
         - dartpy
