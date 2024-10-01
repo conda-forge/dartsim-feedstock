@@ -147,7 +147,8 @@ outputs:
         - numpy
     test:
       imports:
-        - dartpy
+        - dartpy  # [linux and x86_64]
+        - dartpy  # [osx and x86_64]
       commands:
         - test -f $PREFIX/lib/libdart.dylib  # [osx]
         - test -f $PREFIX/lib/libdart.so  # [linux]
