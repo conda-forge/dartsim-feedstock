@@ -12,7 +12,7 @@ source:
       - remove-opencl.patch
 
 build:
-  number: 4
+  number: 8
 
 outputs:
   - name: dartsim-cpp
@@ -78,7 +78,7 @@ outputs:
     script: bld_py.bat   # [win]
     build:
       skip: true  # [linux and not x86_64]
-      skip: true  # [osx]
+      skip: true  # [osx and arm64]
     requirements:
       build:
         - {{ compiler('c') }}
@@ -97,36 +97,38 @@ outputs:
         - ninja                  # [win]
         - perl                   # [win]
         - pkg-config
-        - python                                 # [build_platform != target_platform and backend == "python3"]
-        - cross-python_{{ target_platform }}     # [build_platform != target_platform and backend == "python3"]
-        - numpy                                  # [build_platform != target_platform and backend == "python3"]
+        - cross-python_{{ target_platform }}  # [build_platform != target_platform and backend == "python3"]
+        - numpy                               # [build_platform != target_platform and backend == "python3"]
+        - python                              # [build_platform != target_platform and backend == "python3"]
       host:
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
+        # C++ deps
+        - assimp
+        - bullet-cpp
+        - fcl
         - libgl  # [linux]
+        - libode
+        - nlopt
+        - octomap
+        - openscenegraph
+        - tinyxml2
+        - urdfdom
         - numpy
+        - xorg-libxfixes  # [linux]
+        # Python deps
         - pip
         - python
         - requests
         - setuptools
-        - xorg-libxfixes  # [linux]
       run:
         - {{ cdt('mesa-libgl-devel') }}   # [linux64]
         - {{ cdt('mesa-libglu-devel') }}  # [linux64]
         - {{ cdt('mesa-dri-drivers') }}   # [linux]
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
-        - libgl  # [linux]
-        - libglu
+        - libgl   # [linux]
+        - libglu  # [linux]
         - numpy
         - python
-        - openscenegraph
-        - nlopt
-        - bullet-cpp
-        - fcl
-        - assimp
-        - octomap
-        - libode
-        - urdfdom
-        - tinyxml2
     test:
       imports:
         - dartpy
@@ -138,12 +140,14 @@ outputs:
     requirements:
       run:
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
-        - {{ pin_subpackage('dartpy', exact=True) }}
+        - {{ pin_subpackage('dartpy', exact=True) }}  # [linux and x86_64]
+        - {{ pin_subpackage('dartpy', exact=True) }}  # [osx and x86_64]
         - python
         - numpy
     test:
       imports:
-        - dartpy
+        - dartpy  # [linux and x86_64]
+        - dartpy  # [osx and x86_64]
       commands:
         - test -f $PREFIX/lib/libdart.dylib  # [osx]
         - test -f $PREFIX/lib/libdart.so  # [linux]
