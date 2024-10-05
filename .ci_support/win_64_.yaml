@@ -3,7 +3,9 @@ assimp:
 bullet_cpp:
 - '3.25'
 c_compiler:
-- vs2019
+- clang
+c_compiler_version:
+- '18'
 c_stdlib:
 - vs
 channel_sources:
@@ -13,7 +15,9 @@ channel_targets:
 console_bridge:
 - '1.0'
 cxx_compiler:
-- vs2019
+- clangxx
+cxx_compiler_version:
+- '18'
 fmt:
 - '11'
 ipopt:
