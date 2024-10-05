@@ -1,12 +1,8 @@
 c_stdlib_version:  # [osx and x86_64]
   - '10.15'  # [osx and x86_64]
 
-# dartpy with MSVC hits fatal error C1060: compiler is out of heap space
+# dartpy with vs2019 hits fatal error C1060: compiler is out of heap space
 c_compiler:
-  - clang    # [win]
-c_compiler_version:
-  - 18       # [win]
+  - vs2022    # [win]
 cxx_compiler:
-  - clangxx  # [win]
-cxx_compiler_version:
-  - 18       # [win]
+  - vs2022  # [win]
