@@ -3,8 +3,6 @@ mkdir build && cd build
 :: Check the number of cores use by ninja by default
 ninja -h
 
-set CXXFLAGS=%CXXFLAGS% /Zm800 /Zc:inline
-
 cmake -G "Ninja" ^
     -DCMAKE_BUILD_TYPE=Release ^
     -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
@@ -25,7 +23,7 @@ if errorlevel 1 exit 1
 :: and https://github.com/conda-forge/dartsim-feedstock/pull/30#issuecomment-1149743621 (where it was reduced to 3)
 :: and https://github.com/conda-forge/dartsim-feedstock/pull/38#issuecomment-1553091093 (where it was reduced to 2)
 :: and https://github.com/conda-forge/dartsim-feedstock/pull/41#issuecomment-1737995505 (where it was reduced to 1)
-ninja -j 2
+ninja -j 1
 if errorlevel 1 exit 1
 
 ninja install
