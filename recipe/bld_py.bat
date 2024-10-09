@@ -1,9 +1,8 @@
-:: Check the number of cores to use by ninja by default
-IF %CPU_COUNT% GTR 8 (
-    set CMAKE_BUILD_PARALLEL_LEVEL=8
-) ELSE (
-    set CMAKE_BUILD_PARALLEL_LEVEL=%CPU_COUNT%
-)
+:: Limit parallel jobs to 1 to reduce memory usage
+set CMAKE_BUILD_PARALLEL_LEVEL=1
+
+:: Add compiler flags to increase precompiled header memory and optimize inline functions
+set CXXFLAGS=%CXXFLAGS% /Zm800 /Zc:inline
 
 :: Install the Python package
-python -m pip install .
+python -m pip install . -vv

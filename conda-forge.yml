@@ -1,3 +1,5 @@
+azure:
+  free_disk_space: true
 bot:
   abi_migration_branches:
   - v6.12
@@ -15,4 +17,5 @@ github:
 provider:
   linux_aarch64: default
   linux_ppc64le: default
+  win_64: travis
 test: native_and_emulated
