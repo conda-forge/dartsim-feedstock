@@ -11,7 +11,7 @@ c_stdlib:
 c_stdlib_version:
 - '2.17'
 cdt_name:
-- cos7
+- conda
 channel_sources:
 - conda-forge
 channel_targets:
@@ -29,7 +29,7 @@ flann:
 libboost_devel:
 - '1.86'
 libode:
-- 0.16.2
+- 0.16.5
 lz4_c:
 - 1.9.3
 target_platform:
@@ -41,5 +41,3 @@ urdfdom:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-- - c_stdlib_version
-  - cdt_name
