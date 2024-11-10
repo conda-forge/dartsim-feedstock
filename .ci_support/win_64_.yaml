@@ -21,7 +21,7 @@ ipopt:
 libboost_devel:
 - '1.86'
 libode:
-- 0.16.2
+- 0.16.5
 nlopt:
 - '2.8'
 numpy:
