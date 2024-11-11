@@ -14,7 +14,7 @@ source:
       - 001-pr-1872.patch
 
 build:
-  number: 9
+  number: 10
 
 outputs:
   - name: dartsim-cpp
