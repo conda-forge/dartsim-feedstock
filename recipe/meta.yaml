@@ -10,9 +10,11 @@ source:
     sha256: eb89cc01f4f48c399b055d462d8ecd2a3f846f825a35ffc67f259186b362e136
     patches:
       - remove-opencl.patch
+      # https://github.com/dartsim/dart/pull/1872
+      - 001-pr-1872.patch
 
 build:
-  number: 8
+  number: 9
 
 outputs:
   - name: dartsim-cpp

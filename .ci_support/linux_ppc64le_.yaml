@@ -11,7 +11,7 @@ c_stdlib:
 c_stdlib_version:
 - '2.17'
 cdt_name:
-- cos7
+- conda
 channel_sources:
 - conda-forge
 channel_targets:
@@ -31,7 +31,7 @@ ipopt:
 libboost_devel:
 - '1.86'
 libode:
-- 0.16.2
+- 0.16.5
 nlopt:
 - '2.8'
 numpy:
@@ -59,7 +59,5 @@ urdfdom:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-- - c_stdlib_version
-  - cdt_name
 - - python
   - numpy
