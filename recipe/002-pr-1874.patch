@@ -1,0 +1,139 @@
+diff --git a/dart/optimizer/nlopt/CMakeLists.txt b/dart/optimizer/nlopt/CMakeLists.txt
+index 27b93321d4be0..16130f44aca5b 100644
+--- a/dart/optimizer/nlopt/CMakeLists.txt
++++ b/dart/optimizer/nlopt/CMakeLists.txt
+@@ -2,6 +2,26 @@
+ dart_find_package(NLOPT)
+ dart_check_optional_package(NLOPT "dart-optimizer-nlopt" "nlopt" "2.4.1")
+ 
++if(NOT NLOPT_VERSION)
++  # If version is not found, we just assume 2.9.0
++  set(NLOPT_VERSION "2.9.0")
++endif()
++
++# Attempt to parse version components
++string(REGEX REPLACE "^([0-9]+)\\.([0-9]+)\\.([0-9]+)$" "\\1" NLOPT_MAJOR_VERSION "${NLOPT_VERSION}")
++string(REGEX REPLACE "^([0-9]+)\\.([0-9]+)\\.([0-9]+)$" "\\2" NLOPT_MINOR_VERSION "${NLOPT_VERSION}")
++string(REGEX REPLACE "^([0-9]+)\\.([0-9]+)\\.([0-9]+)$" "\\3" NLOPT_PATCH_VERSION "${NLOPT_VERSION}")
++
++# Check if parsing succeeded
++if(NOT (NLOPT_MAJOR_VERSION MATCHES "^[0-9]+$" AND 
++        NLOPT_MINOR_VERSION MATCHES "^[0-9]+$" AND 
++        NLOPT_PATCH_VERSION MATCHES "^[0-9]+$"))
++  message(WARNING "Failed to parse NLOPT_VERSION '${NLOPT_VERSION}'. Using default values (2, 9, 0) for version components.")
++  set(NLOPT_MAJOR_VERSION "2")
++  set(NLOPT_MINOR_VERSION "9")
++  set(NLOPT_PATCH_VERSION "0")
++endif()
++
+ # Search all header and source files
+ file(GLOB hdrs "*.hpp")
+ file(GLOB srcs "*.cpp")
+@@ -13,6 +33,12 @@ set(component_name optimizer-nlopt)
+ # Add target
+ dart_add_library(${target_name} ${hdrs} ${srcs})
+ target_link_libraries(${target_name} PUBLIC dart NLOPT::nlopt)
++target_compile_definitions(${target_name}
++  PUBLIC
++    -DNLOPT_MAJOR_VERSION=${NLOPT_MAJOR_VERSION}
++    -DNLOPT_MINOR_VERSION=${NLOPT_MINOR_VERSION}
++    -DNLOPT_PATCH_VERSION=${NLOPT_PATCH_VERSION}
++)
+ 
+ # Component
+ add_component(${PROJECT_NAME} ${component_name})
+diff --git a/dart/optimizer/nlopt/NloptSolver.cpp b/dart/optimizer/nlopt/NloptSolver.cpp
+index 5e8d2dbce9b4c..0adb336fcda68 100644
+--- a/dart/optimizer/nlopt/NloptSolver.cpp
++++ b/dart/optimizer/nlopt/NloptSolver.cpp
+@@ -257,7 +257,9 @@ nlopt::algorithm NloptSolver::convertAlgorithm(NloptSolver::Algorithm algorithm)
+     NLOPTSOLVER_ALGORITHM_DART_TO_NLOPT(GN_ORIG_DIRECT_L)
+     NLOPTSOLVER_ALGORITHM_DART_TO_NLOPT(GD_STOGO)
+     NLOPTSOLVER_ALGORITHM_DART_TO_NLOPT(GD_STOGO_RAND)
++#if !NLOPT_VERSION_GE(2, 9, 0)
+     NLOPTSOLVER_ALGORITHM_DART_TO_NLOPT(LD_LBFGS_NOCEDAL)
++#endif
+     NLOPTSOLVER_ALGORITHM_DART_TO_NLOPT(LD_LBFGS)
+     NLOPTSOLVER_ALGORITHM_DART_TO_NLOPT(LN_PRAXIS)
+     NLOPTSOLVER_ALGORITHM_DART_TO_NLOPT(LD_VAR1)
+@@ -311,7 +313,9 @@ NloptSolver::Algorithm NloptSolver::convertAlgorithm(nlopt::algorithm algorithm)
+     NLOPTSOLVER_ALGORITHM_NLOPT_TO_DART(GN_ORIG_DIRECT_L)
+     NLOPTSOLVER_ALGORITHM_NLOPT_TO_DART(GD_STOGO)
+     NLOPTSOLVER_ALGORITHM_NLOPT_TO_DART(GD_STOGO_RAND)
++#if !NLOPT_VERSION_GE(2, 9, 0)
+     NLOPTSOLVER_ALGORITHM_NLOPT_TO_DART(LD_LBFGS_NOCEDAL)
++#endif
+     NLOPTSOLVER_ALGORITHM_NLOPT_TO_DART(LD_LBFGS)
+     NLOPTSOLVER_ALGORITHM_NLOPT_TO_DART(LN_PRAXIS)
+     NLOPTSOLVER_ALGORITHM_NLOPT_TO_DART(LD_VAR1)
+diff --git a/dart/optimizer/nlopt/NloptSolver.hpp b/dart/optimizer/nlopt/NloptSolver.hpp
+index f8f2f9279f72e..29145f9e2e462 100644
+--- a/dart/optimizer/nlopt/NloptSolver.hpp
++++ b/dart/optimizer/nlopt/NloptSolver.hpp
+@@ -39,12 +39,18 @@
+ 
+ #include <nlopt.hpp>
+ 
++#define NLOPT_VERSION_GE(x, y, z)                                              \
++  ((NLOPT_MAJOR_VERSION > (x))                                                 \
++   || (NLOPT_MAJOR_VERSION == (x) && NLOPT_MINOR_VERSION > (y))                \
++   || (NLOPT_MAJOR_VERSION == (x) && NLOPT_MINOR_VERSION == (y)                \
++       && NLOPT_PATCH_VERSION >= (z)))
++
+ namespace dart {
+ namespace optimizer {
+ 
+ class Problem;
+ 
+-/// NloptSolver is a nonlinear programming solver that provides many unlerlying
++/// NloptSolver is a nonlinear programming solver that provides many underlying
+ /// algorithms through nlopt (an third-party library:
+ /// https://nlopt.readthedocs.io/).
+ ///
+@@ -73,7 +79,9 @@ class NloptSolver : public Solver
+     GN_ORIG_DIRECT_L,
+     GD_STOGO,
+     GD_STOGO_RAND,
++#if !NLOPT_VERSION_GE(2, 9, 0)
+     LD_LBFGS_NOCEDAL,
++#endif
+     LD_LBFGS,
+     LN_PRAXIS,
+     LD_VAR1,
+diff --git a/pixi.toml b/pixi.toml
+index 67bf879e15c20..35385c314d445 100644
+--- a/pixi.toml
++++ b/pixi.toml
+@@ -52,8 +52,9 @@ config = { cmd = """
+         -G Ninja \
+         -S . \
+         -B build \
+-        -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
+         -DCMAKE_BUILD_TYPE=Release \
++        -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
++        -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
+         -DDART_VERBOSE=ON \
+         -DDART_USE_SYSTEM_IMGUI=ON
+ """ }
+@@ -192,6 +193,7 @@ config = { cmd = """
+         -B build \
+         -G 'Visual Studio 17 2022' \
+         -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
++        -DCMAKE_PREFIX_PATH=$CONDA_PREFIX \
+         -DDART_VERBOSE=ON \
+         -DDART_MSVC_DEFAULT_OPTIONS=ON \
+         -DBUILD_SHARED_LIBS=OFF \
+diff --git a/python/dartpy/optimizer/NloptSolver.cpp b/python/dartpy/optimizer/NloptSolver.cpp
+index fba30c57af4b6..9a0d72a8b5f78 100644
+--- a/python/dartpy/optimizer/NloptSolver.cpp
++++ b/python/dartpy/optimizer/NloptSolver.cpp
+@@ -123,7 +123,9 @@ void NloptSolver(py::module& m)
+       DARTPY_DEFINE_ALGORITHM(GN_ORIG_DIRECT_L)
+       DARTPY_DEFINE_ALGORITHM(GD_STOGO)
+       DARTPY_DEFINE_ALGORITHM(GD_STOGO_RAND)
++#if !NLOPT_VERSION_GE(2, 9, 0)
+       DARTPY_DEFINE_ALGORITHM(LD_LBFGS_NOCEDAL)
++#endif
+       DARTPY_DEFINE_ALGORITHM(LD_LBFGS)
+       DARTPY_DEFINE_ALGORITHM(LN_PRAXIS)
+       DARTPY_DEFINE_ALGORITHM(LD_VAR1)
