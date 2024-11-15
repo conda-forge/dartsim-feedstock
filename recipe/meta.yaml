@@ -14,7 +14,7 @@ source:
       - 001-pr-1872.patch
 
 build:
-  number: 10
+  number: 11
 
 outputs:
   - name: dartsim-cpp
@@ -74,6 +74,8 @@ outputs:
         - if not exist %LIBRARY_LIB%\\dart.lib exit 1  # [win]
         - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-odeTargets.cmake exit 1  # [win]
         - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-bulletTargets.cmake exit 1  # [win]
+      downstreams:
+        - gz-physics8
 
   - name: dartpy
     script: build_py.sh  # [unix]
