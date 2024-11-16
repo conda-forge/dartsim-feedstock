@@ -8,10 +8,6 @@ package:
 source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
     sha256: bbf954e283f464f6d0a8a5ab43ce92fd49ced357ccdd986c7cb4c29152df8692
-    patches:
-      - remove-opencl.patch
-      # https://github.com/dartsim/dart/pull/1872
-      - 001-pr-1872.patch
 
 build:
   number: 0
