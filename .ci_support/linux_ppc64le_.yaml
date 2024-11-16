@@ -33,7 +33,7 @@ libboost_devel:
 libode:
 - 0.16.5
 nlopt:
-- '2.8'
+- '2.9'
 numpy:
 - '1.22'
 - '1.23'

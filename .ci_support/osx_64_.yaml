@@ -35,7 +35,7 @@ libode:
 macos_machine:
 - x86_64-apple-darwin13.4.0
 nlopt:
-- '2.8'
+- '2.9'
 numpy:
 - '1.22'
 - '1.23'
