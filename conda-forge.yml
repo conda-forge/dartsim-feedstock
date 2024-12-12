@@ -16,5 +16,4 @@ provider:
   linux_aarch64: default
   linux_ppc64le: default
   win_64: travis
-  
 test: native_and_emulated
