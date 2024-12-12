@@ -13,6 +13,6 @@ github:
   branch_name: main
   tooling_branch_name: main
 provider:
-  linux_aarch64: default
-  linux_ppc64le: default
+  linux_aarch64: github_actions
+  linux_ppc64le: github_actions
 test: native_and_emulated
