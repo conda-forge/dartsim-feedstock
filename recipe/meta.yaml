@@ -79,8 +79,8 @@ outputs:
     build:
       skip: true  # [osx]
       skip: true  # [win]
-      skip: true  # [aarch64 and py<311]
-      skip: true  # [ppc64le and py<311]
+      skip: true  # [aarch64 and py<312]
+      skip: true  # [ppc64le and py<312]
     requirements:
       build:
         - {{ compiler('c') }}
@@ -134,16 +134,16 @@ outputs:
       run:
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
         - {{ pin_subpackage('dartpy', exact=True) }}  # [linux64]
-        - {{ pin_subpackage('dartpy', exact=True) }}  # [aarch64 and py>=311]
-        - {{ pin_subpackage('dartpy', exact=True) }}  # [ppc64le and py>=311]
+        - {{ pin_subpackage('dartpy', exact=True) }}  # [aarch64 and py>=312]
+        - {{ pin_subpackage('dartpy', exact=True) }}  # [ppc64le and py>=312]
         - {{ pin_subpackage('dartpy', exact=True) }}  # [osx]
         - python
         - numpy
     test:
       imports:
         - dartpy  # [linux64]
-        - dartpy  # [aarch64 and py>=311]
-        - dartpy  # [ppc64le and py>=311]
+        - dartpy  # [aarch64 and py>=312]
+        - dartpy  # [ppc64le and py>=312]
         - dartpy  # [osx]
       commands:
         - test -f $PREFIX/lib/libdart.dylib  # [osx]
