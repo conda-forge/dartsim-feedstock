@@ -8,6 +8,9 @@ package:
 source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
     sha256: bbf954e283f464f6d0a8a5ab43ce92fd49ced357ccdd986c7cb4c29152df8692
+    patches:
+      # Disable tutorials and examples to save build time
+      - patches/disable-tutorials-examples.patch  # [win]
 
 build:
   number: 4
