@@ -36,24 +36,16 @@ nlopt:
 - '2.9'
 numpy:
 - '1.22'
-- '1.23'
-- '1.26'
-- '2'
-- '1.22'
 pin_run_as_build:
   python:
     min_pin: x.x
     max_pin: x.x
 python:
 - 3.10.* *_cpython
-- 3.11.* *_cpython
-- 3.12.* *_cpython
-- 3.13.* *_cp313
-- 3.9.* *_cpython
 spdlog:
 - '1.14'
 target_platform:
-- linux-aarch64
+- linux-ppc64le
 tinyxml2:
 - '10'
 urdfdom:
