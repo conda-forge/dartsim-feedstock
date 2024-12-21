@@ -10,7 +10,7 @@ source:
     sha256: bbf954e283f464f6d0a8a5ab43ce92fd49ced357ccdd986c7cb4c29152df8692
 
 build:
-  number: 1
+  number: 2
 
 outputs:
   - name: dartsim-cpp
@@ -35,9 +35,6 @@ outputs:
         - ninja                  # [win]
         - perl                   # [win]
         - pkg-config
-        - python                                 # [build_platform != target_platform]
-        - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-        - numpy                                  # [build_platform != target_platform]
       host:
         - assimp
         - bullet-cpp
