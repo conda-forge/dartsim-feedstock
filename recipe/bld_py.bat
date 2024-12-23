@@ -1,12 +1,14 @@
 :: Limit parallel jobs to 1 to reduce memory usage
 set CMAKE_BUILD_PARALLEL_LEVEL=1
 
-:: Add compiler flags:
-::   /Zm1600  increases compiler memory limit
-::   /bigobj  allows larger object files
-::   /Zc:inline  controls inline function expansion
-set CXXFLAGS=%CXXFLAGS% /Zm1500 /bigobj /Od /Z7
+:: Compiler flags to reduce memory usage:
+:: - /Od         => disable optimizations
+:: - /Zm1500     => increase compiler heap (change if needed)
+:: - /bigobj     => allow larger .obj files
+:: - (NO /Z7)    => no debug symbols
+:: - (NO /GL)    => ensure LTCG is off
+set CXXFLAGS=%CXXFLAGS% /Od /Zm1500 /bigobj
 
-:: Install the Python package (which will invoke CMake under the hood)
+:: Install the Python package (triggers CMake build via pip)
 python -m pip install . -vv
 if errorlevel 1 exit 1
