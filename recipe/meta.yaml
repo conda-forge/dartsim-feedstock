@@ -8,9 +8,12 @@ package:
 source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
     sha256: bbf954e283f464f6d0a8a5ab43ce92fd49ced357ccdd986c7cb4c29152df8692
+    patches:
+      # Disable tutorials and examples to save build time
+      - patches/disable-tutorials-examples.patch  # [win]
 
 build:
-  number: 4
+  number: 5
 
 outputs:
   - name: dartsim-cpp
@@ -73,8 +76,6 @@ outputs:
   - name: dartpy
     script: build_py.sh  # [unix]
     script: bld_py.bat  # [win]
-    build:
-      skip: true  # [win]
     requirements:
       build:
         - {{ compiler('c') }}
@@ -135,12 +136,12 @@ outputs:
     requirements:
       run:
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
-        - {{ pin_subpackage('dartpy', exact=True) }}  # [not win]
+        - {{ pin_subpackage('dartpy', exact=True) }}
         - python
         - numpy
     test:
       imports:
-        - dartpy  # [not win]
+        - dartpy
       commands:
         - test -f $PREFIX/lib/libdart.dylib  # [osx]
         - test -f $PREFIX/lib/libdart.so  # [linux]
