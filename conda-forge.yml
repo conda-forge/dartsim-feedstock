@@ -1,5 +1,5 @@
 azure:
-  free_disk_space: True
+  free_disk_space: true
 bot:
   abi_migration_branches:
   - v6.12
