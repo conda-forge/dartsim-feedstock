@@ -31,11 +31,11 @@ libboost_devel:
 libode:
 - 0.16.5
 lz4_c:
-- 1.9.3
+- '1.10'
 target_platform:
 - linux-ppc64le
 tinyxml2:
-- '10'
+- '10.0'
 urdfdom:
 - '4.0'
 zip_keys:
