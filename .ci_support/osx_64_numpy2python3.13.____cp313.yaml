@@ -35,7 +35,7 @@ libode:
 macos_machine:
 - x86_64-apple-darwin13.4.0
 nlopt:
-- '2.9'
+- '2.10'
 numpy:
 - '2'
 pin_run_as_build:
@@ -49,7 +49,7 @@ spdlog:
 target_platform:
 - osx-64
 tinyxml2:
-- '10'
+- '10.0'
 urdfdom:
 - '4.0'
 zip_keys:
