@@ -10,7 +10,7 @@ source:
     sha256: bbf954e283f464f6d0a8a5ab43ce92fd49ced357ccdd986c7cb4c29152df8692
 
 build:
-  number: 7
+  number: 8
 
 outputs:
   - name: dartsim-cpp
