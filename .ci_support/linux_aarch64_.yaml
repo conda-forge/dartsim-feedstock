@@ -35,7 +35,7 @@ lz4_c:
 target_platform:
 - linux-aarch64
 tinyxml2:
-- '10.0'
+- '11.0'
 urdfdom:
 - '4.0'
 zip_keys:
