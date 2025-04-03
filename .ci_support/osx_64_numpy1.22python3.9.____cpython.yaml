@@ -49,7 +49,7 @@ spdlog:
 target_platform:
 - osx-64
 tinyxml2:
-- '10.0'
+- '11.0'
 urdfdom:
 - '4.0'
 zip_keys:
