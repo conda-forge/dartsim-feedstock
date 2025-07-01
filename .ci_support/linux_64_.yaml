@@ -25,7 +25,7 @@ cxx_compiler_version:
 docker_image:
 - quay.io/condaforge/linux-anvil-x86_64:alma9
 fmt:
-- '11.1'
+- '11.2'
 ipopt:
 - 3.14.17
 libboost_devel:
@@ -35,11 +35,7 @@ libode:
 nlopt:
 - '2.10'
 numpy:
-- '2.0'
-- '2.0'
-- '2.0'
 - '2'
-- '2.0'
 pin_run_as_build:
   python:
     min_pin: x.x
@@ -61,5 +57,3 @@ urdfdom:
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
-- - python
-  - numpy
