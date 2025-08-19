@@ -9,7 +9,7 @@ bullet_cpp:
 c_compiler:
 - clang
 c_compiler_version:
-- '18'
+- '19'
 c_stdlib:
 - macosx_deployment_target
 c_stdlib_version:
@@ -23,11 +23,11 @@ console_bridge:
 cxx_compiler:
 - clangxx
 cxx_compiler_version:
-- '18'
+- '19'
 fmt:
 - '11.2'
 ipopt:
-- 3.14.17
+- 3.14.19
 libboost_devel:
 - '1.86'
 libode:

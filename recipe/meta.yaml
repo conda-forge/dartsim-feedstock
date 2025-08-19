@@ -10,7 +10,7 @@ source:
     sha256: bbf954e283f464f6d0a8a5ab43ce92fd49ced357ccdd986c7cb4c29152df8692
 
 build:
-  number: 10
+  number: 11
 
 outputs:
   - name: dartsim-cpp
@@ -75,6 +75,7 @@ outputs:
     script: bld_py.bat  # [win]
     build:
       skip: true  # [win]
+      skip: true  # [ppc64le and py<311]
     requirements:
       build:
         - {{ compiler('c') }}
