@@ -29,7 +29,7 @@ fmt:
 ipopt:
 - 3.14.19
 libboost_devel:
-- '1.86'
+- '1.88'
 libode:
 - 0.16.5
 macos_machine:
@@ -47,7 +47,6 @@ python:
 - 3.11.* *_cpython
 - 3.12.* *_cpython
 - 3.13.* *_cp313
-- 3.9.* *_cpython
 spdlog:
 - '1.15'
 target_platform:
