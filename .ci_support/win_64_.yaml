@@ -15,7 +15,7 @@ console_bridge:
 cxx_compiler:
 - vs2022
 fmt:
-- '11.2'
+- '12.0'
 ipopt:
 - 3.14.19
 libboost_devel:
@@ -38,7 +38,7 @@ python:
 - 3.12.* *_cpython
 - 3.13.* *_cp313
 spdlog:
-- '1.15'
+- '1.16'
 target_platform:
 - win-64
 tinyxml2:
