@@ -75,7 +75,7 @@ outputs:
     script: bld_py.bat  # [win]
     build:
       skip: true  # [win]
-      skip: true  # [ppc64le and py<311]
+      skip: true  # [(aarch64 or ppc64le) and py<312]
     requirements:
       build:
         - {{ compiler('c') }}
