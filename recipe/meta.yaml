@@ -1,5 +1,5 @@
 {% set name = "dartsim" %}
-{% set version = "6.15.0" %}
+{% set version = "6.16.0" %}
 
 package:
   name: {{ name }}
@@ -7,10 +7,10 @@ package:
 
 source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
-    sha256: bbf954e283f464f6d0a8a5ab43ce92fd49ced357ccdd986c7cb4c29152df8692
+    sha256: a036d943688fdd6fb34f140a1f3e8d44376361a265b734a3702da5dea9f75786
 
 build:
-  number: 14
+  number: 0
 
 outputs:
   - name: dartsim-cpp
@@ -75,7 +75,7 @@ outputs:
     script: bld_py.bat  # [win]
     build:
       skip: true  # [win]
-      skip: true  # [ppc64le and py<311]
+      skip: true  # [(aarch64 or ppc64le) and py<312]
     requirements:
       build:
         - {{ compiler('c') }}
