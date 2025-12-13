@@ -1,5 +1,5 @@
 {% set name = "dartsim" %}
-{% set version = "6.16.0" %}
+{% set version = "6.16.1" %}
 
 package:
   name: {{ name }}
@@ -7,7 +7,7 @@ package:
 
 source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
-    sha256: a036d943688fdd6fb34f140a1f3e8d44376361a265b734a3702da5dea9f75786
+    sha256: aa500b222d9ebc7cf98eae2e6531dd82b4f1fa6ae09be09fb7205795bedd4db5
 
 build:
   number: 0
