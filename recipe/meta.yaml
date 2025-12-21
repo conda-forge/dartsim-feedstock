@@ -11,6 +11,8 @@ source:
     patches:
       # Disable tutorials and examples to save build time
       - patches/disable-tutorials-examples.patch  # [win]
+      # Avoid -A x64 for Ninja/NMake when building dartpy on Windows
+      - patches/fix-setup-msvc-ninja.patch  # [win]
 
 build:
   number: 1
