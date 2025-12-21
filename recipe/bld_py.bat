@@ -1,6 +1,12 @@
 :: Limit parallel jobs to 1 to reduce memory usage
 set CMAKE_BUILD_PARALLEL_LEVEL=1
 
+:: Prefer Ninja to avoid MSBuild default parallelism spikes
+set CMAKE_GENERATOR=Ninja
+
+:: Avoid MSVC release flags that add /Zi and /GL (big memory spikes)
+set "CMAKE_ARGS=%CMAKE_ARGS% -DDART_MSVC_DEFAULT_OPTIONS=ON"
+
 :: Compiler flags to reduce memory usage:
 :: - /Od         => disable optimizations
 :: - /Zm1500     => increase compiler heap (change if needed)
