@@ -1,5 +1,5 @@
 {% set name = "dartsim" %}
-{% set version = "6.15.0" %}
+{% set version = "6.16.2" %}
 
 package:
   name: {{ name }}
@@ -7,13 +7,13 @@ package:
 
 source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
-    sha256: bbf954e283f464f6d0a8a5ab43ce92fd49ced357ccdd986c7cb4c29152df8692
+    sha256: 8a7c389f0c8b2aecbb19ad69774b3a326dd8c708699fc775c5da075a5bf63d9b
     patches:
       # Disable tutorials and examples to save build time
       - patches/disable-tutorials-examples.patch  # [win]
 
 build:
-  number: 5
+  number: 1
 
 outputs:
   - name: dartsim-cpp
@@ -76,6 +76,8 @@ outputs:
   - name: dartpy
     script: build_py.sh  # [unix]
     script: bld_py.bat  # [win]
+    build:
+      skip: true  # [(aarch64 or ppc64le) and py<312]
     requirements:
       build:
         - {{ compiler('c') }}
@@ -161,6 +163,7 @@ about:
 
 extra:
   recipe-maintainers:
+    - jeongseok-meta
     - jslee02
     - traversaro
     - wolfv
