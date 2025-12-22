@@ -1,6 +1,9 @@
 :: Limit parallel jobs to 1 to reduce memory usage
 set CMAKE_BUILD_PARALLEL_LEVEL=1
 
+:: Remove C++ build artifacts from previous output to free disk space
+if exist build rmdir /s /q build
+
 :: Avoid MSVC release flags that add /Zi and /GL (big memory spikes)
 set "CMAKE_ARGS=%CMAKE_ARGS% -DDART_MSVC_DEFAULT_OPTIONS=ON"
 

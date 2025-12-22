@@ -31,3 +31,6 @@ if errorlevel 1 exit 1
 
 ctest --output-on-failure
 if errorlevel 1 exit 1
+
+cd ..
+if exist build rmdir /s /q build
