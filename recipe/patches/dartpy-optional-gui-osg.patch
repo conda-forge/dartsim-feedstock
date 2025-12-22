@@ -1,0 +1,29 @@
+diff --git a/python/dartpy/CMakeLists.txt b/python/dartpy/CMakeLists.txt
+index 860f219505..71f92318c6 100644
+--- a/python/dartpy/CMakeLists.txt
++++ b/python/dartpy/CMakeLists.txt
+@@ -18,6 +18,10 @@ if(NOT IS_ABSOLUTE ${PYTHON_SITE_PACKAGES})
+ endif()
+ set(PYTHON_SITE_PACKAGES ${PYTHON_SITE_PACKAGES} PARENT_SCOPE)
+ 
+ file(GLOB_RECURSE dartpy_headers "*.h" "*.hpp")
+ file(GLOB_RECURSE dartpy_sources "*.cpp")
++if(NOT DART_BUILD_GUI_OSG)
++  list(FILTER dartpy_sources EXCLUDE REGEX "/gui/osg/")
++endif()
+ 
+ # Python binding module name
+ set(pybind_module dartpy)
+@@ -43,12 +47,14 @@ target_include_directories(${pybind_module}
+ )
+ 
+ set(dartpy_libraries
+   dart
+   dart-utils
+   dart-utils-urdf
+   dart-gui
+-  dart-gui-osg
+ )
++if(DART_BUILD_GUI_OSG)
++  list(APPEND dartpy_libraries dart-gui-osg)
++endif()
