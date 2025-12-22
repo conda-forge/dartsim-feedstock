@@ -1,11 +1,14 @@
-:: Limit parallel jobs to 1 to reduce memory usage
-set CMAKE_BUILD_PARALLEL_LEVEL=1
+:: Keep some parallelism to reduce wall time while avoiding OOM
+set CMAKE_BUILD_PARALLEL_LEVEL=2
 
 :: Remove C++ build artifacts from previous output to free disk space
 if exist build rmdir /s /q build
 
 :: Use a build temp directory on the system drive to avoid D: disk exhaustion
 set "DARTPY_BUILD_TEMP=%USERPROFILE%\\AppData\\Local\\Temp\\dartpy_build"
+
+:: Use Ninja to speed up MSVC builds
+set "CMAKE_GENERATOR=Ninja"
 
 :: Avoid MSVC release flags that add /Zi and /GL (big memory spikes)
 set "CMAKE_ARGS=%CMAKE_ARGS% -DDART_MSVC_DEFAULT_OPTIONS=ON"
