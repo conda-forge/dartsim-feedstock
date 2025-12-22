@@ -142,7 +142,7 @@ outputs:
     requirements:
       run:
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
-        - {{ pin_subpackage('dartpy', exact=True) }}
+        - {{ pin_subpackage('dartpy', exact=True) }}  # [not ((aarch64 or ppc64le) and py<312)]
         - python
         - numpy
     test:
