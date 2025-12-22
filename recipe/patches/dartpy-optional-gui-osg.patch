@@ -1,5 +1,4 @@
 diff --git a/python/dartpy/CMakeLists.txt b/python/dartpy/CMakeLists.txt
-index 860f219505..71f92318c6 100644
 --- a/python/dartpy/CMakeLists.txt
 +++ b/python/dartpy/CMakeLists.txt
 @@ -19,6 +19,9 @@
@@ -24,3 +23,32 @@ index 860f219505..71f92318c6 100644
  foreach(dartpy_library ${dartpy_libraries})
    if(NOT TARGET ${dartpy_library})
      message(FATAL_ERROR "Cannot find the library ${dartpy_library}. Please check the configuration of DART.")
+@@ -70,6 +75,7 @@
+ 
+ target_compile_definitions(${pybind_module}
+   PRIVATE DARTPY_VERSION_INFO="${DARTPY_VERSION_INFO}"
++  PRIVATE DART_BUILD_GUI_OSG=$<BOOL:${DART_BUILD_GUI_OSG}>
+ )
+ 
+ # Remove debug postfix for dartpy
+diff --git a/python/dartpy/gui/module.cpp b/python/dartpy/gui/module.cpp
+--- a/python/dartpy/gui/module.cpp
++++ b/python/dartpy/gui/module.cpp
+@@ -37,13 +37,17 @@
+ namespace dart {
+ namespace python {
+ 
++#if DART_BUILD_GUI_OSG
+ void dart_gui_osg(py::module& m);
++#endif
+ 
+ void dart_gui(py::module& m)
+ {
+   auto sm = m.def_submodule("gui");
+ 
++#if DART_BUILD_GUI_OSG
+   dart_gui_osg(sm);
++#endif
+ }
+ 
+ } // namespace python
