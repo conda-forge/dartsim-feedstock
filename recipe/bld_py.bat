@@ -2,8 +2,7 @@
 set CMAKE_BUILD_PARALLEL_LEVEL=1
 
 :: Avoid MSVC release flags that add /Zi and /GL (big memory spikes)
-:: Disable OSG GUI bindings to reduce disk usage during compilation
-set "CMAKE_ARGS=%CMAKE_ARGS% -DDART_MSVC_DEFAULT_OPTIONS=ON -DDART_BUILD_GUI_OSG=OFF"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DDART_MSVC_DEFAULT_OPTIONS=ON"
 
 :: Compiler flags to reduce memory usage:
 :: - /Od         => disable optimizations

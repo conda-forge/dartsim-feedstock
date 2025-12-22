@@ -13,8 +13,6 @@ source:
       - patches/disable-tutorials-examples.patch  # [win]
       # Avoid -A x64 for Ninja/NMake when building dartpy on Windows
       - patches/fix-setup-msvc-ninja.patch  # [win]
-      # Allow disabling OSG bindings for dartpy to reduce Windows build footprint
-      - patches/dartpy-optional-gui-osg.patch  # [win]
 
 build:
   number: 1
