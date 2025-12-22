@@ -4,6 +4,9 @@ set CMAKE_BUILD_PARALLEL_LEVEL=1
 :: Remove C++ build artifacts from previous output to free disk space
 if exist build rmdir /s /q build
 
+:: Use a build temp directory on the system drive to avoid D: disk exhaustion
+set "DARTPY_BUILD_TEMP=%USERPROFILE%\\AppData\\Local\\Temp\\dartpy_build"
+
 :: Avoid MSVC release flags that add /Zi and /GL (big memory spikes)
 set "CMAKE_ARGS=%CMAKE_ARGS% -DDART_MSVC_DEFAULT_OPTIONS=ON"
 

@@ -1,0 +1,18 @@
+diff --git a/setup.py b/setup.py
+index 0a1a4f2f4b..5b7dca6c63 100644
+--- a/setup.py
++++ b/setup.py
+@@ -155,7 +155,12 @@ class CMakeBuild(build_ext):
+         if sys.platform.startswith("msvc"):
+             cmake_args += ["-DDART_USE_SYSTEM_IMGUI=ON"]
+         else:
+             cmake_args += ["-DDART_USE_SYSTEM_IMGUI=OFF"]
+ 
+-        build_temp = Path(self.build_temp) / ext.name
++        build_temp_root = os.environ.get("DARTPY_BUILD_TEMP")
++        if build_temp_root:
++            build_temp = Path(build_temp_root) / ext.name
++        else:
++            build_temp = Path(self.build_temp) / ext.name
+         if not build_temp.exists():
+             build_temp.mkdir(parents=True)

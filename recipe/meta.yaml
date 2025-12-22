@@ -13,6 +13,8 @@ source:
       - patches/disable-tutorials-examples.patch  # [win]
       # Avoid -A x64 for Ninja/NMake when building dartpy on Windows
       - patches/fix-setup-msvc-ninja.patch  # [win]
+      # Allow relocating dartpy build temp dir to avoid Windows disk exhaustion
+      - patches/dartpy-build-temp-env.patch  # [win]
 
 build:
   number: 1
