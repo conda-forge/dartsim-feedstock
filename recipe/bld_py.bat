@@ -12,11 +12,11 @@ set "CMAKE_ARGS=%CMAKE_ARGS% -DDART_MSVC_DEFAULT_OPTIONS=ON"
 
 :: Compiler flags to reduce memory usage:
 :: - /Od         => disable optimizations
-:: - /Zm1500     => increase compiler heap (change if needed)
+:: - /Zm2000     => increase compiler heap (change if needed)
 :: - /bigobj     => allow larger .obj files
 :: - (NO /Z7)    => no debug symbols
 :: - (NO /GL)    => ensure LTCG is off
-set CXXFLAGS=%CXXFLAGS% /Od /Zm1500 /bigobj /MP2
+set CXXFLAGS=%CXXFLAGS% /Od /Zm2000 /bigobj
 
 :: Install the Python package (triggers CMake build via pip)
 python -m pip install . -vv
