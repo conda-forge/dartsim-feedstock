@@ -1,5 +1,7 @@
 :: Keep some parallelism to reduce wall time while avoiding OOM
 set CMAKE_BUILD_PARALLEL_LEVEL=2
+if "%PY_VER%"=="3.13" set CMAKE_BUILD_PARALLEL_LEVEL=1
+if "%PY_VER%"=="3.14" set CMAKE_BUILD_PARALLEL_LEVEL=1
 
 :: Remove C++ build artifacts from previous output to free disk space
 if exist build rmdir /s /q build
@@ -16,6 +18,7 @@ set "CMAKE_ARGS=%CMAKE_ARGS% -DDART_MSVC_DEFAULT_OPTIONS=ON"
 :: - /bigobj     => allow larger .obj files
 :: - (NO /Z7)    => no debug symbols
 :: - (NO /GL)    => ensure LTCG is off
+set "CL=%CL% /Od /Zm2000 /bigobj"
 set CXXFLAGS=%CXXFLAGS% /Od /Zm2000 /bigobj
 
 :: Install the Python package (triggers CMake build via pip)
