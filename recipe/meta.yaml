@@ -8,15 +8,23 @@ package:
 source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
     sha256: 8a7c389f0c8b2aecbb19ad69774b3a326dd8c708699fc775c5da075a5bf63d9b
+    patches:
+      # Disable tutorials and examples to save build time
+      - patches/disable-tutorials-examples.patch  # [win]
+      # Avoid -A x64 for Ninja/NMake when building dartpy on Windows
+      - patches/fix-setup-msvc-ninja.patch  # [win]
+      # Allow relocating dartpy build temp dir to avoid Windows disk exhaustion
+      - patches/dartpy-build-temp-env.patch  # [win]
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: dartsim-cpp
     script: build_cpp.sh  # [unix]
     script: bld_cpp.bat  # [win]
     build:
+      skip: true  # [win and (py<312 or py>312)]
       run_exports:
         - {{ pin_subpackage('dartsim-cpp', max_pin='x.x') }}
       ignore_run_exports:
@@ -74,8 +82,7 @@ outputs:
     script: build_py.sh  # [unix]
     script: bld_py.bat  # [win]
     build:
-      skip: true  # [win]
-      skip: true  # [(aarch64 or ppc64le) and py<312]
+      skip: true  # [((aarch64 or ppc64le) and py<312) or (win and (py<312 or py>312))]
     requirements:
       build:
         - {{ compiler('c') }}
@@ -131,17 +138,18 @@ outputs:
 
   - name: dartsim
     build:
+      skip: true  # [win and (py<312 or py>312)]
       run_exports:
         - {{ pin_subpackage('dartsim-cpp', max_pin='x.x') }}
     requirements:
       run:
         - {{ pin_subpackage('dartsim-cpp', exact=True) }}
-        - {{ pin_subpackage('dartpy', exact=True) }}  # [not win]
+        - {{ pin_subpackage('dartpy', exact=True) }}  # [not ((aarch64 or ppc64le) and py<312)]
         - python
         - numpy
     test:
       imports:
-        - dartpy  # [not win]
+        - dartpy  # [not ((aarch64 or ppc64le) and py<312)]
       commands:
         - test -f $PREFIX/lib/libdart.dylib  # [osx]
         - test -f $PREFIX/lib/libdart.so  # [linux]
