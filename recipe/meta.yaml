@@ -24,7 +24,7 @@ outputs:
     script: build_cpp.sh  # [unix]
     script: bld_cpp.bat  # [win]
     build:
-      skip: true  # [win and (py<312 or py>312)]
+      skip: true  # [win and (py<310 or py>=314)]
       run_exports:
         - {{ pin_subpackage('dartsim-cpp', max_pin='x.x') }}
       ignore_run_exports:
@@ -82,7 +82,7 @@ outputs:
     script: build_py.sh  # [unix]
     script: bld_py.bat  # [win]
     build:
-      skip: true  # [((aarch64 or ppc64le) and py<312) or (win and (py<312 or py>312))]
+      skip: true  # [((aarch64 or ppc64le) and py<312) or (win and (py<310 or py>=314))]
     requirements:
       build:
         - {{ compiler('c') }}
@@ -138,7 +138,7 @@ outputs:
 
   - name: dartsim
     build:
-      skip: true  # [win and (py<312 or py>312)]
+      skip: true  # [win and (py<310 or py>=314)]
       run_exports:
         - {{ pin_subpackage('dartsim-cpp', max_pin='x.x') }}
     requirements:
