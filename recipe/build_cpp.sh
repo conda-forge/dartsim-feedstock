@@ -3,7 +3,7 @@
 mkdir build && cd build
 
 if [[ ${target_platform} == "linux-ppc64le" ]]; then
-  NUM_PARALLEL=-j2
+  NUM_PARALLEL=-j1
 else
   if [[ ${CPU_COUNT} -gt 8 ]]; then
     NUM_PARALLEL=-j8
