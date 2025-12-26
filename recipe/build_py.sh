@@ -15,7 +15,15 @@ fi
 
 # Set CMAKE_BUILD_PARALLEL_LEVEL to control the parallel build level
 if [[ ${target_platform} == "linux-ppc64le" ]]; then
-  export CMAKE_BUILD_PARALLEL_LEVEL=1
+  export CMAKE_BUILD_PARALLEL_LEVEL=2
+elif [[ ${target_platform} == linux-* ]]; then
+  if [[ ${CPU_COUNT} -gt 8 ]]; then
+    export CMAKE_BUILD_PARALLEL_LEVEL=8
+  elif [[ ${CPU_COUNT} -lt 4 ]]; then
+    export CMAKE_BUILD_PARALLEL_LEVEL=4
+  else
+    export CMAKE_BUILD_PARALLEL_LEVEL=${CPU_COUNT}
+  fi
 else
   if [[ ${CPU_COUNT} -gt 8 ]]; then
     export CMAKE_BUILD_PARALLEL_LEVEL=8
