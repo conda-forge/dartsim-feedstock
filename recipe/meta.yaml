@@ -17,7 +17,7 @@ source:
       - patches/dartpy-build-temp-env.patch  # [win]
 
 build:
-  number: 4
+  number: 2
 
 outputs:
   - name: dartsim-cpp
