@@ -3,7 +3,17 @@
 mkdir build && cd build
 
 if [[ ${target_platform} == "linux-ppc64le" ]]; then
-  NUM_PARALLEL=-j1
+  NUM_PARALLEL=-j2
+elif [[ ${target_platform} == "linux-aarch64" ]]; then
+  NUM_PARALLEL=-j2
+elif [[ ${target_platform} == linux-* ]]; then
+  if [[ ${CPU_COUNT} -gt 8 ]]; then
+    NUM_PARALLEL=-j8
+  elif [[ ${CPU_COUNT} -lt 4 ]]; then
+    NUM_PARALLEL=-j4
+  else
+    NUM_PARALLEL=-j${CPU_COUNT}
+  fi
 else
   if [[ ${CPU_COUNT} -gt 8 ]]; then
     NUM_PARALLEL=-j8
