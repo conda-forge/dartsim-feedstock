@@ -16,6 +16,7 @@ set "CMAKE_ARGS=%CMAKE_ARGS% -DDART_MSVC_DEFAULT_OPTIONS=ON"
 :: - /bigobj     => allow larger .obj files
 :: - (NO /Z7)    => no debug symbols
 :: - (NO /GL)    => ensure LTCG is off
+set "CL=%CL% /Od /Zm2000 /bigobj"
 set CXXFLAGS=%CXXFLAGS% /Od /Zm2000 /bigobj
 
 :: Install the Python package (triggers CMake build via pip)
