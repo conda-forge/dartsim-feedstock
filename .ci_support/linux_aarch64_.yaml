@@ -1,5 +1,5 @@
 assimp:
-- 5.4.3
+- 6.0.3
 bullet_cpp:
 - '3.25'
 c_compiler:
