@@ -3,7 +3,7 @@ MACOSX_DEPLOYMENT_TARGET:
 MACOSX_SDK_VERSION:
 - '10.13'
 assimp:
-- 5.4.3
+- 6.0.3
 bullet_cpp:
 - '3.25'
 c_compiler:
