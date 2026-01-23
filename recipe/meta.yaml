@@ -1,5 +1,5 @@
 {% set name = "dartsim" %}
-{% set version = "6.16.4" %}
+{% set version = "6.16.5" %}
 
 package:
   name: {{ name }}
@@ -7,7 +7,7 @@ package:
 
 source:
   - url: https://github.com/dartsim/dart/archive/v{{ version }}.tar.gz
-    sha256: d7af169aca40f63e8fae0541421bdbf48a36bcc5e236414d0d3ae2bf4eada489
+    sha256: ea1709540131718a1af8138a89687e9cb2c3d21304c4d773ae6d70815e843cf6
     patches:
       # Disable tutorials and examples to save build time
       - patches/disable-tutorials-examples.patch  # [win]
@@ -17,7 +17,7 @@ source:
       - patches/dartpy-build-temp-env.patch  # [win]
 
 build:
-  number: 1
+  number: 0
 
 outputs:
   - name: dartsim-cpp
