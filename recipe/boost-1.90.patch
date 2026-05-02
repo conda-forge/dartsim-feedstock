@@ -1,0 +1,13 @@
+diff --git a/cmake/DARTFindBoost.cmake b/cmake/DARTFindBoost.cmake
+index 1784e8d5..fd382f81 100644
+--- a/cmake/DARTFindBoost.cmake
++++ b/cmake/DARTFindBoost.cmake
+@@ -12,7 +12,7 @@ endif()
+ add_definitions(-DBOOST_TEST_DYN_LINK)
+ set(Boost_USE_MULTITHREADED ON)
+ set(Boost_USE_STATIC_RUNTIME OFF)
+-set(BOOST_REQUIRED_COMPONENTS system filesystem)
++set(BOOST_REQUIRED_COMPONENTS filesystem)
+ if(DART_VERBOSE)
+   find_package(Boost ${DART_MIN_BOOST_VERSION} REQUIRED COMPONENTS ${BOOST_REQUIRED_COMPONENTS})
+ else()
