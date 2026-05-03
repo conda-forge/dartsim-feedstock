@@ -1,15 +1,11 @@
 assimp:
-- 6.0.3
+- '6'
 bullet_cpp:
 - '3.25'
 c_compiler:
-- gcc
-c_compiler_version:
-- '14'
+- vs2022
 c_stdlib:
-- sysroot
-c_stdlib_version:
-- '2.17'
+- vs
 channel_sources:
 - conda-forge
 channel_targets:
@@ -17,11 +13,7 @@ channel_targets:
 console_bridge:
 - '1.0'
 cxx_compiler:
-- gxx
-cxx_compiler_version:
-- '14'
-docker_image:
-- quay.io/condaforge/linux-anvil-x86_64:alma9
+- vs2022
 fmt:
 - '12.1'
 ipopt:
@@ -34,22 +26,19 @@ nlopt:
 - '2.10'
 numpy:
 - '2'
+perl:
+- 5.32.1
 pin_run_as_build:
   python:
     min_pin: x.x
     max_pin: x.x
 python:
-- 3.12.* *_cpython
 - 3.13.* *_cp313
-- 3.14.* *_cp314
 spdlog:
 - '1.17'
 target_platform:
-- linux-ppc64le
+- win-64
 tinyxml2:
 - '11.0'
 urdfdom:
 - '5.1'
-zip_keys:
-- - c_compiler_version
-  - cxx_compiler_version
