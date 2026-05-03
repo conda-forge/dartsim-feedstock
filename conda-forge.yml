@@ -1,3 +1,5 @@
+conda_build_tool: rattler-build
+conda_install_tool: pixi
 azure:
   free_disk_space: true
 bot:
