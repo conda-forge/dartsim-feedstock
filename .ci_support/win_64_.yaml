@@ -19,7 +19,7 @@ fmt:
 ipopt:
 - 3.14.19
 libboost_devel:
-- '1.88'
+- '1.90'
 libode:
 - 0.16.6
 nlopt:

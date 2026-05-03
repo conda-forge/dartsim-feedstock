@@ -17,7 +17,7 @@ source:
       - patches/dartpy-build-temp-env.patch  # [win]
 
 build:
-  number: 2
+  number: 3
 
 outputs:
   - name: dartsim-cpp
@@ -49,7 +49,7 @@ outputs:
         - fcl
         - fmt
         - freeglut  # [not osx]
-        - imgui
+        - imgui <1.92
         - ipopt
         - libboost-devel
         - libgl-devel  # [linux]
@@ -106,7 +106,7 @@ outputs:
         - fcl
         - fmt
         - freeglut  # [not osx]
-        - imgui
+        - imgui <1.92
         - ipopt
         - libboost-devel
         - libgl-devel  # [linux]
