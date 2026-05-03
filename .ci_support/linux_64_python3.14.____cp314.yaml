@@ -1,5 +1,5 @@
 assimp:
-- 6.0.3
+- '6'
 bullet_cpp:
 - '3.25'
 c_compiler:
@@ -39,13 +39,11 @@ pin_run_as_build:
     min_pin: x.x
     max_pin: x.x
 python:
-- 3.12.* *_cpython
-- 3.13.* *_cp313
 - 3.14.* *_cp314
 spdlog:
 - '1.17'
 target_platform:
-- linux-aarch64
+- linux-64
 tinyxml2:
 - '11.0'
 urdfdom:

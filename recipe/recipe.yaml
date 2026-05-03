@@ -1,0 +1,226 @@
+schema_version: 1
+
+context:
+  name: dartsim
+  version: "6.16.7"
+  build_number: 3
+
+recipe:
+  name: ${{ name|lower }}-split
+  version: ${{ version }}
+
+source:
+  - url: https://github.com/dartsim/dart/archive/v${{ version }}.tar.gz
+    sha256: 7c8c76126db31046c1d5e40267645e3a78199c1b88ae4f6346b18b97eee000dd
+    patches:
+      # Disable tutorials and examples to save build time
+      - if: win
+        then: patches/disable-tutorials-examples.patch
+      # Avoid -A x64 for Ninja/NMake when building dartpy on Windows
+      - if: win
+        then: patches/fix-setup-msvc-ninja.patch
+      # Allow relocating dartpy build temp dir to avoid Windows disk exhaustion
+      - if: win
+        then: patches/dartpy-build-temp-env.patch
+
+build:
+  number: ${{ build_number }}
+
+outputs:
+  - package:
+      name: dartsim-cpp
+    build:
+      script:
+        file: ${{ "bld_cpp.bat" if win else "build_cpp.sh" }}
+      skip:
+        - (linux and match(python, "<3.12")) or (win and (match(python, "<3.12") or match(python, ">3.14")))
+    requirements:
+      build:
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+        - ${{ stdlib('c') }}
+        - cmake
+        - doxygen
+        - if: not win
+          then: make
+        - if: win
+          then: ninja
+        - if: win
+          then: perl
+        - pkg-config
+      host:
+        - assimp
+        - bullet-cpp
+        - console_bridge
+        - eigen >=3.3.4,<5
+        - fcl
+        - fmt
+        - if: not osx
+          then: freeglut
+        - imgui <1.92
+        - ipopt
+        - libboost-devel
+        - if: linux
+          then: libgl-devel
+        - if: linux
+          then: libglu
+        - libode
+        - nlopt
+        - octomap
+        - openscenegraph
+        - pagmo
+        - pagmo-devel
+        - tinyxml2
+        - urdfdom
+        - spdlog
+      run:
+        - eigen >=3.3.4,<5
+        - octomap
+      run_exports:
+        - ${{ pin_subpackage('dartsim-cpp', upper_bound='x.x') }}
+      ignore_run_exports:
+        from_package:
+          - console_bridge
+          - spdlog
+    tests:
+      - script:
+          - if: osx
+            then: test -f $PREFIX/lib/libdart.dylib
+          - if: linux
+            then: test -f $PREFIX/lib/libdart.so
+          - if: not win
+            then: test -f $PREFIX/share/dart/cmake/dart_collision-odeTargets.cmake
+          - if: not win
+            then: test -f $PREFIX/share/dart/cmake/dart_collision-bulletTargets.cmake
+          - if: win
+            then: if not exist %LIBRARY_LIB%\\dart.lib exit 1
+          - if: win
+            then: if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-odeTargets.cmake exit 1
+          - if: win
+            then: if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-bulletTargets.cmake exit 1
+      - downstream: gz-physics8
+
+  - package:
+      name: dartpy
+    build:
+      script:
+        file: ${{ "bld_py.bat" if win else "build_py.sh" }}
+      skip:
+        - (linux and match(python, "<3.12")) or (win and (match(python, "<3.12") or match(python, ">3.14")))
+    requirements:
+      build:
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+        - ${{ stdlib('c') }}
+        - cmake
+        - doxygen
+        - if: not win
+          then: make
+        - if: win
+          then: ninja
+        - if: win
+          then: perl
+        - pkg-config
+        - if: build_platform != target_platform
+          then:
+            - cross-python_${{ target_platform }}
+            - numpy
+            - python
+      host:
+        # C++ deps
+        - assimp
+        - bullet-cpp
+        - console_bridge
+        - eigen >=3.3.4,<5
+        - fcl
+        - fmt
+        - if: not osx
+          then: freeglut
+        - imgui <1.92
+        - ipopt
+        - libboost-devel
+        - if: linux
+          then: libgl-devel
+        - if: linux
+          then: libglu
+        - libode
+        - nlopt
+        - octomap
+        - openscenegraph
+        - pagmo
+        - pagmo-devel
+        - tinyxml2
+        - urdfdom
+        - spdlog
+        - if: linux
+          then: xorg-libxfixes
+        # Python deps
+        - numpy
+        - pip
+        - python
+        - requests
+        - setuptools
+      run:
+        - if: linux
+          then: libgl
+        - if: linux
+          then: libglu
+        - numpy
+        - python
+    tests:
+      - python:
+          imports:
+            - dartpy
+          pip_check: false
+
+  - package:
+      name: dartsim
+    build:
+      skip:
+        - (linux and match(python, "<3.12")) or (win and (match(python, "<3.12") or match(python, ">3.14")))
+    requirements:
+      run:
+        - ${{ pin_subpackage('dartsim-cpp', exact=True) }}
+        - if: not ((aarch64 or ppc64le) and match(python, "<3.12"))
+          then: ${{ pin_subpackage('dartpy', exact=True) }}
+        - python
+        - numpy
+      run_exports:
+        - ${{ pin_subpackage('dartsim-cpp', upper_bound='x.x') }}
+    tests:
+      - python:
+          imports:
+            - if: not ((aarch64 or ppc64le) and match(python, "<3.12"))
+              then: dartpy
+          pip_check: false
+      - script:
+          - if: osx
+            then: test -f $PREFIX/lib/libdart.dylib
+          - if: linux
+            then: test -f $PREFIX/lib/libdart.so
+          - if: not win
+            then: test -f $PREFIX/share/dart/cmake/dart_collision-odeTargets.cmake
+          - if: not win
+            then: test -f $PREFIX/share/dart/cmake/dart_collision-bulletTargets.cmake
+          - if: win
+            then: if not exist %LIBRARY_LIB%\\dart.lib exit 1
+          - if: win
+            then: if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-odeTargets.cmake exit 1
+          - if: win
+            then: if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-bulletTargets.cmake exit 1
+
+about:
+  homepage: http://dartsim.github.io/
+  license: BSD-2-Clause
+  license_file: LICENSE
+  summary: The DART (Dynamic Animation and Robotics Toolkit) library provides data structures and algorithms for kinematic and dynamic applications in robotics and computer animation.
+  description: The DART (Dynamic Animation and Robotics Toolkit) library provides data structures and algorithms for kinematic and dynamic applications in robotics and computer animation.
+  repository: https://github.com/dartsim/dart
+
+extra:
+  feedstock-name: dartsim
+  recipe-maintainers:
+    - jeongseok-meta
+    - jslee02
+    - traversaro
+    - wolfv
