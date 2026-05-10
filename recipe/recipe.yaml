@@ -39,10 +39,7 @@ outputs:
         - ${{ stdlib('c') }}
         - cmake
         - doxygen
-        - if: not win
-          then: make
-        - if: win
-          then: ninja
+        - ninja
         - if: win
           then: perl
         - pkg-config
@@ -195,8 +192,7 @@ outputs:
     requirements:
       run:
         - ${{ pin_subpackage('dartsim-cpp', exact=True) }}
-        - if: not ((aarch64 or ppc64le) and match(python, "<3.12"))
-          then: ${{ pin_subpackage('dartpy', exact=True) }}
+        - ${{ pin_subpackage('dartpy', exact=True) }}
         - python
         - numpy
       run_exports:
@@ -204,8 +200,7 @@ outputs:
     tests:
       - python:
           imports:
-            - if: not ((aarch64 or ppc64le) and match(python, "<3.12"))
-              then: dartpy
+            - dartpy
           pip_check: false
       - script:
           - if: osx
