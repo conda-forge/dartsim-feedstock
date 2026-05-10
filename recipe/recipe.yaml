@@ -3,7 +3,7 @@ schema_version: 1
 context:
   name: dartsim
   version: "6.16.7"
-  build_number: 3
+  build_number: 4
 
 recipe:
   name: ${{ name|lower }}-split
@@ -76,6 +76,7 @@ outputs:
       run:
         - eigen >=3.3.4,<5
         - octomap
+        - spdlog
       run_exports:
         - ${{ pin_subpackage('dartsim-cpp', upper_bound='x.x') }}
       ignore_run_exports:
@@ -98,6 +99,23 @@ outputs:
             then: if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-odeTargets.cmake exit 1
           - if: win
             then: if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-bulletTargets.cmake exit 1
+      - script:
+          - cmake -S tests/cmake-consumer -B cmake-consumer-build -G Ninja
+          - cmake --build cmake-consumer-build
+          - if: not win
+            then: ./cmake-consumer-build/dartsim_consumer_smoke
+          - if: win
+            then: cmake-consumer-build\\dartsim_consumer_smoke.exe
+        files:
+          recipe:
+            - tests/cmake-consumer/
+        requirements:
+          run:
+            - ${{ compiler('c') }}
+            - ${{ compiler('cxx') }}
+            - ${{ stdlib('c') }}
+            - cmake
+            - ninja
       - downstream: gz-physics8
 
   - package:
