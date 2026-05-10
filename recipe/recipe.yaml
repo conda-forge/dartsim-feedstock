@@ -32,8 +32,6 @@ outputs:
     build:
       script:
         file: ${{ "bld_cpp.bat" if win else "build_cpp.sh" }}
-      skip:
-        - (linux and match(python, "<3.12")) or (win and (match(python, "<3.12") or match(python, ">3.14")))
     requirements:
       build:
         - ${{ compiler('c') }}
