@@ -35,7 +35,8 @@ else
 fi
 
 # Install the Python package
-export CMAKE_ARGS="${CMAKE_ARGS:-} -DDART_USE_SYSTEM_PYBIND11=ON"
+export CMAKE_GENERATOR="${CMAKE_GENERATOR:-Ninja}"
+export CMAKE_ARGS="${CMAKE_ARGS:-} -DDART_USE_SYSTEM_PYBIND11=ON -DBUILD_TESTING=OFF"
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-0}" == "1" ]]; then
   python -m pip install . -vv
 else

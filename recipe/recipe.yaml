@@ -130,10 +130,7 @@ outputs:
         - ${{ stdlib('c') }}
         - cmake
         - doxygen
-        - if: not win
-          then: make
-        - if: win
-          then: ninja
+        - ninja
         - if: win
           then: perl
         - pkg-config
