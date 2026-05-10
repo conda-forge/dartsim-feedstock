@@ -35,4 +35,5 @@ else
 fi
 
 # Install the Python package
-python -m pip install . -vv
+export CMAKE_ARGS="${CMAKE_ARGS:-} -DDART_USE_SYSTEM_PYBIND11=ON"
+python -m pip install . -vv --no-deps --no-build-isolation

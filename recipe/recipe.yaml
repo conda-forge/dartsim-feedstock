@@ -175,9 +175,11 @@ outputs:
         # Python deps
         - numpy
         - pip
+        - pybind11 >=2.13.6,<3
         - python
         - requests
         - setuptools
+        - wheel
       run:
         - if: linux
           then: libgl

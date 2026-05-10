@@ -8,7 +8,8 @@ if exist build rmdir /s /q build
 set "DARTPY_BUILD_TEMP=%USERPROFILE%\\AppData\\Local\\Temp\\dartpy_build"
 
 :: Avoid MSVC release flags that add /Zi and /GL (big memory spikes)
-set "CMAKE_ARGS=%CMAKE_ARGS% -DDART_MSVC_DEFAULT_OPTIONS=ON"
+:: Use conda-forge's pybind11 package instead of CMake FetchContent.
+set "CMAKE_ARGS=%CMAKE_ARGS% -DDART_MSVC_DEFAULT_OPTIONS=ON -DDART_USE_SYSTEM_PYBIND11=ON"
 
 :: Compiler flags to reduce memory usage:
 :: - /Od         => disable optimizations
@@ -20,5 +21,5 @@ set "CL=%CL% /Od /Zm2000 /bigobj"
 set CXXFLAGS=%CXXFLAGS% /Od /Zm2000 /bigobj
 
 :: Install the Python package (triggers CMake build via pip)
-python -m pip install . -vv
+python -m pip install . -vv --no-deps --no-build-isolation
 if errorlevel 1 exit 1
