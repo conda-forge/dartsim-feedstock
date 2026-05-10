@@ -36,4 +36,8 @@ fi
 
 # Install the Python package
 export CMAKE_ARGS="${CMAKE_ARGS:-} -DDART_USE_SYSTEM_PYBIND11=ON"
-python -m pip install . -vv --no-deps --no-build-isolation
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-0}" == "1" ]]; then
+  python -m pip install . -vv
+else
+  python -m pip install . -vv --no-deps --no-build-isolation
+fi
