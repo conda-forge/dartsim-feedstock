@@ -35,4 +35,10 @@ else
 fi
 
 # Install the Python package
-python -m pip install . -vv
+export CMAKE_GENERATOR=Ninja
+export CMAKE_ARGS="${CMAKE_ARGS:-} -DDART_USE_SYSTEM_PYBIND11=ON -DPYBIND11_FINDPYTHON=OFF -DBUILD_TESTING=OFF"
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-0}" == "1" ]]; then
+  python -m pip install . -vv
+else
+  python -m pip install . -vv --no-deps --no-build-isolation
+fi
