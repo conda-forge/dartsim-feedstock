@@ -3,7 +3,7 @@ MACOSX_DEPLOYMENT_TARGET:
 MACOSX_SDK_VERSION:
 - '11.0'
 assimp:
-- 6.0.3
+- '6'
 bullet_cpp:
 - '3.25'
 c_compiler:
@@ -39,7 +39,7 @@ target_platform:
 tinyxml2:
 - '11.0'
 urdfdom:
-- '5.1'
+- '6'
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version

@@ -17,7 +17,7 @@ source:
 
 build:
   skip: true  # [win]
-  number: 29
+  number: 30
   run_exports:
     - {{ pin_subpackage(name, max_pin='x.x') }}
 
