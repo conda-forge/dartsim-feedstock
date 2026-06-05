@@ -45,4 +45,4 @@ target_platform:
 tinyxml2:
 - '11.0'
 urdfdom:
-- '5.1'
+- '6'

@@ -3,7 +3,7 @@ schema_version: 1
 context:
   name: dartsim
   version: "6.17.0"
-  build_number: 0
+  build_number: 1
 
 recipe:
   name: ${{ name|lower }}-split
