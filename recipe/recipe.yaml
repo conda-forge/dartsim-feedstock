@@ -2,8 +2,8 @@ schema_version: 1
 
 context:
   name: dartsim
-  version: "6.17.0"
-  build_number: 1
+  version: "6.17.1"
+  build_number: 0
 
 recipe:
   name: ${{ name|lower }}-split
@@ -11,7 +11,7 @@ recipe:
 
 source:
   - url: https://github.com/dartsim/dart/archive/v${{ version }}.tar.gz
-    sha256: a5ab3e53dcaccc7bcc297e0ed0b31e348e26719f6c373751f6ee059d251b80a0
+    sha256: 037b9d7d291014c105c30cea175c9fef7ef8e1e540aa33862b31c76e528f856f
     patches:
       # Disable tutorials and examples to save build time
       - if: win
