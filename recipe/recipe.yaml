@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   name: dartsim
-  version: "6.17.1"
+  version: "6.18.0"
   build_number: 0
 
 recipe:
@@ -11,7 +11,7 @@ recipe:
 
 source:
   - url: https://github.com/dartsim/dart/archive/v${{ version }}.tar.gz
-    sha256: 037b9d7d291014c105c30cea175c9fef7ef8e1e540aa33862b31c76e528f856f
+    sha256: 7439168bf2aec62d5c76cdfa58ed1327e65ce5f5407e912ddcc1557276695e02
     patches:
       # Disable tutorials and examples to save build time
       - if: win
