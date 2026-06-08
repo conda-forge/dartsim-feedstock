@@ -35,7 +35,7 @@ libode:
 macos_machine:
 - arm64-apple-darwin20.0.0
 nlopt:
-- '2.10'
+- '2.11'
 numpy:
 - '2'
 pin_run_as_build:
