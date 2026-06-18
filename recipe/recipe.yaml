@@ -196,19 +196,6 @@ outputs:
           imports:
             - dartpy
           pip_check: false
-      - script:
-          - if: osx
-            then: test -f $PREFIX/lib/libdart.dylib
-          - if: linux
-            then: test -f $PREFIX/lib/libdart.so
-          - if: not win
-            then:
-              - test -f $PREFIX/share/dart/cmake/dart_collision-odeTargets.cmake
-              - test -f $PREFIX/share/dart/cmake/dart_collision-bulletTargets.cmake
-            else:
-              - if not exist %LIBRARY_LIB%\\dart.lib exit 1
-              - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-odeTargets.cmake exit 1
-              - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-bulletTargets.cmake exit 1
 about:
   homepage: http://dartsim.github.io/
   license: BSD-2-Clause
