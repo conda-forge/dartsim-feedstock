@@ -3,7 +3,7 @@ schema_version: 1
 context:
   name: dartsim
   version: "6.19.3"
-  build_number: 0
+  build_number: 1
 
 recipe:
   name: ${{ name|lower }}-split
@@ -113,7 +113,10 @@ outputs:
       script:
         file: ${{ "bld_py.bat" if win else "build_py.sh" }}
       skip:
-        - (linux and match(python, "<3.12")) or (win and (match(python, "<3.12") or match(python, ">3.14")))
+        # dartpy rebuilds DART for each Python variant on Windows; keep the
+        # latest Python variants first (currently 3.14 and 3.13) while staying
+        # under Azure's 6h job timeout with optimized Release builds.
+        - (linux and match(python, "<3.12")) or (win and (match(python, "<3.13") or match(python, ">3.14")))
     requirements:
       build:
         - ${{ compiler('c') }}
@@ -182,7 +185,7 @@ outputs:
       name: dartsim
     build:
       skip:
-        - (linux and match(python, "<3.12")) or (win and (match(python, "<3.12") or match(python, ">3.14")))
+        - (linux and match(python, "<3.12")) or (win and (match(python, "<3.13") or match(python, ">3.14")))
     requirements:
       run:
         - ${{ pin_subpackage('dartsim-cpp', exact=True) }}
