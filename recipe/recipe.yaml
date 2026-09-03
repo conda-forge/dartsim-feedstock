@@ -17,9 +17,10 @@ source:
       - disable_test_Issue1596.patch
       - 1779.patch
       - boost-1.90.patch
+      - eigen5.patch
 
 build:
-  number: 30
+  number: 31
   skip: win
 
 requirements:
@@ -40,7 +41,7 @@ requirements:
     - libboost-devel
     - bullet-cpp
     - console_bridge
-    - eigen >=3.3.4,<5
+    - eigen-abi-devel
     - fcl
     - flann
     - libccd-double
@@ -52,7 +53,6 @@ requirements:
     - if: win
       then: freeglut
   run:
-    - eigen >=3.3.4,<5
     - flann
     - lz4-c
     - octomap
