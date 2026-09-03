@@ -1,7 +1,7 @@
 From: Tobias Fischer <tobias.fischer@qut.edu.au>
-Subject: [PATCH] Fix build against Eigen 5
+Subject: [PATCH] Fix build and tests against Eigen 5
 
-Two unrelated problems show up when building DART 6.12 against Eigen 5:
+Three unrelated problems show up when building DART 6.12 against Eigen 5:
 
 * find_package(Eigen3 3.3.4 REQUIRED CONFIG) fails because Eigen 5's
   package version file only considers a request compatible when the
@@ -10,6 +10,12 @@ Two unrelated problems show up when building DART 6.12 against Eigen 5:
 * Eigen 5 no longer includes <cassert> transitively, so the translation
   units that relied on getting assert() from an Eigen header fail with
   "use of undeclared identifier 'assert'".
+* test_ForceDependentSlip binds an Eigen expression to 'auto', keeping a
+  reference to a temporary that is destroyed at the end of the statement.
+  Reading it afterwards is undefined behaviour, which GCC diagnoses as
+  "using a dangling pointer to an unnamed temporary". It happened to read
+  intact stack memory with Eigen 3 but reads garbage with Eigen 5, making
+  ForceDependentSlip.CylinderSlipVelocity fail on Linux.
 
 diff --git a/cmake/DARTFindEigen3.cmake b/cmake/DARTFindEigen3.cmake
 index e1acc08..bd51b5d 100644
@@ -191,3 +197,21 @@ index fc60517..81975a1 100644
  #include <limits>
  
  #include "dart/common/Console.hpp"
+diff --git a/unittests/comprehensive/test_ForceDependentSlip.cpp b/unittests/comprehensive/test_ForceDependentSlip.cpp
+index 9c0b85a..7082646 100644
+--- a/unittests/comprehensive/test_ForceDependentSlip.cpp
++++ b/unittests/comprehensive/test_ForceDependentSlip.cpp
+@@ -275,7 +275,12 @@ TEST(ForceDependentSlip, CylinderSlipVelocity)
+       // There appears to be a bug in DART in obtaining the linear acceleration
+       // of the body using (BodyNode::getLinearAcceleration), so we compute it
+       // here via finite difference.
+-      auto accel = (body2->getLinearVelocity() - lastVel) / dt;
++      // Note that the result has to be evaluated into a Vector3d rather than
++      // captured with 'auto': the expression holds a reference to the
++      // temporary returned by getLinearVelocity(), which is destroyed at the
++      // end of this statement.
++      const Eigen::Vector3d accel
++          = (body2->getLinearVelocity() - lastVel) / dt;
+       EXPECT_NEAR(mass * accel.x() * slip, spinVel - linVel, 2e-4);
+       EXPECT_NEAR(0.0, body2->getLinearVelocity().y(), 1e-4);
+     }
