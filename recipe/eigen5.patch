@@ -1,0 +1,217 @@
+From: Tobias Fischer <tobias.fischer@qut.edu.au>
+Subject: [PATCH] Fix build and tests against Eigen 5
+
+Three unrelated problems show up when building DART 6.12 against Eigen 5:
+
+* find_package(Eigen3 3.3.4 REQUIRED CONFIG) fails because Eigen 5's
+  package version file only considers a request compatible when the
+  requested major version matches the installed one, so the 5.x config
+  file is rejected for a 3.3.4 request.
+* Eigen 5 no longer includes <cassert> transitively, so the translation
+  units that relied on getting assert() from an Eigen header fail with
+  "use of undeclared identifier 'assert'".
+* test_ForceDependentSlip binds an Eigen expression to 'auto', keeping a
+  reference to a temporary that is destroyed at the end of the statement.
+  Reading it afterwards is undefined behaviour, which GCC diagnoses as
+  "using a dangling pointer to an unnamed temporary". It happened to read
+  intact stack memory with Eigen 3 but reads garbage with Eigen 5, making
+  ForceDependentSlip.CylinderSlipVelocity fail on Linux.
+
+diff --git a/cmake/DARTFindEigen3.cmake b/cmake/DARTFindEigen3.cmake
+index e1acc08..bd51b5d 100644
+--- a/cmake/DARTFindEigen3.cmake
++++ b/cmake/DARTFindEigen3.cmake
+@@ -6,5 +6,15 @@
+ #
+ # This file is provided under the "BSD-style" License
+ 
+-find_package(Eigen3 3.3.4 REQUIRED CONFIG)
++# Don't pass the minimum version to find_package(): the package version file
++# shipped by Eigen 5 only accepts requests for the major version it provides,
++# so asking for 3.3.4 makes the 5.x config file be rejected. Find whatever
++# version is installed and check the lower bound afterwards instead.
++find_package(Eigen3 REQUIRED CONFIG)
++
++if(Eigen3_VERSION AND Eigen3_VERSION VERSION_LESS 3.3.4)
++  message(FATAL_ERROR
++    "Eigen3 3.3.4 or greater is required, but found ${Eigen3_VERSION}."
++  )
++endif()
+ 
+diff --git a/dart/dynamics/BoxShape.cpp b/dart/dynamics/BoxShape.cpp
+index e3e798f..0b9bc91 100644
+--- a/dart/dynamics/BoxShape.cpp
++++ b/dart/dynamics/BoxShape.cpp
+@@ -32,6 +32,7 @@
+ 
+ #include "dart/dynamics/BoxShape.hpp"
+ 
++#include <cassert>
+ #include <cmath>
+ 
+ namespace dart {
+diff --git a/dart/dynamics/CapsuleShape.cpp b/dart/dynamics/CapsuleShape.cpp
+index 1d93752..82147cb 100644
+--- a/dart/dynamics/CapsuleShape.cpp
++++ b/dart/dynamics/CapsuleShape.cpp
+@@ -32,6 +32,7 @@
+ 
+ #include "dart/dynamics/CapsuleShape.hpp"
+ 
++#include <cassert>
+ #include <cmath>
+ 
+ #include "dart/dynamics/CylinderShape.hpp"
+diff --git a/dart/dynamics/ConeShape.cpp b/dart/dynamics/ConeShape.cpp
+index 252d996..675a197 100644
+--- a/dart/dynamics/ConeShape.cpp
++++ b/dart/dynamics/ConeShape.cpp
+@@ -32,6 +32,7 @@
+ 
+ #include "dart/dynamics/ConeShape.hpp"
+ 
++#include <cassert>
+ #include <cmath>
+ 
+ #include "dart/dynamics/CylinderShape.hpp"
+diff --git a/dart/dynamics/CylinderShape.cpp b/dart/dynamics/CylinderShape.cpp
+index 87e7136..b157612 100644
+--- a/dart/dynamics/CylinderShape.cpp
++++ b/dart/dynamics/CylinderShape.cpp
+@@ -32,6 +32,7 @@
+ 
+ #include "dart/dynamics/CylinderShape.hpp"
+ 
++#include <cassert>
+ #include <cmath>
+ 
+ #include "dart/math/Helpers.hpp"
+diff --git a/dart/dynamics/EllipsoidShape.cpp b/dart/dynamics/EllipsoidShape.cpp
+index 698c735..c296b7f 100644
+--- a/dart/dynamics/EllipsoidShape.cpp
++++ b/dart/dynamics/EllipsoidShape.cpp
+@@ -32,6 +32,8 @@
+ 
+ #include "dart/dynamics/EllipsoidShape.hpp"
+ 
++#include <cassert>
++
+ #include "dart/math/Helpers.hpp"
+ 
+ namespace dart {
+diff --git a/dart/dynamics/MeshShape.cpp b/dart/dynamics/MeshShape.cpp
+index 1a6cf55..392e0e1 100644
+--- a/dart/dynamics/MeshShape.cpp
++++ b/dart/dynamics/MeshShape.cpp
+@@ -32,6 +32,7 @@
+ 
+ #include "dart/dynamics/MeshShape.hpp"
+ 
++#include <cassert>
+ #include <limits>
+ #include <string>
+ 
+diff --git a/dart/dynamics/PyramidShape.cpp b/dart/dynamics/PyramidShape.cpp
+index 97b2c56..6cbab0b 100644
+--- a/dart/dynamics/PyramidShape.cpp
++++ b/dart/dynamics/PyramidShape.cpp
+@@ -32,6 +32,7 @@
+ 
+ #include "dart/dynamics/PyramidShape.hpp"
+ 
++#include <cassert>
+ #include <cmath>
+ 
+ #include "dart/common/Console.hpp"
+diff --git a/dart/dynamics/SphereShape.cpp b/dart/dynamics/SphereShape.cpp
+index 2d988ba..783db30 100644
+--- a/dart/dynamics/SphereShape.cpp
++++ b/dart/dynamics/SphereShape.cpp
+@@ -32,6 +32,8 @@
+ 
+ #include "dart/dynamics/SphereShape.hpp"
+ 
++#include <cassert>
++
+ #include "dart/math/Helpers.hpp"
+ 
+ namespace dart {
+diff --git a/dart/optimizer/GenericMultiObjectiveProblem.cpp b/dart/optimizer/GenericMultiObjectiveProblem.cpp
+index b646d70..7e186ee 100644
+--- a/dart/optimizer/GenericMultiObjectiveProblem.cpp
++++ b/dart/optimizer/GenericMultiObjectiveProblem.cpp
+@@ -33,6 +33,7 @@
+ #include "dart/optimizer/GenericMultiObjectiveProblem.hpp"
+ 
+ #include <algorithm>
++#include <cassert>
+ #include <limits>
+ #include <numeric>
+ 
+diff --git a/dart/optimizer/GradientDescentSolver.cpp b/dart/optimizer/GradientDescentSolver.cpp
+index cf936e9..ba3d33c 100644
+--- a/dart/optimizer/GradientDescentSolver.cpp
++++ b/dart/optimizer/GradientDescentSolver.cpp
+@@ -32,6 +32,7 @@
+ 
+ #include "dart/optimizer/GradientDescentSolver.hpp"
+ 
++#include <cassert>
+ #include <iostream>
+ 
+ #include "dart/common/Console.hpp"
+diff --git a/dart/optimizer/MultiObjectiveProblem.cpp b/dart/optimizer/MultiObjectiveProblem.cpp
+index 52e86a8..c350b52 100644
+--- a/dart/optimizer/MultiObjectiveProblem.cpp
++++ b/dart/optimizer/MultiObjectiveProblem.cpp
+@@ -33,6 +33,7 @@
+ #include "dart/optimizer/MultiObjectiveProblem.hpp"
+ 
+ #include <algorithm>
++#include <cassert>
+ #include <limits>
+ #include <numeric>
+ 
+diff --git a/dart/optimizer/Population.cpp b/dart/optimizer/Population.cpp
+index 9e9bce8..52f3107 100644
+--- a/dart/optimizer/Population.cpp
++++ b/dart/optimizer/Population.cpp
+@@ -32,6 +32,8 @@
+ 
+ #include "dart/optimizer/Population.hpp"
+ 
++#include <cassert>
++
+ #include "dart/common/Console.hpp"
+ #include "dart/math/Random.hpp"
+ 
+diff --git a/dart/optimizer/Problem.cpp b/dart/optimizer/Problem.cpp
+index fc60517..81975a1 100644
+--- a/dart/optimizer/Problem.cpp
++++ b/dart/optimizer/Problem.cpp
+@@ -33,6 +33,7 @@
+ #include "dart/optimizer/Problem.hpp"
+ 
+ #include <algorithm>
++#include <cassert>
+ #include <limits>
+ 
+ #include "dart/common/Console.hpp"
+diff --git a/unittests/comprehensive/test_ForceDependentSlip.cpp b/unittests/comprehensive/test_ForceDependentSlip.cpp
+index 9c0b85a..7082646 100644
+--- a/unittests/comprehensive/test_ForceDependentSlip.cpp
++++ b/unittests/comprehensive/test_ForceDependentSlip.cpp
+@@ -275,7 +275,12 @@ TEST(ForceDependentSlip, CylinderSlipVelocity)
+       // There appears to be a bug in DART in obtaining the linear acceleration
+       // of the body using (BodyNode::getLinearAcceleration), so we compute it
+       // here via finite difference.
+-      auto accel = (body2->getLinearVelocity() - lastVel) / dt;
++      // Note that the result has to be evaluated into a Vector3d rather than
++      // captured with 'auto': the expression holds a reference to the
++      // temporary returned by getLinearVelocity(), which is destroyed at the
++      // end of this statement.
++      const Eigen::Vector3d accel
++          = (body2->getLinearVelocity() - lastVel) / dt;
+       EXPECT_NEAR(mass * accel.x() * slip, spinVel - linVel, 2e-4);
+       EXPECT_NEAR(0.0, body2->getLinearVelocity().y(), 1e-4);
+     }
