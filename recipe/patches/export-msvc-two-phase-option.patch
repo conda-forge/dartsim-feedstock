@@ -1,0 +1,15 @@
+diff --git a/dart/CMakeLists.txt b/dart/CMakeLists.txt
+--- a/dart/CMakeLists.txt
++++ b/dart/CMakeLists.txt
+@@ -169,6 +169,11 @@ endif()
+ # C++ standard settings
+ target_compile_features(dart PUBLIC cxx_std_17)
+ 
++# DART 6's public templates require MSVC's legacy two-phase parsing mode.
++# Export the option so installed CMake consumers compile the headers the same
++# way as DART itself.
++target_compile_options(dart INTERFACE "$<$<CXX_COMPILER_ID:MSVC>:/Zc:twoPhase->")
++
+ # Build DART with all available SIMD instructions
+ if(DART_ENABLE_SIMD)
+   if(MSVC)

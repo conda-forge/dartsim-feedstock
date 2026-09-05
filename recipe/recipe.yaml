@@ -3,7 +3,7 @@ schema_version: 1
 context:
   name: dartsim
   version: "6.19.4"
-  build_number: 0
+  build_number: 1
 
 recipe:
   name: ${{ name|lower }}-split
@@ -20,6 +20,9 @@ source:
           # Avoid -A x64 for Ninja/NMake when building dartpy on Windows
           - patches/fix-setup-msvc-ninja.patch
           - patches/dartpy-build-temp-env.patch
+          # Remove once an upstream release exports the MSVC two-phase parsing
+          # option required by DART 6's public template headers.
+          - patches/export-msvc-two-phase-option.patch
 build:
   number: ${{ build_number }}
 
@@ -77,7 +80,7 @@ outputs:
           - spdlog
     tests:
       - script:
-          - cmake -S tests/cmake-consumer -B cmake-consumer-build -G Ninja
+          - cmake -S tests/cmake-consumer -B cmake-consumer-build -G Ninja -DCMAKE_BUILD_TYPE=Release
           - cmake --build cmake-consumer-build
           - ctest --test-dir cmake-consumer-build --output-on-failure --no-tests=error
         files:
