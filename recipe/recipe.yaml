@@ -79,7 +79,7 @@ outputs:
       - script:
           - cmake -S tests/cmake-consumer -B cmake-consumer-build -G Ninja
           - cmake --build cmake-consumer-build
-          - ctest --test-dir cmake-consumer-build --output-on-failure
+          - ctest --test-dir cmake-consumer-build --output-on-failure --no-tests=error
         files:
           recipe:
             - tests/cmake-consumer/
