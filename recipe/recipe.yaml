@@ -20,8 +20,8 @@ source:
           # Avoid -A x64 for Ninja/NMake when building dartpy on Windows
           - patches/fix-setup-msvc-ninja.patch
           - patches/dartpy-build-temp-env.patch
-          # Remove once an upstream release exports the MSVC two-phase parsing
-          # option required by DART 6's public template headers.
+          # Remove once an upstream release exports the MSVC conformance options
+          # required by DART 6's public template headers.
           - patches/export-msvc-two-phase-option.patch
 build:
   number: ${{ build_number }}
