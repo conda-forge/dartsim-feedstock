@@ -3,7 +3,7 @@ schema_version: 1
 context:
   name: dartsim
   version: "6.19.4"
-  build_number: 0
+  build_number: 1
 
 recipe:
   name: ${{ name|lower }}-split
@@ -13,13 +13,16 @@ source:
   - url: https://github.com/dartsim/dart/archive/v${{ version }}.tar.gz
     sha256: 627a6d21650427da634503829eba6c0c20887cd3441082eb44187fb3f9250150
     patches:
-      # Disable tutorials and examples to save build time
       - if: win
         then:
-      # Avoid -A x64 for Ninja/NMake when building dartpy on Windows
+          # Disable tutorials and examples to save build time
           - patches/disable-tutorials-examples.patch
+          # Avoid -A x64 for Ninja/NMake when building dartpy on Windows
           - patches/fix-setup-msvc-ninja.patch
           - patches/dartpy-build-temp-env.patch
+          # Remove once an upstream release exports the MSVC conformance options
+          # required by DART 6's public template headers.
+          - patches/export-msvc-two-phase-option.patch
 build:
   number: ${{ build_number }}
 
@@ -77,24 +80,9 @@ outputs:
           - spdlog
     tests:
       - script:
-          - if: osx
-            then: test -f $PREFIX/lib/libdart.dylib
-          - if: linux
-            then: test -f $PREFIX/lib/libdart.so
-          - if: not win
-            then:
-              - test -f $PREFIX/share/dart/cmake/dart_collision-odeTargets.cmake
-              - test -f $PREFIX/share/dart/cmake/dart_collision-bulletTargets.cmake
-            else:
-              - if not exist %LIBRARY_LIB%\\dart.lib exit 1
-              - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-odeTargets.cmake exit 1
-              - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-bulletTargets.cmake exit 1
-      - script:
-          - cmake -S tests/cmake-consumer -B cmake-consumer-build -G Ninja
+          - cmake -S tests/cmake-consumer -B cmake-consumer-build -G Ninja -DCMAKE_BUILD_TYPE=Release
           - cmake --build cmake-consumer-build
-          - if: not win
-            then: ./cmake-consumer-build/dartsim_consumer_smoke
-            else: cmake-consumer-build\\dartsim_consumer_smoke.exe
+          - ctest --test-dir cmake-consumer-build --output-on-failure --no-tests=error
         files:
           recipe:
             - tests/cmake-consumer/

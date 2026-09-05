@@ -1,0 +1,19 @@
+diff --git a/dart/CMakeLists.txt b/dart/CMakeLists.txt
+--- a/dart/CMakeLists.txt
++++ b/dart/CMakeLists.txt
+@@ -169,6 +169,15 @@ endif()
+ # C++ standard settings
+ target_compile_features(dart PUBLIC cxx_std_17)
+ 
++# DART 6's public templates require the same MSVC conformance options used
++# when compiling DART itself. Export them so installed CMake consumers parse
++# the headers consistently.
++target_compile_options(
++  dart
++  INTERFACE
++    "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->"
++    "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/Zc:twoPhase->")
++
+ # Build DART with all available SIMD instructions
+ if(DART_ENABLE_SIMD)
+   if(MSVC)
