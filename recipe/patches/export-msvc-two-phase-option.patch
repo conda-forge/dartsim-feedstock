@@ -11,8 +11,8 @@ diff --git a/dart/CMakeLists.txt b/dart/CMakeLists.txt
 +target_compile_options(
 +  dart
 +  INTERFACE
-+    "$<$<CXX_COMPILER_ID:MSVC>:/permissive->"
-+    "$<$<CXX_COMPILER_ID:MSVC>:/Zc:twoPhase->")
++    "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->"
++    "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/Zc:twoPhase->")
 +
  # Build DART with all available SIMD instructions
  if(DART_ENABLE_SIMD)
