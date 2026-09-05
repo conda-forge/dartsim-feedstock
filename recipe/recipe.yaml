@@ -13,11 +13,11 @@ source:
   - url: https://github.com/dartsim/dart/archive/v${{ version }}.tar.gz
     sha256: 627a6d21650427da634503829eba6c0c20887cd3441082eb44187fb3f9250150
     patches:
-      # Disable tutorials and examples to save build time
       - if: win
         then:
-      # Avoid -A x64 for Ninja/NMake when building dartpy on Windows
+          # Disable tutorials and examples to save build time
           - patches/disable-tutorials-examples.patch
+          # Avoid -A x64 for Ninja/NMake when building dartpy on Windows
           - patches/fix-setup-msvc-ninja.patch
           - patches/dartpy-build-temp-env.patch
 build:

@@ -1,5 +1,3 @@
-azure:
-  free_disk_space: true
 bot:
   abi_migration_branches:
   - v6.12
@@ -20,3 +18,5 @@ provider:
   linux_aarch64: default
   linux_ppc64le: default
 test: native_and_emulated
+workflow_settings:
+  free_disk_space: quick
