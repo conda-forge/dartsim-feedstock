@@ -77,24 +77,9 @@ outputs:
           - spdlog
     tests:
       - script:
-          - if: osx
-            then: test -f $PREFIX/lib/libdart.dylib
-          - if: linux
-            then: test -f $PREFIX/lib/libdart.so
-          - if: not win
-            then:
-              - test -f $PREFIX/share/dart/cmake/dart_collision-odeTargets.cmake
-              - test -f $PREFIX/share/dart/cmake/dart_collision-bulletTargets.cmake
-            else:
-              - if not exist %LIBRARY_LIB%\\dart.lib exit 1
-              - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-odeTargets.cmake exit 1
-              - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-bulletTargets.cmake exit 1
-      - script:
           - cmake -S tests/cmake-consumer -B cmake-consumer-build -G Ninja
           - cmake --build cmake-consumer-build
-          - if: not win
-            then: ./cmake-consumer-build/dartsim_consumer_smoke
-            else: cmake-consumer-build\\dartsim_consumer_smoke.exe
+          - ctest --test-dir cmake-consumer-build --output-on-failure
         files:
           recipe:
             - tests/cmake-consumer/
