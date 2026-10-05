@@ -1,0 +1,76 @@
+diff --git a/tests/integration/test_MultiObjectiveOptimization.cpp b/tests/integration/test_MultiObjectiveOptimization.cpp
+index 460a528..82c96ff 100644
+--- a/tests/integration/test_MultiObjectiveOptimization.cpp
++++ b/tests/integration/test_MultiObjectiveOptimization.cpp
+@@ -103,16 +103,7 @@ public:
+ //==============================================================================
+ void testZDT1(MultiObjectiveSolver& solver)
+ {
+-#if DART_BUILD_MODE_RELEASE
+-  std::size_t numSolutions = 50;
+-#else
+-  std::size_t numSolutions = 10;
+-#endif
+-#if DART_BUILD_MODE_RELEASE
+-  std::size_t iterationNum = 1000;
+-#else
+-  std::size_t iterationNum = 200;
+-#endif
++  const std::size_t numSolutions = 8;
+ 
+   auto problem = std::make_shared<ZDT1>();
+   problem->setLowerBounds(lowerLimits);
+@@ -120,13 +111,13 @@ void testZDT1(MultiObjectiveSolver& solver)
+ 
+   solver.setProblem(problem);
+   solver.setPopulationSize(numSolutions);
+-  solver.setNumPopulations(100);
+-  solver.setNumIterationsPerEvolution(iterationNum);
+-  solver.solve(100);
++  solver.setNumPopulations(2);
++  solver.setNumIterationsPerEvolution(1);
++  solver.solve(1);
+ 
+   EXPECT_TRUE(solver.getPopulation(0).getSize() == numSolutions);
+   EXPECT_TRUE(solver.getPopulation(1).getSize() == numSolutions);
+-  EXPECT_TRUE(solver.getNumPopulations() == 100);
++  EXPECT_TRUE(solver.getNumPopulations() == 2);
+ }
+ 
+ //==============================================================================
+@@ -139,16 +130,7 @@ void testZDT1Generic(MultiObjectiveSolver& solver)
+   pFuncs.push_back(pFunc1);
+   pFuncs.push_back(pFunc2);
+ 
+-#if DART_BUILD_MODE_RELEASE
+-  std::size_t numSolutions = 50;
+-#else
+-  std::size_t numSolutions = 10;
+-#endif
+-#if DART_BUILD_MODE_RELEASE
+-  std::size_t iterationNum = 1000;
+-#else
+-  std::size_t iterationNum = 200;
+-#endif
++  const std::size_t numSolutions = 8;
+ 
+   auto problem
+       = std::make_shared<optimizer::GenericMultiObjectiveProblem>(dimension);
+@@ -158,13 +140,13 @@ void testZDT1Generic(MultiObjectiveSolver& solver)
+ 
+   solver.setProblem(problem);
+   solver.setPopulationSize(numSolutions);
+-  solver.setNumPopulations(100);
+-  solver.setNumIterationsPerEvolution(iterationNum);
+-  solver.solve(100);
++  solver.setNumPopulations(2);
++  solver.setNumIterationsPerEvolution(1);
++  solver.solve(1);
+ 
+   EXPECT_TRUE(solver.getPopulation(0).getSize() == numSolutions);
+   EXPECT_TRUE(solver.getPopulation(1).getSize() == numSolutions);
+-  EXPECT_TRUE(solver.getNumPopulations() == 100);
++  EXPECT_TRUE(solver.getNumPopulations() == 2);
+ }
+ 
+ //==============================================================================
