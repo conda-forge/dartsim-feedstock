@@ -2,8 +2,8 @@ schema_version: 1
 
 context:
   name: dartsim
-  version: "6.19.4"
-  build_number: 1
+  version: "6.19.5"
+  build_number: 0
 
 recipe:
   name: ${{ name|lower }}-split
@@ -11,8 +11,11 @@ recipe:
 
 source:
   - url: https://github.com/dartsim/dart/archive/v${{ version }}.tar.gz
-    sha256: 627a6d21650427da634503829eba6c0c20887cd3441082eb44187fb3f9250150
+    sha256: 86539ba78f28a4e0d54eaac961a7b08c09d10ff6518ee77e401796133157bee0
     patches:
+      # Remove with DART 6.20, which drops the legacy pagmo test:
+      # https://github.com/dartsim/dart/commit/c4298ce48793ba943947f641724bfd565ce9c682
+      - patches/fix-pagmo-multiobjective-test.patch
       - if: win
         then:
           # Disable tutorials and examples to save build time
