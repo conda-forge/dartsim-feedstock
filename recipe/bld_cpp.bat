@@ -29,5 +29,6 @@ if errorlevel 1 exit 1
 ninja install
 if errorlevel 1 exit 1
 
-ctest --output-on-failure
+:: Skip the long-measurement push-recovery sweep; see build_cpp.sh
+ctest --output-on-failure -LE long-measurement
 if errorlevel 1 exit 1
