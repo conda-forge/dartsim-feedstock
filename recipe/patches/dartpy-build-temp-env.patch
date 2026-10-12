@@ -1,9 +1,9 @@
 diff --git a/setup.py b/setup.py
 --- a/setup.py
 +++ b/setup.py
-@@ -158,7 +158,11 @@
+@@ -188,7 +188,11 @@ class CMakeBuild(build_ext):
          else:
-             cmake_args += ["-DDART_USE_SYSTEM_IMGUI=OFF"]
+             build_args += [f"-j{os.environ['CMAKE_BUILD_PARALLEL_LEVEL']}"]
  
 -        build_temp = Path(self.build_temp) / ext.name
 +        build_temp_root = os.environ.get("DARTPY_BUILD_TEMP")

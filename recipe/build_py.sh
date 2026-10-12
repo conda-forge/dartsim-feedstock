@@ -11,6 +11,8 @@ if [[ "${target_platform}" == osx-* ]]; then
     echo "Building for macOS Intel (x86_64)"
     export ARCHFLAGS="-arch x86_64"
   fi
+  # DART 6.20 uses std::pmr; see https://conda-forge.org/docs/maintainer/knowledge_base.html#newer-c-features-with-old-sdk
+  export CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
 fi
 
 # Set CMAKE_BUILD_PARALLEL_LEVEL to control the parallel build level
