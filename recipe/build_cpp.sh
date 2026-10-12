@@ -42,12 +42,12 @@ cmake --install .
 if [ ${target_platform} != "linux-ppc64le" ]; then
   cmake --build . --target tests --parallel ${NUM_PARALLEL}
   if [[ "${CONDA_BUILD_CROSS_COMPILATION:-}" != "1" || "${CROSSCOMPILING_EMULATOR}" != "" ]]; then
-    # Skip the push-recovery sweep (label long-measurement, also skipped by
-    # upstream's FreeBSD CI); with conda-forge's deps it measures soft 4000 N
-    # vs rigid 8000 N and fails its soft >= rigid claim. Skip the demos app
-    # tests (label examples): not packaged, and their GUI-scaling checks
-    # expect ImGui >=1.92 while this recipe pins imgui <1.92.
-    CTEST_ARGS=(--output-on-failure -LE "long-measurement|examples")
+    # test_SoftFootSimbiconPushSweep (also skipped by upstream's FreeBSD CI)
+    # measures soft 4000 N vs rigid 8000 N with conda-forge's deps and fails
+    # its soft >= rigid claim. UNIT_examples_demos_DisplaySettings tests the
+    # unpackaged demos app and expects ImGui >=1.92 while this recipe pins
+    # imgui <1.92.
+    CTEST_EXCLUDE="test_SoftFootSimbiconPushSweep|UNIT_examples_demos_DisplaySettings"
     # On macOS the resting sphere-on-plane regression test (test_Issue1184)
     # settles ~5e-7 over its 1e-3 resting-height tolerance: the steady-state
     # contact penetration sits exactly on the bound and macOS FP tips it just
@@ -55,8 +55,8 @@ if [ ${target_platform} != "linux-ppc64le" ]; then
     # FP-tolerance fragility, not a functional defect.
     # Upstream: https://github.com/dartsim/dart/issues/1184
     if [[ "${target_platform}" == osx-* ]]; then
-      CTEST_ARGS+=(-E "test_Issue1184")
+      CTEST_EXCLUDE+="|test_Issue1184"
     fi
-    ctest "${CTEST_ARGS[@]}"
+    ctest --output-on-failure -E "^(${CTEST_EXCLUDE})$"
   fi
 fi
