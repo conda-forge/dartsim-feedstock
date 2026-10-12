@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   name: dartsim
-  version: "6.19.5"
+  version: "6.20.0"
   build_number: 0
 
 recipe:
@@ -11,11 +11,11 @@ recipe:
 
 source:
   - url: https://github.com/dartsim/dart/archive/v${{ version }}.tar.gz
-    sha256: 86539ba78f28a4e0d54eaac961a7b08c09d10ff6518ee77e401796133157bee0
+    sha256: a203ee8c812b6b4a057b113eee15142da434a54d9f4c119c06a788defa80a30b
     patches:
-      # Remove with DART 6.20, which drops the legacy pagmo test:
-      # https://github.com/dartsim/dart/commit/c4298ce48793ba943947f641724bfd565ce9c682
-      - patches/fix-pagmo-multiobjective-test.patch
+      # DART 6.20 requires assimp's version but reads it only from pkg-config
+      # outside MSVC, so find_package(DART) fails without pkg-config.
+      - patches/fix-assimp-version-without-pkg-config.patch
       - if: win
         then:
           # Disable tutorials and examples to save build time
@@ -53,21 +53,13 @@ outputs:
         - eigen-abi-devel
         - fcl
         - fmt
-        - if: not osx
-          then: freeglut
         - imgui <1.92
-        - ipopt
         - libboost-devel
         - if: linux
-          then:
-            - libgl-devel
-            - libglu
+          then: libgl-devel
         - libode
-        - nlopt
         - octomap
         - openscenegraph
-        - pagmo
-        - pagmo-devel
         - tinyxml2
         - urdfdom
         - spdlog
@@ -132,21 +124,13 @@ outputs:
         - eigen >=3.3.4,<5
         - fcl
         - fmt
-        - if: not osx
-          then: freeglut
         - imgui <1.92
-        - ipopt
         - libboost-devel
         - if: linux
-          then:
-            - libgl-devel
-            - libglu
+          then: libgl-devel
         - libode
-        - nlopt
         - octomap
         - openscenegraph
-        - pagmo
-        - pagmo-devel
         - tinyxml2
         - urdfdom
         - spdlog
@@ -155,15 +139,13 @@ outputs:
         # Python deps
         - numpy
         - pip
-        - pybind11 >=2.13.6,<3
+        - pybind11 >=3.0.3
         - python
         - setuptools
         - wheel
       run:
         - if: linux
-          then:
-            - libgl
-            - libglu
+          then: libgl
         - numpy
         - python
     tests:

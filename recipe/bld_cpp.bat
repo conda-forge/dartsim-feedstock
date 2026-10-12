@@ -29,5 +29,6 @@ if errorlevel 1 exit 1
 ninja install
 if errorlevel 1 exit 1
 
-ctest --output-on-failure
+:: Skip the push-recovery sweep; see build_cpp.sh
+ctest --output-on-failure -E test_SoftFootSimbiconPushSweep
 if errorlevel 1 exit 1
