@@ -11,6 +11,8 @@ set "DARTPY_BUILD_TEMP=%USERPROFILE%\\AppData\\Local\\Temp\\dartpy_build"
 :: Use conda-forge's pybind11 package instead of CMake FetchContent.
 set "CMAKE_ARGS=%CMAKE_ARGS% -DDART_MSVC_DEFAULT_OPTIONS=ON"
 set "CMAKE_ARGS=%CMAKE_ARGS% -DDART_USE_SYSTEM_PYBIND11=ON"
+:: Skip the C++ examples and tutorials, which MSVC builds would otherwise add.
+set "CMAKE_ARGS=%CMAKE_ARGS% -DDART_BUILD_EXAMPLES=OFF -DDART_BUILD_TUTORIALS=OFF"
 
 :: Compiler flags to reduce memory usage while keeping Release optimization:
 :: - /Zm2000     => increase compiler heap (change if needed)
