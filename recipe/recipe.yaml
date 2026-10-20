@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   name: dartsim
-  version: "6.20.1"
+  version: "6.20.2"
   build_number: 0
 
 recipe:
@@ -11,21 +11,7 @@ recipe:
 
 source:
   - url: https://github.com/dartsim/dart/archive/v${{ version }}.tar.gz
-    sha256: f6799dd17303c478bee6fc5f439108ccf7b2870f712884d4bdb85fcf9d2b1778
-    patches:
-      # DART 6.20 requires assimp's version but reads it only from pkg-config
-      # outside MSVC, so find_package(DART) fails without pkg-config.
-      - patches/fix-assimp-version-without-pkg-config.patch
-      - if: win
-        then:
-          # Disable tutorials and examples to save build time
-          - patches/disable-tutorials-examples.patch
-          # Avoid -A x64 for Ninja/NMake when building dartpy on Windows
-          - patches/fix-setup-msvc-ninja.patch
-          - patches/dartpy-build-temp-env.patch
-          # Remove once an upstream release exports the MSVC conformance options
-          # required by DART 6's public template headers.
-          - patches/export-msvc-two-phase-option.patch
+    sha256: 61e6d2542d85c1891ae25471412617715b98e620a044be919514671116c0c5fe
 build:
   number: ${{ build_number }}
 
