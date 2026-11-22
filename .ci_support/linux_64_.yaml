@@ -1,3 +1,5 @@
+DOCKER_PLATFORM:
+- linux/amd64
 assimp:
 - '6'
 bullet_cpp:
@@ -31,7 +33,7 @@ libboost_devel:
 libode:
 - 0.16.6
 lz4_c:
-- '1.10'
+- '1.11'
 target_platform:
 - linux-64
 tinyxml2:
