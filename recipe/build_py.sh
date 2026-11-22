@@ -40,6 +40,9 @@ fi
 export CMAKE_GENERATOR=Ninja
 export CMAKE_ARGS="${CMAKE_ARGS:-} -DDART_USE_SYSTEM_PYBIND11=ON -DPYBIND11_FINDPYTHON=OFF -DBUILD_TESTING=OFF"
 if [[ "${CONDA_BUILD_CROSS_COMPILATION:-0}" == "1" ]]; then
+  # Use the target Python headers reported by cross-python.
+  python_include_dir=$(python -c 'import sysconfig; print(sysconfig.get_path("include"))')
+  export CMAKE_ARGS="${CMAKE_ARGS} -DPython3_INCLUDE_DIR:PATH=\"${python_include_dir}\""
   python -m pip install . -vv
 else
   python -m pip install . -vv --no-deps --no-build-isolation
